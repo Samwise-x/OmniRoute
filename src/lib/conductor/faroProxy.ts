@@ -23,6 +23,7 @@ export interface FaroAnswer {
 
 export interface FaroProxyOptions {
   fetchImpl?: typeof fetch;
+  confirmationToken?: string;
 }
 
 const DEFAULT_FARO_URL = "http://127.0.0.1:7920";
@@ -35,7 +36,10 @@ export async function askFaro(message: string, opts: FaroProxyOptions = {}): Pro
     const res = await doFetch(`${base}/ask`, {
       method: "POST",
       headers: { authorization: `Bearer ${token}`, "content-type": "application/json" },
-      body: JSON.stringify({ message }),
+      body: JSON.stringify({
+        message,
+        ...(opts.confirmationToken ? { confirmation_token: opts.confirmationToken } : {}),
+      }),
     });
     if (!res.ok) return { ok: false, text: "", pending: null };
     const parsed = faroResponseSchema.parse(await res.json());

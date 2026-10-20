@@ -1,0 +1,126 @@
+# Standalone OmniConductor deployment. Start with: docker compose -f docker-compose.omniconductor.yml up --build -d
+services:
+  hub:
+    build:
+      context: ./services/omni-conductor
+      dockerfile: Dockerfile.hub
+    restart: unless-stopped
+    environment:
+      HOST: 0.0.0.0
+      PORT: 7910
+      CONDUCTOR_HUB_TOKEN: ${CONDUCTOR_HUB_TOKEN:?Set CONDUCTOR_HUB_TOKEN in .env}
+      CONDUCTOR_STATE_FILE: /data/conductor-state.json
+      RUNNER_HEARTBEAT_TTL_MS: ${RUNNER_HEARTBEAT_TTL_MS:-90000}
+    volumes:
+      - conductor-data:/data
+    ports:
+      - "${CONDUCTOR_HUB_BIND:-127.0.0.1}:7910:7910"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:7910/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 3s
+    read_only: true
+    tmpfs: [/tmp]
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+
+  faro:
+    build:
+      context: ./services/omni-conductor
+      dockerfile: Dockerfile.faro
+    restart: unless-stopped
+    depends_on:
+      hub: { condition: service_healthy }
+    environment:
+      HOST: 0.0.0.0
+      PORT: 7920
+      CONDUCTOR_HUB_URL: http://hub:7910
+      CONDUCTOR_HUB_TOKEN: ${CONDUCTOR_HUB_TOKEN:?Set CONDUCTOR_HUB_TOKEN in .env}
+      OMNIROUTE_BASE_URL: ${OMNIROUTE_BASE_URL:-}
+      OMNIROUTE_API_KEY: ${OMNIROUTE_API_KEY:-}
+      FARO_MODEL: ${FARO_MODEL:-}
+    ports:
+      - "${CONDUCTOR_FARO_BIND:-127.0.0.1}:7920:7920"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:7920/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 3s
+    read_only: true
+    tmpfs: [/tmp]
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+
+  runner:
+    build:
+      context: ./services/omni-conductor
+      dockerfile: Dockerfile.runner
+    restart: unless-stopped
+    depends_on:
+      hub: { condition: service_healthy }
+    environment:
+      CONDUCTOR_HUB_URL: http://hub:7910
+      CONDUCTOR_HUB_TOKEN: ${CONDUCTOR_HUB_TOKEN:?Set CONDUCTOR_HUB_TOKEN in .env}
+      RUNNER_NAME: ${RUNNER_NAME:-omni-runner}
+      RUNNER_CLIS: ${RUNNER_CLIS:-claude,codex,opencode}
+      RUNNER_MODELS: ${RUNNER_MODELS:-*}
+      RUNNER_CLAUDE_MODELS: ${RUNNER_CLAUDE_MODELS:-}
+      RUNNER_CODEX_MODELS: ${RUNNER_CODEX_MODELS:-}
+      RUNNER_OPENCODE_MODELS: ${RUNNER_OPENCODE_MODELS:-}
+      RUNNER_GATEWAY_MODELS: ${RUNNER_GATEWAY_MODELS:-}
+      RUNNER_MAX_CONCURRENCY: ${RUNNER_MAX_CONCURRENCY:-1}
+      RUNNER_TASK_TIMEOUT_MS: ${RUNNER_TASK_TIMEOUT_MS:-1200000}
+      RUNNER_TEST_TIMEOUT_MS: ${RUNNER_TEST_TIMEOUT_MS:-300000}
+      RUNNER_TEST_COMMAND: ${RUNNER_TEST_COMMAND:-}
+      RUNNER_HEALTH_HOST: 0.0.0.0
+      RUNNER_HEALTH_PORT: 7930
+      RUNNER_ALLOWED_REPO_HOSTS: ${RUNNER_ALLOWED_REPO_HOSTS:-}
+      RUNNER_GIT_HOST: ${RUNNER_GIT_HOST:-github.com}
+      RUNNER_GIT_TOKEN: ${RUNNER_GIT_TOKEN:-}
+      GATEWAY_BIN: ${GATEWAY_BIN:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+      OMNIROUTE_BASE_URL: ${OMNIROUTE_BASE_URL:-}
+      OMNIROUTE_API_KEY: ${OMNIROUTE_API_KEY:-}
+    deploy:
+      replicas: ${RUNNER_REPLICAS:-2}
+      resources:
+        limits: { cpus: "2.0", memory: 4G }
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:7930/readyz').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 15s
+    read_only: true
+    tmpfs:
+      - /tmp:size=4g,mode=1777
+      - /home/runner:size=512m,mode=700,uid=10001,gid=10001
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    pids_limit: 256
+
+volumes:
+  conductor-data:

@@ -71,6 +71,7 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.omniconductor.example
 # Local gitleaks artifacts (do not commit)
 gitleaks-local.json
 !.env.example

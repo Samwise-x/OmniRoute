@@ -32,7 +32,10 @@ test("voz: push-to-talk com MediaRecorder/getUserMedia; STT multipart sem Conten
   assert.match(s, /navigator\.mediaDevices\.getUserMedia/);
   assert.match(s, /MediaRecorder/);
   assert.match(s, /FormData\(\)/);
-  assert.ok(!/audio\/transcriptions[\s\S]{0,300}content-type/i.test(s), "multipart deixa o browser definir o boundary");
+  assert.ok(
+    !/audio\/transcriptions[\s\S]{0,300}content-type/i.test(s),
+    "multipart deixa o browser definir o boundary"
+  );
   assert.match(s, /URL\.createObjectURL/);
   assert.match(s, /URL\.revokeObjectURL/);
   assert.match(s, /useTranslations\("conductor"\)/);

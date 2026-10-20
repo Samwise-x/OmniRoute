@@ -1,0 +1,6 @@
+FROM node:24-bookworm-slim
+WORKDIR /opt/omni-conductor
+COPY faro.mjs ./faro.mjs
+USER node
+ENV NODE_ENV=production
+CMD ["node", "faro.mjs"]

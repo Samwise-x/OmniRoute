@@ -12,7 +12,10 @@ import { createErrorResponse } from "@/lib/api/errorResponse";
 import { requireManagementAuth } from "@/lib/api/requireManagementAuth";
 import { askFaro } from "@/lib/conductor/faroProxy";
 
-const askSchema = z.object({ message: z.string().min(1).max(4000) });
+const askSchema = z.object({
+  message: z.string().min(1).max(4000),
+  confirmation_token: z.string().max(12_000).optional(),
+});
 
 export async function POST(request: Request) {
   const authError = await requireManagementAuth(request);
@@ -26,12 +29,20 @@ export async function POST(request: Request) {
   }
   const parsed = askSchema.safeParse(raw);
   if (!parsed.success) {
-    return createErrorResponse({ status: 400, message: "Body must be { message: string (1-4000 chars) }" });
+    return createErrorResponse({
+      status: 400,
+      message: "Body must be { message: string (1-4000 chars) }",
+    });
   }
 
-  const answer = await askFaro(parsed.data.message);
+  const answer = await askFaro(parsed.data.message, {
+    confirmationToken: parsed.data.confirmation_token,
+  });
   if (!answer.ok) {
-    return createErrorResponse({ status: 503, message: "Faro (spokesperson) is offline or refused the request" });
+    return createErrorResponse({
+      status: 503,
+      message: "Faro (spokesperson) is offline or refused the request",
+    });
   }
   return NextResponse.json({ text: answer.text, pending: answer.pending });
 }

@@ -27,6 +27,14 @@ test("client: cancelar é destrutivo → ConfirmModal antes do POST", () => {
   assert.match(src, /useTranslations\("conductor"\)/, "strings via i18n, namespace conductor");
 });
 
+test("client: completed task detail exposes the generated patch, not a nonexistent remote branch", () => {
+  const src = fs.readFileSync(path.join(process.cwd(), CLIENT), "utf8");
+  assert.match(src, /detail\.result\?\.patch/);
+  assert.match(src, /detail\.tests\.status/);
+  assert.match(src, /<summary[^>]*>Patch<\/summary>/);
+  assert.ok(!src.includes('t("fetchHint"'), "does not suggest fetching an unpushed branch");
+});
+
 test("page: wrapper fino de servidor com metadata (padrão relay)", () => {
   const src = fs.readFileSync(path.join(process.cwd(), PAGE), "utf8");
   assert.match(src, /export const metadata/);

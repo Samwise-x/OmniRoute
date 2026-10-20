@@ -1,0 +1,14 @@
+{
+  "name": "@omniroute/omni-conductor-runner-tools",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Pinned coding-agent CLI adapters for the standalone OmniConductor Runner",
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "dependencies": {
+    "@anthropic-ai/claude-code": "2.1.304",
+    "@openai/codex": "0.163.0",
+    "opencode-ai": "1.19.3"
+  }
+}

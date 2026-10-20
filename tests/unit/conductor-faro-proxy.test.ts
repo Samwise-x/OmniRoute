@@ -27,12 +27,26 @@ test.after(() => {
 });
 
 test("repassa a mensagem ao /ask com o token server-side e devolve text+pending", async () => {
-  const { impl, calls } = fakeFaro({ text: "frota ok", pending: { kind: "cancel_task" }, extra: "NÃO passa" });
+  const { impl, calls } = fakeFaro({
+    text: "frota ok",
+    pending: { kind: "cancel_task" },
+    extra: "NÃO passa",
+  });
   const r = await askFaro("como está a frota?", { fetchImpl: impl });
   assert.deepEqual(r, { ok: true, text: "frota ok", pending: { kind: "cancel_task" } });
   assert.equal(calls[0].url, "http://faro.test:7920/ask");
   assert.equal(calls[0].auth, "Bearer tok-hub");
   assert.deepEqual(calls[0].body, { message: "como está a frota?" });
+});
+
+test("confirmation token remains server-proxied and reaches Faro only when explicitly supplied", async () => {
+  const { impl, calls } = fakeFaro({ text: "cancelled", pending: null });
+  const response = await askFaro("sim", {
+    fetchImpl: impl,
+    confirmationToken: "signed-confirmation",
+  });
+  assert.equal(response.ok, true);
+  assert.deepEqual(calls[0].body, { message: "sim", confirmation_token: "signed-confirmation" });
 });
 
 test("pending null passa como null (sem confirmação pendente)", async () => {

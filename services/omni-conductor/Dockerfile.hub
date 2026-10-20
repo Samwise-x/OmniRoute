@@ -1,0 +1,7 @@
+FROM node:24-bookworm-slim
+WORKDIR /opt/omni-conductor
+COPY hub.mjs ./hub.mjs
+RUN mkdir -p /data && chown node:node /data && chmod 700 /data
+USER node
+ENV NODE_ENV=production
+CMD ["node", "hub.mjs"]
