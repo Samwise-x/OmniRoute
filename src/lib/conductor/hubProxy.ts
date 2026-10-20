@@ -43,6 +43,7 @@ export interface ConductorTaskDetail extends FleetTask {
   prompt: string | null;
   base_ref: string | null;
   tests: unknown;
+  result: unknown;
   council: unknown;
   created_at: string | null;
   /** Runner profile the task was pinned to (hub `requirements.cli`), `null` when unconstrained. */
@@ -76,6 +77,7 @@ const hubTaskSchema = z.object({
       branch: z.string().nullish(),
       error: z.string().nullish(),
       tests: z.unknown().optional(),
+      result: z.unknown().optional(),
     })
     .nullish(),
   // The hub echoes back the `requirements` object `createConductorTask` sends on creation.
@@ -202,6 +204,7 @@ export async function getConductorTaskDetail(
       prompt: t.spec?.prompt ?? null,
       base_ref: t.repo?.base_ref ?? null,
       tests: t.manifest?.tests ?? null,
+      result: t.manifest?.result ?? null,
       council: t.council ?? null,
       created_at: t.created_at ?? null,
       cli: t.requirements?.cli ?? null,
@@ -218,6 +221,7 @@ export interface DelegationInput {
   mode?: string;
   cli?: string;
   model?: string;
+  idempotencyKey?: string;
 }
 
 /**
@@ -246,7 +250,11 @@ export async function createConductorTask(
     const doFetch = opts.fetchImpl ?? fetch;
     const res = await doFetch(`${cfg.url}/v1/tasks`, {
       method: "POST",
-      headers: { authorization: `Bearer ${token}`, "content-type": "application/json" },
+      headers: {
+        authorization: `Bearer ${token}`,
+        "content-type": "application/json",
+        ...(input.idempotencyKey ? { "idempotency-key": input.idempotencyKey } : {}),
+      },
       body: JSON.stringify(body),
     });
     if (!res.ok) return { ok: false, status: res.status };

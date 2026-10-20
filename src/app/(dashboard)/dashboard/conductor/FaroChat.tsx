@@ -23,6 +23,11 @@ interface ChatMessage {
   text: string;
 }
 
+interface FaroPending {
+  token: string;
+  action: string;
+}
+
 type VoiceState = "idle" | "listening" | "thinking" | "speaking";
 
 const STT_KEY = "conductor.sttModel";
@@ -49,7 +54,7 @@ export default function FaroChat() {
   const t = useTranslations("conductor");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
-  const [pending, setPending] = useState(false);
+  const [pending, setPending] = useState<FaroPending | null>(null);
   const [busy, setBusy] = useState(false);
   const [voice, setVoice] = useState<VoiceState>("idle");
   const [speak, setSpeak] = useState(false);
@@ -111,10 +116,14 @@ export default function FaroChat() {
     setMessages((m) => [...m, { role: "user", text: clean }]);
     setInput("");
     try {
+      const confirmsPending = /^(yes|y|confirm|sim|sí|si|confirmar|no|n|não|nao)$/i.test(clean);
       const res = await fetch("/api/conductor/ask", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: clean }),
+        body: JSON.stringify({
+          message: clean,
+          ...(confirmsPending && pending ? { confirmation_token: pending.token } : {}),
+        }),
       });
       if (!res.ok) {
         setErr(await errorMessageOf(res, t("faroOffline")));
@@ -122,7 +131,13 @@ export default function FaroChat() {
       }
       const data = await res.json();
       setMessages((m) => [...m, { role: "faro", text: data.text }]);
-      setPending(Boolean(data.pending));
+      setPending(
+        data.pending &&
+          typeof data.pending.token === "string" &&
+          typeof data.pending.action === "string"
+          ? { token: data.pending.token, action: data.pending.action }
+          : null
+      );
       if (viaVoice && speak && data.text) await playAnswer(data.text);
     } catch {
       setErr(t("faroOffline"));

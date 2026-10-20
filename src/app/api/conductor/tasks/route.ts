@@ -55,7 +55,10 @@ export async function POST(request: Request) {
     });
   }
 
-  const result = await createConductorTask(parsed.data);
+  const result = await createConductorTask({
+    ...parsed.data,
+    idempotencyKey: request.headers.get("idempotency-key")?.slice(0, 200) || undefined,
+  });
   if (!result.ok || !result.task_id) {
     return createErrorResponse({
       status: clampErrorStatus(result.status),

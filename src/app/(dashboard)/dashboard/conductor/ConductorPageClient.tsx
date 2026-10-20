@@ -42,6 +42,18 @@ interface FleetSnapshot {
 interface TaskDetail extends FleetTask {
   prompt: string | null;
   base_ref: string | null;
+  result: {
+    harness?: string;
+    output?: string;
+    patch?: string | null;
+    patch_truncated?: boolean;
+  } | null;
+  tests: {
+    status?: string;
+    command?: string[];
+    exit_code?: number | null;
+    output?: string;
+  } | null;
   council: { candidate_task_ids?: string[] } | null;
 }
 
@@ -226,10 +238,59 @@ export default function ConductorPageClient() {
               <div>
                 <div className="font-medium">{t("branch")}</div>
                 <code className="text-xs">{detail.branch}</code>
-                <p className="text-xs text-text-muted">
-                  {t("fetchHint", { branch: detail.branch })}
-                </p>
               </div>
+            )}
+            {detail.tests && typeof detail.tests === "object" && (
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <span className="font-medium">Tests</span>
+                  <Badge
+                    variant={
+                      detail.tests.status === "passed"
+                        ? "success"
+                        : detail.tests.status === "failed"
+                          ? "error"
+                          : "warning"
+                    }
+                  >
+                    {detail.tests.status ?? "unknown"}
+                  </Badge>
+                  {detail.tests.exit_code !== undefined && detail.tests.exit_code !== null && (
+                    <code className="text-xs">exit {detail.tests.exit_code}</code>
+                  )}
+                </div>
+                {detail.tests.command && (
+                  <code className="block text-xs">{detail.tests.command.join(" ")}</code>
+                )}
+                {detail.tests.output && (
+                  <details>
+                    <summary className="cursor-pointer font-medium">Test output</summary>
+                    <pre className="max-h-64 overflow-auto whitespace-pre-wrap text-xs bg-black/5 dark:bg-white/5 rounded p-2">
+                      {detail.tests.output}
+                    </pre>
+                  </details>
+                )}
+              </div>
+            )}
+            {detail.result?.harness && <Badge variant="info">{detail.result.harness}</Badge>}
+            {detail.result?.output && (
+              <details>
+                <summary className="cursor-pointer font-medium">Output</summary>
+                <pre className="max-h-64 overflow-auto whitespace-pre-wrap text-xs bg-black/5 dark:bg-white/5 rounded p-2">
+                  {detail.result.output}
+                </pre>
+              </details>
+            )}
+            {detail.result?.patch && (
+              <details>
+                <summary className="cursor-pointer font-medium">Patch</summary>
+                <pre className="max-h-96 overflow-auto whitespace-pre-wrap text-xs bg-black/5 dark:bg-white/5 rounded p-2">
+                  {detail.result.patch}
+                </pre>
+              </details>
+            )}
+            {detail.result?.patch_truncated && (
+              <Badge variant="warning">Patch exceeds the Hub result-size limit</Badge>
             )}
             {detail.mode.startsWith("council") && detail.council?.candidate_task_ids && (
               <div>

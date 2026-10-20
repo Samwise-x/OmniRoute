@@ -315,7 +315,8 @@
     "i18n:translate-new-keys": "bash scripts/i18n/translate-new-keys.sh",
     "i18n:check-keys": "node scripts/i18n/check-key-completeness.mjs",
     "i18n:check-keys:cli": "node scripts/i18n/check-key-completeness.mjs --catalog=cli",
-    "check:free-catalog-evidence": "node scripts/check/check-free-catalog-evidence.mjs"
+    "check:free-catalog-evidence": "node scripts/check/check-free-catalog-evidence.mjs",
+    "test:conductor": "node --import tsx/esm --test tests/unit/conductor-runtime.test.mjs"
   },
   "dependencies": {
     "@agentclientprotocol/sdk": "1.4.0",
