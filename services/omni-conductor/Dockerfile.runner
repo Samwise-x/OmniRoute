@@ -1,12 +1,24 @@
 FROM node:24-bookworm-slim
 RUN apt-get update && apt-get install -y --no-install-recommends git ca-certificates && rm -rf /var/lib/apt/lists/*
+
+# Agent CLIs are pinned in `package.json`/`package-lock.json` (no floating install).
 WORKDIR /opt/agent-clis
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev --no-audit --no-fund
 ENV PATH=/opt/agent-clis/node_modules/.bin:$PATH
+
+# OpenCode is this image's reference self-hosted harness; fail the BUILD (not the first
+# task) if the pinned CLI is missing or cannot start. `opencode --version` is the same
+# probe the Runner uses to advertise the capability, so a green build implies a Runner
+# that will actually register it.
+RUN opencode --version
+
 WORKDIR /opt/omni-conductor
 COPY runner.mjs ./runner.mjs
 RUN useradd --system --uid 10001 --create-home runner && chown -R runner:runner /opt/omni-conductor
 USER runner
 ENV NODE_ENV=production RUNNER_WORK_ROOT=/tmp
+# The runtime is a single self-hosted harness unless the operator opts into more; the
+# Runner proxies OpenCode through OmniRoute via OMNIROUTE_BASE_URL / OMNIROUTE_API_KEY.
+ENV RUNNER_CLIS=opencode
 CMD ["node", "runner.mjs"]

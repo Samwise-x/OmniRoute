@@ -1516,6 +1516,51 @@ jobs:
       - run: npm run check:node-runtime
       - run: npm run test:security
 
+  # OmniConductor / Omniconductor Hub. The suite starts the REAL hub.mjs, faro.mjs and
+  # runner.mjs processes and drives them over HTTP; the coding-agent harness is a
+  # documented-contract stand-in for `opencode run`, and no provider credential is used.
+  # `verify:conductor` additionally emits the acceptance report (docs/ops/OMNICONDUCTOR_EVIDENCE.md)
+  # so a green run leaves behind machine-readable evidence instead of a hand-written claim.
+  test-conductor:
+    name: OmniConductor Hub (runtime evidence)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    # needs: changes (not build) — the suite boots its own services.
+    needs: changes
+    if: ${{ github.event_name != 'pull_request' || (needs.changes.outputs.code == 'true' && (github.event.pull_request.draft == false || needs.changes.outputs.queueCandidate == 'true')) }}
+    env:
+      JWT_SECRET: ci-test-secret-with-sufficient-length-for-validation
+      API_KEY_SECRET: ci-test-api-key-secret-long
+      DISABLE_SQLITE_AUTO_BACKUP: "true"
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          package-manager-cache: false
+          node-version: ${{ env.CI_NODE_VERSION }}
+      - uses: ./.github/actions/npm-ci-retry
+        with:
+          # PR acceleration is not release-candidate provenance.
+          cache: ${{ github.event_name == 'pull_request' }}
+      - run: npm run check:node-runtime
+      - name: Service-level runtime suite (OpenCode seam, guards, Hub/Faro/Runner)
+        run: npm run test:conductor
+      - name: OmniRoute ⇄ Hub contract (production route handlers, real Hub)
+        run: npm run test:conductor:contract
+      - name: Acceptance evidence probe (GO/NO-GO report)
+        run: npm run verify:conductor -- --json "$RUNNER_TEMP/conductor-evidence.json" --markdown "$RUNNER_TEMP/OMNICONDUCTOR_EVIDENCE.md"
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: conductor-evidence
+          path: |
+            ${{ runner.temp }}/conductor-evidence.json
+            ${{ runner.temp }}/OMNICONDUCTOR_EVIDENCE.md
+          if-no-files-found: warn
+
   # Live-server E2E. Both suites boot a real OmniRoute via their own runner and
   # drive it over HTTP; neither needs provider credentials. They were documented in
   # AGENTS.md's test matrix but wired to NO workflow, and had additionally been

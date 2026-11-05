@@ -67,9 +67,28 @@ const adapters = {
       prompt,
     ],
   },
+  /**
+   * OpenCode is the reference self-hosted harness for this seam.
+   *
+   * Argv follows the invocation documented in `docs/reference/CLI-TOOLS.md` and used by
+   * `omniroute setup-opencode`: `opencode run "<prompt>" --model <model>`. There is no
+   * `--auto`: this adapter runs the released CLI non-interactively, and an unknown flag
+   * makes the CLI exit non-zero before it ever reads the prompt. `--model` is passed even
+   * when the task pins none, because OpenCode's default provider is its own hosted
+   * catalog — the whole point of this seam is that the work is served by OUR gateway.
+   * Both come from the same knobs `omniroute setup-opencode` writes
+   * (`OMNIROUTE_BASE_URL` / `OMNIROUTE_API_KEY`), which `execute()` already forwards.
+   */
   opencode: {
     bin: process.env.OPENCODE_BIN || "opencode",
-    args: (prompt, _repo, model) => ["run", "--auto", ...(model ? ["--model", model] : []), prompt],
+    args: (prompt, _repo, model) => {
+      const resolved = model || process.env.OPENCODE_MODEL || "";
+      return ["run", prompt, ...(resolved ? ["--model", resolved] : [])];
+    },
+    // A model only makes the runner eligible for the opencode profile when it is
+    // provider-qualified (`omniroute/...`), so `requirements.model` can never select
+    // OpenCode's own hosted catalog on a self-hosted deployment.
+    modelEligible: (capability, model) => isOpencodeGatewayModel(capability, model),
   },
   gateway: {
     bin: process.env.GATEWAY_BIN || "omniroute-agent",
@@ -82,6 +101,42 @@ const adapters = {
     ],
   },
 };
+/**
+ * `opencode/<model>` (the prefix `omniroute setup-opencode` writes) means "serve this
+ * through the configured gateway" — that is the self-hosted path and is always allowed.
+ * A bare model name would send the task to OpenCode's own hosted catalog, which is not
+ * what a self-hosted deployment asked for, so it is refused unless the operator opts in
+ * with `RUNNER_OPENCODE_ALLOW_HOSTED_MODELS=true`. This is deliberately NOT relaxed by a
+ * `RUNNER_MODELS=*` wildcard: the wildcard means "let the CLI validate model names", and
+ * for this profile the CLI would validate them against someone else's catalog. A refused
+ * pair simply leaves the task queued (or fails it closed when a runner claimed it), which
+ * is visible — a silently hosted run is not.
+ */
+/**
+ * Mirror of the Hub's `modelMatches`: `*`, an exact name, or a glob such as
+ * `omniroute/*`. Kept local so the Runner's choice never depends on the Hub having
+ * scheduled it for the right reason.
+ */
+function modelMatches(models, model) {
+  if (!Array.isArray(models)) return false;
+  if (models.includes("*") || models.includes(model)) return true;
+  return models.some((pattern) => {
+    if (typeof pattern !== "string" || !pattern.includes("*")) return false;
+    const re = new RegExp(
+      `^${pattern
+        .split("*")
+        .map((part) => part.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
+        .join(".*")}$`
+    );
+    return re.test(model);
+  });
+}
+function isOpencodeGatewayModel(capability, model) {
+  if (!capability) return false;
+  if (!model) return true;
+  if (model.startsWith("omniroute/")) return true;
+  return process.env.RUNNER_OPENCODE_ALLOW_HOSTED_MODELS === "true";
+}
 function modelsFor(profile) {
   const key = `RUNNER_${profile.toUpperCase()}_MODELS`;
   return (process.env[key] || process.env.RUNNER_MODELS || "*")
@@ -89,6 +144,41 @@ function modelsFor(profile) {
     .map((model) => model.trim())
     .filter(Boolean);
 }
+/**
+ * Give a self-hosted OpenCode CLI a config that points at OUR gateway.
+ *
+ * `execute()` hands the harness a brand-new HOME so nothing from the host leaks in —
+ * which also means OpenCode would otherwise fall back to its own hosted catalog. We
+ * write the same provider block `omniroute setup-opencode` / `docs/reference/CLI-TOOLS.md`
+ * document, with the API key kept in the environment (`{env:OMNIROUTE_API_KEY}`) rather
+ * than on disk, so the credential never becomes part of the workspace or the patch.
+ *
+ * A repo-provided config in the clone still wins: OpenCode merges project config after
+ * the global one, so an operator can override this per repository.
+ */
+async function seedOpencodeConfig(home) {
+  const baseUrl = (process.env.OMNIROUTE_BASE_URL || "").trim().replace(/\/+$/, "");
+  if (!baseUrl) return;
+  const dir = path.join(home, ".config", "opencode");
+  await fs.mkdir(dir, { recursive: true, mode: 0o700 });
+  const config = {
+    $schema: "https://opencode.ai/config.json",
+    provider: {
+      omniroute: {
+        npm: "@ai-sdk/openai-compatible",
+        name: "OmniRoute",
+        options: { baseURL: `${baseUrl}/v1`, apiKey: "{env:OMNIROUTE_API_KEY}" },
+        // An empty map would hide every model; leaving it out makes OpenCode use the
+        // provider's own /v1/models listing, which is the authoritative catalog.
+      },
+    },
+    autoupdate: false,
+  };
+  await fs.writeFile(path.join(dir, "opencode.json"), `${JSON.stringify(config, null, 2)}\n`, {
+    mode: 0o600,
+  });
+}
+
 async function capabilities() {
   const clis = [];
   for (const profile of PROFILES) {
@@ -106,15 +196,24 @@ async function execute(task) {
   const requiredModel = task.requirements?.model;
   const profile = candidates.find((candidate) => {
     const capability = capabilityByProfile.get(candidate);
-    return (
-      !!capability &&
-      (!requiredModel ||
-        capability.models.includes("*") ||
-        capability.models.includes(requiredModel))
-    );
+    if (!capability) return false;
+    const adapter = adapters[candidate];
+    if (adapter?.modelEligible) return adapter.modelEligible(capability, requiredModel);
+    return !requiredModel || modelMatches(capability.models, requiredModel);
   });
+  // A task whose CLI/model this process cannot serve is reported, never thrown: an
+  // uncaught throw here used to take down the whole runner process (the `try` below
+  // starts after the workspace is created), so one mismatched task killed a fleet member.
   if (!profile || !adapters[profile])
-    throw new Error(`No installed compatible harness${required ? `: ${required}` : ""}`);
+    return report(task, {
+      ok: false,
+      summary: "No installed compatible harness",
+      error:
+        `No installed compatible harness${required ? `: ${required}` : ""}` +
+        (requiredModel ? ` (model ${requiredModel} is not eligible for this profile)` : ""),
+      tests: { status: "not_run", reason: "no_compatible_harness" },
+      result: { harness: null },
+    }).catch((e) => console.error("report failed", e.message));
   const tmp = await fs.mkdtemp(
     path.join(process.env.RUNNER_WORK_ROOT || os.tmpdir(), "omni-task-")
   );
@@ -201,6 +300,7 @@ async function execute(task) {
       "OMNIROUTE_API_KEY",
     ])
       if (process.env[key]) env[key] = process.env[key];
+    if (profile === "opencode") await seedOpencodeConfig(home);
     const result = await run(
       adapter.bin,
       adapter.args(task.spec.prompt, repoDir, task.requirements?.model),

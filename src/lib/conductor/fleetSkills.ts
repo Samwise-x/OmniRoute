@@ -16,6 +16,17 @@ export interface FleetSkill {
   tags: string[];
 }
 
+/**
+ * A runner advertises models in one of two shapes, and BOTH are legitimate:
+ * the bundled Hub/Runner pair sends plain strings (`{"models":["*"]}`), while an
+ * OASF-shaped registry sends ranked objects (`{"models":[{"id":"…","cost":3}]}`).
+ * Accepting only the object form made the strict `z.array(...)` throw, and the
+ * `catch` below then blanked the WHOLE fleet from the Agent Card — so a real
+ * deployment advertised no Conductor skills at all. Anything else in the list
+ * (`42`, `null`, `{}`) is dropped per-entry instead of failing the profile.
+ */
+const modelRefSchema = z.union([z.string(), z.object({ id: z.string() })]);
+
 /** Untrusted hub response — validate only what we read. */
 const runnersSchema = z.array(
   z.object({
@@ -25,7 +36,15 @@ const runnersSchema = z.array(
         .array(
           z.object({
             profile: z.string(),
-            models: z.array(z.object({ id: z.string() })).optional(),
+            models: z
+              .array(z.unknown())
+              .optional()
+              .transform((models) =>
+                (models ?? [])
+                  .map((model) => modelRefSchema.safeParse(model))
+                  .filter((parsed) => parsed.success)
+                  .map((parsed) => parsed.data as z.infer<typeof modelRefSchema>)
+              ),
           })
         )
         .optional(),
@@ -75,7 +94,7 @@ function deriveSkills(runners: z.infer<typeof runnersSchema>): FleetSkill[] {
     for (const cli of r.capabilities.clis ?? []) {
       const entry = byProfile.get(cli.profile) ?? { count: 0, models: new Set<string>() };
       entry.count++;
-      for (const m of cli.models ?? []) entry.models.add(m.id);
+      for (const m of cli.models ?? []) entry.models.add(typeof m === "string" ? m : m.id);
       byProfile.set(cli.profile, entry);
     }
     for (const s of r.capabilities.skills ?? []) oasfSkills.add(s);

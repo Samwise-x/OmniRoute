@@ -93,3 +93,65 @@ test("shape inválido do hub → [] (input não confiável)", async () => {
   const { impl } = fakeFetch({ nao: "é array" });
   assert.deepEqual(await getFleetSkills({ fetchImpl: impl }), []);
 });
+
+// Regression: the bundled Hub advertises `capabilities.clis[].models` as plain
+// STRINGS (see services/omni-conductor/hub.mjs `cleanRunner` + the Runner's
+// registration payload), while the OASF-shaped registry uses `{id}` objects.
+// The strict `z.object({ id: z.string() })` rejected the real Hub shape and the
+// whole fleet silently vanished from the Agent Card — a live deployment showed
+// `skills: []` while `GET /v1/runners` was returning an online gateway runner.
+test("accepts the bundled Hub's string model list (real deployment shape)", async () => {
+  const REAL_HUB = [
+    {
+      id: "probe-runner",
+      online: true,
+      draining: false,
+      capabilities: {
+        name: "probe-runner",
+        clis: [{ profile: "gateway", models: ["*"] }],
+        skills: [],
+      },
+    },
+    {
+      id: "claude-box",
+      online: true,
+      draining: false,
+      capabilities: {
+        name: "claude-box",
+        clis: [{ profile: "claude", models: ["claude-sonnet-5", "claude-opus-5"] }],
+        skills: ["deploy"],
+      },
+    },
+  ];
+  const { impl } = fakeFetch(REAL_HUB);
+  const skills = await getFleetSkills({ fetchImpl: impl });
+  const ids = skills.map((s) => s.id).sort();
+  assert.deepEqual(ids, [
+    "conductor-cli-claude",
+    "conductor-cli-gateway",
+    "conductor-skill-deploy",
+  ]);
+  const claude = skills.find((s) => s.id === "conductor-cli-claude")!;
+  assert.match(claude.description, /claude-sonnet-5/);
+  assert.ok(claude.tags.includes("claude"));
+});
+
+test("tolerates a mixed string/object model list without dropping the profile", async () => {
+  const MIXED = [
+    {
+      id: "r",
+      online: true,
+      capabilities: {
+        clis: [{ profile: "codex", models: [{ id: "gpt-5.5" }, "gpt-5.5-mini", 42] }],
+      },
+    },
+  ];
+  const { impl } = fakeFetch(MIXED);
+  const skills = await getFleetSkills({ fetchImpl: impl });
+  assert.deepEqual(
+    skills.map((s) => s.id),
+    ["conductor-cli-codex"]
+  );
+  assert.match(skills[0].description, /gpt-5\.5/);
+  assert.match(skills[0].description, /gpt-5\.5-mini/);
+});

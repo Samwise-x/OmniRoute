@@ -77,6 +77,30 @@ function cleanRunner(r) {
     capabilities: r.capabilities,
   };
 }
+/**
+ * Does an advertised model pattern cover the requested model?
+ *
+ * Three shapes are legitimate, and the middle one used to be broken: `*` delegates the
+ * name to the CLI, an exact string is the literal name, and `<prefix>/*` is how a
+ * gateway-routed harness advertises "everything my gateway serves" (`omniroute/*`).
+ * The last one was compared as a literal string, so a task pinned to
+ * `omniroute/claude-sonnet-4-5` NEVER matched and sat queued forever with no diagnostic.
+ * `*` inside a longer pattern is a glob, so any other `foo*` form keeps working too.
+ */
+function modelMatches(models, model) {
+  if (!Array.isArray(models)) return false;
+  if (models.includes("*") || models.includes(model)) return true;
+  return models.some((pattern) => {
+    if (typeof pattern !== "string" || !pattern.includes("*")) return false;
+    const re = new RegExp(
+      `^${pattern
+        .split("*")
+        .map((part) => part.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
+        .join(".*")}$`
+    );
+    return re.test(model);
+  });
+}
 function eligible(task, runner) {
   const req = task.requirements || {};
   const clis = runner.capabilities.clis || [];
@@ -86,9 +110,7 @@ function eligible(task, runner) {
   return (
     matchingProfiles.length > 0 &&
     (!req.model ||
-      matchingProfiles.some(
-        (capability) => capability.models?.includes(req.model) || capability.models?.includes("*")
-      ))
+      matchingProfiles.some((capability) => modelMatches(capability.models, req.model)))
   );
 }
 function chooseRunner(task) {

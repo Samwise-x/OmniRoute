@@ -30,7 +30,7 @@ docker compose --env-file .env -f docker-compose.yml -f docker-compose.omnicondu
 
 This combined invocation puts `hub`, `faro`, both `runner` replicas and the selected OmniRoute service on the same Compose network; the browser still reaches only OmniRoute's management-authenticated routes. For a separately hosted OmniRoute process, use the host-reachable settings in the next section instead.
 
-The runner image installs the public Claude Code, Codex and OpenCode CLIs at the exact versions pinned by `services/omni-conductor/package-lock.json`. It advertises only installed harnesses. Scaling creates independently identified runners; the Hub reports live capability and heartbeat state. `gateway` can be enabled by setting `RUNNER_CLIS=...,gateway` and supplying a compatible executable as `GATEWAY_BIN` in a custom runner deployment; its invocation contract is `GATEWAY_BIN --repo <working-directory> --prompt <task-prompt>`. No default Gateway executable is assumed.
+The runner image installs the public Claude Code, Codex and OpenCode CLIs at the exact versions pinned by `services/omni-conductor/package-lock.json` (and the build fails if the pinned `opencode` cannot start, so a green image cannot ship a Runner that advertises nothing). It advertises only installed harnesses. Scaling creates independently identified runners; the Hub reports live capability and heartbeat state. `gateway` can be enabled by setting `RUNNER_CLIS=...,gateway` and supplying a compatible executable as `GATEWAY_BIN` in a custom runner deployment; its invocation contract is `GATEWAY_BIN --repo <working-directory> --prompt <task-prompt>`. No default Gateway executable is assumed.
 
 Connect the OmniRoute process to the deployment. With OmniRoute running on the Docker host, use:
 
@@ -63,12 +63,41 @@ Cancellation sets a terminal Hub state; active runners poll the task state and t
 
 The runner supports `claude`, `codex`, `opencode` and a configurable `gateway` adapter. A CLI is reported as a capability only when its executable is installed. Provider credentials, model availability, and native CLI behavior remain dependent on operator configuration. `gateway` is not represented as a fictitious built-in executable.
 
-## Verification
+### OpenCode is the reference self-hosted harness
 
-Run the service-level integration suite (uses temporary local Git repositories and a custom Gateway-compatible test executable; no API key or external model is used):
+`RUNNER_CLIS` defaults to `opencode`. Two properties make it the harness this seam is standardized on:
 
-```sh
-npm run test:conductor
+- **It runs our models, not OpenCode's.** With `OMNIROUTE_BASE_URL` set, the Runner writes a per-task `$HOME/.config/opencode/opencode.json` whose only provider is `omniroute`, with `baseURL: <OMNIROUTE_BASE_URL>/v1` and the key referenced as `{env:OMNIROUTE_API_KEY}` — the credential is read from the process environment at run time and never written into the workspace, the patch, or the state volume. A repo-supplied `opencode.json` in the clone still wins, because OpenCode merges project config after the global one.
+- **It cannot silently leave self-hosting.** A model pinned to a bare name (e.g. `gpt-5.5`) would be served by OpenCode's own hosted catalog, so the Runner refuses it and fails the task closed with an explicit error. Only `omniroute/<model>` (the prefix `omniroute setup-opencode` writes) is eligible by default. Set `RUNNER_OPENCODE_ALLOW_HOSTED_MODELS=true` to opt in deliberately.
+
+Invocation is `opencode run "<prompt>" [--model <model>]` — the form documented in [`docs/reference/CLI-TOOLS.md`](../reference/CLI-TOOLS.md) and used by `omniroute setup-opencode`. `OPENCODE_MODEL` supplies the default `--model` when a task pins none, so an unpinned task still lands on your gateway.
+
+Recommended deployment variables:
+
+```dotenv
+RUNNER_CLIS=opencode
+OMNIROUTE_BASE_URL=http://omniroute:20128   # or the host-reachable gateway URL
+OMNIROUTE_API_KEY=sk-your-omniroute-key     # an inference key, not a management token
+OPENCODE_MODEL=omniroute/claude-sonnet-4-5  # default when the task pins none
 ```
 
-It starts actual Hub, two Runner, and Faro Node processes, registers their capabilities, exercises deterministic routing including multi-CLI/model pairing, runs repository-declared tests in an isolated clone, retains and verifies the generated patch, checks failure/timeout/concurrency/cancellation/lease-recovery states, tests signed Faro create/cancel confirmations and model-router payloads, reads/replays SSE events, verifies bearer auth, and restarts Hub against persisted state. The custom executable verifies the runner adapter/execution pipeline, not Claude/Codex/OpenCode model quality or external provider credentials. To validate those production harnesses, deploy with credentials and submit a test task from the OmniRoute dashboard or `POST /api/conductor/tasks`.
+## Verification
+
+Four commands, cheapest first. All of them are wired into CI (`OmniConductor Hub (runtime evidence)`), and none needs a provider credential.
+
+```sh
+npm run test:conductor            # real hub + faro + runner processes, incl. the OpenCode seam
+npm run test:conductor:contract   # OmniRoute's production route handlers against a real Hub
+npm run verify:conductor          # GO/NO-GO report → conductor-evidence.json + docs/ops/OMNICONDUCTOR_EVIDENCE.md
+npm run verify:conductor:docker   # image build + Compose bring-up (needs a Docker host; exits NO-GO when absent)
+```
+
+`npm run verify:conductor` regenerates [`OMNICONDUCTOR_EVIDENCE.md`](OMNICONDUCTOR_EVIDENCE.md) from what it actually observed, so that document is a result rather than a claim. Add `-- --real-clis` on a credentialed host to run the installed vendor CLIs instead of the contract stand-in; the report records which mode produced it.
+
+### What the evidence does and does not prove
+
+`npm run verify:conductor` proves, on this machine, that the three services start, authenticate, route, execute, retain a patch, run the repository's own tests, survive a restart, and refuse the inputs they are supposed to refuse — including that the OpenCode harness is invoked with the documented argv and handed a config pointing at your gateway. It does **not** prove model quality, because the stand-in for `opencode run` decides the edit; `--real-clis` closes that gap on a credentialed host. It does not prove the images build; `verify:conductor:docker` does, and fails loudly on a host without an engine instead of reporting a hollow pass.
+
+### Manual validation of a real deployment
+
+For end-to-end validation with real credentials, deploy, then submit a task from the OmniRoute dashboard or `POST /api/conductor/tasks` with `cli: "opencode"` and an `omniroute/<model>` pin, and read the retained manifest: `tests.command`, `tests.exit_code`, `tests.output`, `result.patch` and `result.worktree` are the evidence. `GET /api/conductor/tasks/<id>` returns them, and `GET /api/a2a/tasks?skill=conductor` shows the mirrored state.

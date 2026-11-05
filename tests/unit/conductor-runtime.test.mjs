@@ -684,3 +684,71 @@ test(
     }
   }
 );
+
+test(
+  "Runner model patterns (`<prefix>/*`) route like exact names instead of never matching",
+  { timeout: 20000 },
+  async () => {
+    const dir = await mkdtemp(path.join(os.tmpdir(), "omni-conductor-patterns-"));
+    const port = await freePort(),
+      url = `http://127.0.0.1:${port}`;
+    let hub;
+    try {
+      hub = start("services/omni-conductor/hub.mjs", {
+        HOST: "127.0.0.1",
+        PORT: String(port),
+        CONDUCTOR_HUB_TOKEN: TOKEN,
+        CONDUCTOR_STATE_FILE: path.join(dir, "state.json"),
+      });
+      await healthy(`${url}/health`, hub);
+      // `omniroute/*` is the natural thing to write for a gateway-routed harness: every
+      // model it serves carries that prefix. Before this, the Hub compared it as a
+      // literal string and the task sat queued forever with no explanation.
+      // max_concurrency is high on purpose: this test is about MODEL matching, and a
+      // concurrency-capped runner would return null for the wrong reason.
+      await api(url, "/v1/runners/register", {
+        id: "pattern-runner",
+        max_concurrency: 16,
+        capabilities: { name: "p", clis: [{ profile: "opencode", models: ["omniroute/*"] }] },
+      });
+      const schedule = async (requirements) => {
+        const created = await api(url, "/v1/tasks", {
+          repo: { url: "https://github.com/acme/repo.git" },
+          spec: { prompt: "pattern" },
+          requirements,
+        });
+        const { id } = await created.json();
+        return (await (await api(url, `/v1/tasks/${id}`, undefined, "GET")).json()).assigned_runner;
+      };
+      assert.equal(
+        await schedule({ cli: "opencode", model: "omniroute/claude-sonnet-4-5" }),
+        "pattern-runner",
+        "a value inside the advertised prefix must match"
+      );
+      assert.equal(
+        await schedule({ cli: "opencode", model: "omniroute/anything/at-all" }),
+        "pattern-runner"
+      );
+      assert.equal(
+        await schedule({ cli: "opencode", model: "gpt-5.5" }),
+        null,
+        "a value outside the prefix must NOT match"
+      );
+      assert.equal(
+        await schedule({ cli: "codex", model: "omniroute/claude-sonnet-4-5" }),
+        null,
+        "the pattern is scoped to the CLI profile that advertised it"
+      );
+      // A literal `*` still delegates every name to the CLI.
+      await api(url, "/v1/runners/register", {
+        id: "wildcard-runner",
+        max_concurrency: 16,
+        capabilities: { name: "w", clis: [{ profile: "claude", models: ["*"] }] },
+      });
+      assert.equal(await schedule({ cli: "claude", model: "anything-goes" }), "wildcard-runner");
+    } finally {
+      if (hub) await stop(hub);
+      await rm(dir, { recursive: true, force: true });
+    }
+  }
+);

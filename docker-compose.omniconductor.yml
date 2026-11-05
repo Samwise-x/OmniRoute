@@ -77,7 +77,8 @@ services:
       CONDUCTOR_HUB_URL: http://hub:7910
       CONDUCTOR_HUB_TOKEN: ${CONDUCTOR_HUB_TOKEN:?Set CONDUCTOR_HUB_TOKEN in .env}
       RUNNER_NAME: ${RUNNER_NAME:-omni-runner}
-      RUNNER_CLIS: ${RUNNER_CLIS:-claude,codex,opencode}
+      # OpenCode is the reference self-hosted harness; add claude/codex explicitly.
+      RUNNER_CLIS: ${RUNNER_CLIS:-opencode}
       RUNNER_MODELS: ${RUNNER_MODELS:-*}
       RUNNER_CLAUDE_MODELS: ${RUNNER_CLAUDE_MODELS:-}
       RUNNER_CODEX_MODELS: ${RUNNER_CODEX_MODELS:-}
@@ -96,8 +97,14 @@ services:
       ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
       OPENAI_API_KEY: ${OPENAI_API_KEY:-}
       OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+      # Points the self-hosted OpenCode CLI at THIS OmniRoute gateway, so tasks are
+      # served by the operator's routed providers instead of OpenCode's hosted catalog.
       OMNIROUTE_BASE_URL: ${OMNIROUTE_BASE_URL:-}
       OMNIROUTE_API_KEY: ${OMNIROUTE_API_KEY:-}
+      # Default model handed to `opencode run --model` when a task pins none.
+      OPENCODE_MODEL: ${OPENCODE_MODEL:-}
+      # Keep self-hosted: a bare (non `omniroute/`) model is refused unless this is true.
+      RUNNER_OPENCODE_ALLOW_HOSTED_MODELS: ${RUNNER_OPENCODE_ALLOW_HOSTED_MODELS:-false}
     deploy:
       replicas: ${RUNNER_REPLICAS:-2}
       resources:
