@@ -3400,13 +3400,13 @@
     "comboRefMember": "காம்போ → {name}"
   },
   "combos": {
-    "autoTosIncludeLabel": "ToS: avoid எனக் குறிக்கப்பட்ட வழங்குநர்களை auto-வில் சேர்க்கவும்",
-    "autoTosDescription": "இயல்பாக முடக்கப்பட்டுள்ளது. ஒரு கணக்குக்கு மட்டுமல்ல, அனைத்து auto கூட்டுகளுக்கும் பொருந்தும். வழங்குநரை இணைப்பதால் இந்தத் தேர்வு இயக்கப்படாது.",
-    "autoTosSaveError": "ToS கொள்கையைச் சேமிக்க முடியவில்லை. முந்தைய அமைப்பே இன்னும் காட்டப்படுகிறது. மீண்டும் முயலவும்.",
-    "autoTosLoadError": "ToS கொள்கையை ஏற்ற முடியவில்லை. மாற்றுவதற்கு முன் மீண்டும் முயலவும்.",
     "title": "காம்போக்கள்",
     "description": "எடையிட்ட வழிப்படுத்தல் மற்றும் மாற்று ஆதரவுடன் மாதிரி காம்போக்களை உருவாக்கவும்",
     "autoCatalogTitle": "தானாக ரூட்டிங் பட்டியல்",
+    "autoTosLoadError": "ToS கொள்கையை ஏற்ற முடியவில்லை. மாற்றுவதற்கு முன் மீண்டும் முயலவும்.",
+    "autoTosSaveError": "ToS கொள்கையைச் சேமிக்க முடியவில்லை. முந்தைய அமைப்பே இன்னும் காட்டப்படுகிறது. மீண்டும் முயலவும்.",
+    "autoTosIncludeLabel": "ToS: avoid எனக் குறிக்கப்பட்ட வழங்குநர்களை auto-வில் சேர்க்கவும்",
+    "autoTosDescription": "இயல்பாக முடக்கப்பட்டுள்ளது. ஒரு கணக்குக்கு மட்டுமல்ல, அனைத்து auto கூட்டுகளுக்கும் பொருந்தும். வழங்குநரை இணைப்பதால் இந்தத் தேர்வு இயக்கப்படாது.",
     "autoCatalogTemplateCount": "{count} டெம்ப்ளேட்கள்",
     "autoCatalogDescription": "இணைக்கப்பட்ட வழங்குநர்களிடமிருந்து உள்ளமைந்த தானியங்கு/* சேர்க்கைகள் மாறும் வகையில் தீர்க்கப்படுகின்றன. இந்த ஐடிகளில் ஏதேனும் ஒன்றை மாதிரி புலமாகப் பயன்படுத்தவும் - அமைப்பு தேவையில்லை.",
     "autoCatalogExpand": "தானாக ரூட்டிங் பட்டியலை விரிவாக்குங்கள்",
@@ -6079,6 +6079,13 @@
     "claudeLowPriorityModeDescription": "இந்தக் கணக்கு அதன் 5 மணிநேரப் பயன்பாட்டு வரம்பை அடைந்து, Anthropic குறைந்த முன்னுரிமை வழித்தடத்தை வழங்கும்போது, OmniRoute அதை ஏற்றுக்கொண்டு, இணைப்பைத் தற்காலிகமாக நிறுத்துவதற்குப் பதிலாக, காலச் சாளரம் மீட்டமைக்கப்படும் வரை anthropic-usage-limit: slow என்பதுடன் கோரிக்கைகளைத் தொடர்ந்து அனுப்பும். வாராந்திர வரம்பு தொடர்ந்து பொருந்தும், மேலும் உபரித் திறன் கிடைக்கும் வரை பதில்கள் காத்திருக்கக்கூடும்.",
     "claudeAutoLimitResetLabel": "அமர்வு வரம்பைத் தானாக மீட்டமை (வாரத்திற்கு ஒருமுறை)",
     "claudeAutoLimitResetDescription": "இந்தக் கணக்கு அதன் 5 மணிநேரப் பயன்பாட்டு வரம்பை அடைந்து, அமர்வு வரம்பை மீட்டமைக்கும் வாய்ப்பு கிடைக்கும்போது, OmniRoute அதைத் தானாகப் பயன்படுத்தி முழு வேகத்தில் மீண்டும் முயற்சிக்கும். இது கணக்கின் வாரத்திற்கு ஒருமுறை கிடைக்கும் மீட்டமைப்பைப் பயன்படுத்தும்; மேலும், பயன்பாடு வாராந்திர வரம்பில் தொடர்ந்து கணக்கிடப்படும்.",
+    "codexPaidCreditsShort": "Extra credits",
+    "codexPaidCreditsToggleTitle": "Allow paid Codex credits after subscription quota runs out (additional charges may apply)",
+    "codexPaidCreditsEnabled": "Codex paid credits enabled (additional charges may apply)",
+    "codexPaidCreditsDisabled": "Codex paid credits disabled",
+    "failedUpdateCodexPaidCredits": "Failed to update Codex paid-credit policy",
+    "allowCodexPaidCreditsLabel": "Allow paid Codex credits",
+    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled.",
     "disableCoolingDescription": "தற்காலிக கூல்டவுனைத் தவிர்க்கவும், இதனால் மீட்டெடுக்கக்கூடிய பிழைகளுக்குப் பிறகும் இந்த இணைப்பு தகுதியுடையதாக இருக்கும் (தடைசெய்யப்பட்ட/காலாவதியான போன்ற இறுதி நிலைகள் இன்னும் பொருந்தும்).",
     "disableCoolingLabel": "இந்த இணைப்பிற்கான கூல்டவுனை முடக்கவும்",
     "bulkPasteAdded": "{count, plural, one {1 விசை சேர்க்கப்பட்டது} other {# விசைகள் சேர்க்கப்பட்டன}}",
@@ -6532,6 +6539,7 @@
       "monsterapi": "monsterapi.ai இல் API விசையைப் பெறுக",
       "moonshot": "Moonshot AI ஐ ஒரு API விசையுடன் இணைக்கவும்.",
       "morph": "இலவச அடுக்கு: 250K கிரெடிட்கள்/மாதம், $0",
+      "apmix": "apmix.ai/dashboard இலிருந்து API விசையுடன் Apmix ஐ இணைக்கவும் — ஒரு சந்தா, பல மாடல்கள்.",
       "nanogpt": "NanoGPT ஐ ஒரு API விசையுடன் இணைக்கவும்.",
       "nebius": "API சோதனைக்காக பதிவு செய்யும் போது ~$1 சோதனை கிரெடிட்கள்",
       "nlpcloud": "NLP Cloud ஆனது OpenAI chat/completions க்கு பதிலாக ஒரு தனியுரிம சாட்பாட் API ஐப் பயன்படுத்துகிறது. OmniRoute ஆனது OpenAI செய்திகளை உள்ளீடு/சூழல்/வரலாறுக்கு ஏற்ப மாற்றி, ஆதரிக்கப்படும் சாட்பாட் மாடல்களின் உள்ளூர் பட்டியலை வழங்குகிறது.",
@@ -6628,8 +6636,7 @@
       "kiro": "இலவச அடுக்கு: 50 கிரெடிட்கள்/மாதம் (~25K–100K டோக்கன்கள்). ⚠️ Kiro ToS மூன்றாம் தரப்பு proxy/harness பயன்பாட்டைத் தடைசெய்கிறது.",
       "codex": "தற்போதுள்ள OAuth செயல்முறையுடன் OpenAI Codex-ஐ இணைக்கவும்.",
       "qwen": "தற்போதுள்ள OAuth செயல்முறையுடன் Qwen Code-ஐ இணைக்கவும்.",
-      "github-models": "github.com/settings/tokens இல் 'models: read' வரம்புடன் ஒரு GitHub PAT ஐ உருவாக்கவும்",
-      "apmix": "apmix.ai/dashboard இலிருந்து API விசையுடன் Apmix ஐ இணைக்கவும் — ஒரு சந்தா, பல மாடல்கள்."
+      "github-models": "github.com/settings/tokens இல் 'models: read' வரம்புடன் ஒரு GitHub PAT ஐ உருவாக்கவும்"
     },
     "passthroughModelsDescription": "{provider} வழங்குநரின் சொந்த மாதிரி ஐடிகளை ஏற்றுக்கொள்கிறது. /மாடல்களில் இருந்து இறக்குமதி செய்யவும் அல்லது ரூட்டிங் செய்ய தனிப்பயன் ஐடிகளைச் சேர்க்கவும்.",
     "bedrockModelsDescription": "அமேசான் பெட்ராக் மாதிரிகள் AWS பிராந்தியத்தால் ஸ்கோப் செய்யப்படுகின்றன. /மாடல்களில் இருந்து இறக்குமதி செய்யவும் அல்லது தேர்ந்தெடுக்கப்பட்ட பகுதியில் செயல்படுத்தப்பட்ட பெட்ராக் மாடல் ஐடிகளைச் சேர்க்கவும்.",
@@ -6801,14 +6808,7 @@
     "rateLimitOverridesModelConcurrencyLabel": "Per-model concurrency caps",
     "rateLimitOverridesModelConcurrencyPlaceholder": "glm-5=1\nglm-4.7=3",
     "rateLimitOverridesModelConcurrencyHint": "Optional: one model=cap per line, matched against the exact upstream model id. Queues excess requests locally; blank means no per-model cap.",
-    "rateLimitOverridesModelConcurrencyInvalid": "Invalid per-model concurrency entry \"{entry}\" — use model=cap with a whole number from 1 to {max}.",
-    "codexPaidCreditsShort": "Extra credits",
-    "codexPaidCreditsToggleTitle": "Allow paid Codex credits after subscription quota runs out (additional charges may apply)",
-    "codexPaidCreditsEnabled": "Codex paid credits enabled (additional charges may apply)",
-    "codexPaidCreditsDisabled": "Codex paid credits disabled",
-    "failedUpdateCodexPaidCredits": "Failed to update Codex paid-credit policy",
-    "allowCodexPaidCreditsLabel": "Allow paid Codex credits",
-    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled."
+    "rateLimitOverridesModelConcurrencyInvalid": "Invalid per-model concurrency entry \"{entry}\" — use model=cap with a whole number from 1 to {max}."
   },
   "settings": {
     "title": "அமைப்புகள்",
@@ -9834,6 +9834,10 @@
     "streamTransformFailed": "ஸ்ட்ரீமை மாற்ற முடியவில்லை"
   },
   "usage": {
+    "codexPaidCreditsLabel": "Paid Codex credits",
+    "codexPaidCreditsAvailable": "Available (balance not reported)",
+    "codexPaidCreditsUnavailable": "Unavailable or spending limit reached",
+    "codexPaidCreditsUnlimited": "Unlimited",
     "title": "பயன்பாடு",
     "grokExtraUsageCredits": "கூடுதல் பயன்பாட்டு கிரெடிட்கள்",
     "grokAutoTopUp": "தானியங்கி மேலேற்றம்",
@@ -10286,11 +10290,7 @@
     "updatedShort": "புதுப்பிக்கப்பட்டது",
     "lastRefreshed": "கடைசியாகப் புதுப்பிக்கப்பட்டது",
     "providerQuota": "வழங்குநர் ஒதுக்கீடு",
-    "providerQuotaHomeHint": "இணைக்கப்பட்ட கணக்குகளின் நேரலை நிலை",
-    "codexPaidCreditsLabel": "Paid Codex credits",
-    "codexPaidCreditsAvailable": "Available (balance not reported)",
-    "codexPaidCreditsUnavailable": "Unavailable or spending limit reached",
-    "codexPaidCreditsUnlimited": "Unlimited"
+    "providerQuotaHomeHint": "இணைக்கப்பட்ட கணக்குகளின் நேரலை நிலை"
   },
   "modals": {
     "waitingAuth": "அங்கீகாரத்திற்காகக் காத்திருக்கிறது",
@@ -14845,6 +14845,8 @@
     "council": "குழு",
     "candidates": "முடிவுகள்",
     "cancel": "பணியை ரத்து செய்",
+    "retry": "__MISSING__:Retry task",
+    "retryFailed": "__MISSING__:The hub refused the retry",
     "cancelConfirmTitle": "இந்த பணியை ரத்து செய்யவா?",
     "cancelConfirmMessage": "ஹப் ரன்னரில் செயல்பாட்டை நிறுத்தும். இதை திரும்ப பெற முடியாது.",
     "cancelFailed": "ஹப் ரத்து செய்வதை நிராகரித்தது",

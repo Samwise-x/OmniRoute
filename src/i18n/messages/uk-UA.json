@@ -3400,13 +3400,13 @@
     "comboRefMember": "Комбінація → {name}"
   },
   "combos": {
+    "title": "Комбо",
+    "description": "Створюйте комбінації моделей із зваженою маршрутизацією та підтримкою резервного варіанту",
+    "autoCatalogTitle": "Каталог автомаршрутизації",
     "autoTosLoadError": "Не вдалося завантажити політику ToS. Спробуйте ще раз перед зміною.",
     "autoTosSaveError": "Не вдалося зберегти політику ToS. Досі відображається попереднє налаштування. Спробуйте ще раз.",
     "autoTosIncludeLabel": "Включати до auto провайдерів із позначкою ToS: avoid",
     "autoTosDescription": "Типово вимкнено. Застосовується до всіх комбінацій auto, а не лише до одного облікового запису. Підключення провайдера не вмикає цю опцію.",
-    "title": "Комбо",
-    "description": "Створюйте комбінації моделей із зваженою маршрутизацією та підтримкою резервного варіанту",
-    "autoCatalogTitle": "Каталог автомаршрутизації",
     "autoCatalogTemplateCount": "{count} шаблони",
     "autoCatalogDescription": "Вбудовані комбінації auto/*, які динамічно вирішуються від підключених постачальників. Використовуйте будь-який із цих ідентифікаторів як поле моделі — налаштування не потрібно.",
     "autoCatalogExpand": "Розгорнути каталог автомаршрутизації",
@@ -6079,6 +6079,13 @@
     "claudeLowPriorityModeDescription": "Коли цей обліковий запис досягає 5-годинного ліміту використання й Anthropic пропонує канал із нижчим пріоритетом, OmniRoute приймає його та продовжує надсилати запити з anthropic-usage-limit: slow до скидання вікна замість переведення з’єднання в режим очікування. Тижневий ліміт усе одно діє, а відповіді можуть очікувати на вільні ресурси.",
     "claudeAutoLimitResetLabel": "Автоматично скидати ліміт сеансу (раз на тиждень)",
     "claudeAutoLimitResetDescription": "Коли цей обліковий запис досягає 5-годинного ліміту використання й доступне скидання ліміту сеансу, OmniRoute автоматично активує його та повторює спробу на повній швидкості. Використовується доступне для облікового запису скидання раз на тиждень, а використання й надалі враховується в тижневому ліміті.",
+    "codexPaidCreditsShort": "Додаткові кредити",
+    "codexPaidCreditsToggleTitle": "Дозволити платні кредити Codex після вичерпання квоти підписки (можуть стягуватися додаткові кошти)",
+    "codexPaidCreditsEnabled": "Платні кредити Codex увімкнено (можуть стягуватися додаткові кошти)",
+    "codexPaidCreditsDisabled": "Платні кредити Codex вимкнено",
+    "failedUpdateCodexPaidCredits": "Не вдалося оновити політику платних кредитів Codex",
+    "allowCodexPaidCreditsLabel": "Дозволити платні кредити Codex",
+    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled.",
     "disableCoolingDescription": "Пропускати тимчасовий період очікування, щоб це підключення залишалося доступним навіть після відновлюваних помилок (термінальні стани, як-от banned/expired, все одно застосовуються).",
     "disableCoolingLabel": "Вимкнути період очікування для цього підключення",
     "bulkPasteAdded": "{count, plural, one {Додано 1 ключ} few {Додано # ключі} many {Додано # ключів} other {Додано # ключа}}",
@@ -6532,6 +6539,7 @@
       "monsterapi": "Отримайте API-ключ на monsterapi.ai",
       "moonshot": "Підключіть Moonshot AI за допомогою API-ключа.",
       "morph": "Безкоштовний тариф: 250 тис. кредитів/місяць, $0",
+      "apmix": "Підключіть Apmix із API-ключем від apmix.ai/dashboard — одна підписка, багато моделей.",
       "nanogpt": "Підключіть NanoGPT за допомогою API-ключа.",
       "nebius": "~$1 пробних кредитів при реєстрації для тестування API",
       "nlpcloud": "NLP Cloud використовує власний API чат-бота замість OpenAI chat/completions. OmniRoute адаптує повідомлення OpenAI до вхідних даних/контексту/історії та надає локальний каталог підтримуваних моделей чат-ботів.",
@@ -6628,8 +6636,7 @@
       "kiro": "Безкоштовний рівень: 50 кредитів на місяць (~25K–100K токенів). ⚠️ Умови використання Kiro забороняють використання через сторонні проксі або оболонки.",
       "codex": "Підключіть OpenAI Codex за допомогою наявного процесу OAuth.",
       "qwen": "Підключіть Qwen Code за допомогою наявного процесу OAuth.",
-      "github-models": "Створіть GitHub PAT з областю видимості 'models: read' на github.com/settings/tokens",
-      "apmix": "Підключіть Apmix із API-ключем від apmix.ai/dashboard — одна підписка, багато моделей."
+      "github-models": "Створіть GitHub PAT з областю видимості 'models: read' на github.com/settings/tokens"
     },
     "passthroughModelsDescription": "{provider} приймає власні ідентифікатори моделі постачальника. Імпортуйте з /models або додайте власні ідентифікатори для маршрутизації.",
     "bedrockModelsDescription": "Моделі Amazon Bedrock залежать від регіону AWS. Імпортуйте з /models або додайте ідентифікатори моделі Bedrock, активовані у вибраному регіоні.",
@@ -6801,14 +6808,7 @@
     "rateLimitOverridesModelConcurrencyLabel": "Ліміти паралельності для окремих моделей",
     "rateLimitOverridesModelConcurrencyPlaceholder": "glm-5=1\nglm-4.7=3",
     "rateLimitOverridesModelConcurrencyHint": "Необов’язково: один запис model=cap на рядок, зіставляється з точним ідентифікатором моделі upstream. Зайві запити ставляться в локальну чергу; порожнє значення означає відсутність ліміту для моделі.",
-    "rateLimitOverridesModelConcurrencyInvalid": "Недійсний запис паралельності для моделі «{entry}» — використовуйте model=cap, де cap — ціле число від 1 до {max}.",
-    "codexPaidCreditsShort": "Додаткові кредити",
-    "codexPaidCreditsToggleTitle": "Дозволити платні кредити Codex після вичерпання квоти підписки (можуть стягуватися додаткові кошти)",
-    "codexPaidCreditsEnabled": "Платні кредити Codex увімкнено (можуть стягуватися додаткові кошти)",
-    "codexPaidCreditsDisabled": "Платні кредити Codex вимкнено",
-    "failedUpdateCodexPaidCredits": "Не вдалося оновити політику платних кредитів Codex",
-    "allowCodexPaidCreditsLabel": "Дозволити платні кредити Codex",
-    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled."
+    "rateLimitOverridesModelConcurrencyInvalid": "Недійсний запис паралельності для моделі «{entry}» — використовуйте model=cap, де cap — ціле число від 1 до {max}."
   },
   "settings": {
     "title": "Налаштування",
@@ -9834,6 +9834,10 @@
     "streamTransformFailed": "Не вдалося перетворити потік"
   },
   "usage": {
+    "codexPaidCreditsLabel": "Платні кредити Codex",
+    "codexPaidCreditsAvailable": "Доступно (баланс не повідомляється)",
+    "codexPaidCreditsUnavailable": "Недоступно або досягнуто ліміт витрат",
+    "codexPaidCreditsUnlimited": "Без обмежень",
     "title": "Використання",
     "grokExtraUsageCredits": "Додаткові кредитні кошти",
     "grokAutoTopUp": "Автоматичне поповнення",
@@ -10286,11 +10290,7 @@
     "updatedShort": "Оновлено",
     "lastRefreshed": "Останнє оновлення",
     "providerQuota": "Квота провайдера",
-    "providerQuotaHomeHint": "Стан у реальному часі за підключеними акаунтами",
-    "codexPaidCreditsLabel": "Платні кредити Codex",
-    "codexPaidCreditsAvailable": "Доступно (баланс не повідомляється)",
-    "codexPaidCreditsUnavailable": "Недоступно або досягнуто ліміт витрат",
-    "codexPaidCreditsUnlimited": "Без обмежень"
+    "providerQuotaHomeHint": "Стан у реальному часі за підключеними акаунтами"
   },
   "modals": {
     "waitingAuth": "Очікування авторизації",
@@ -14845,6 +14845,8 @@
     "council": "Рада",
     "candidates": "Кандидати",
     "cancel": "Скасувати завдання",
+    "retry": "__MISSING__:Retry task",
+    "retryFailed": "__MISSING__:The hub refused the retry",
     "cancelConfirmTitle": "Скасувати це завдання?",
     "cancelConfirmMessage": "Хаб скасує виконання на виконавці. Це не можна скасувати.",
     "cancelFailed": "Хаб відмовив у скасуванні",

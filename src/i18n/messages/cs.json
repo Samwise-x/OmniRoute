@@ -3400,13 +3400,13 @@
     "comboRefMember": "Kombinace → {name}"
   },
   "combos": {
+    "title": "Komba",
+    "description": "Vytvářejte kombinace modelů s váženým směrováním a podporou záloh",
+    "autoCatalogTitle": "Katalog automatického směrování",
     "autoTosLoadError": "Zásady podmínek služby se nepodařilo načíst. Před změnou to zkuste znovu.",
     "autoTosSaveError": "Zásady podmínek služby se nepodařilo uložit. Stále se zobrazuje předchozí nastavení. Zkuste to znovu.",
     "autoTosIncludeLabel": "Zahrnout do auto poskytovatele označené ToS: avoid",
     "autoTosDescription": "Ve výchozím nastavení vypnuto. Platí pro všechny kombinace auto, nejen pro jeden účet. Připojení poskytovatele tuto možnost nezapne.",
-    "title": "Komba",
-    "description": "Vytvářejte kombinace modelů s váženým směrováním a podporou záloh",
-    "autoCatalogTitle": "Katalog automatického směrování",
     "autoCatalogTemplateCount": "{count} šablon",
     "autoCatalogDescription": "Vestavěná automatická/* komba řešená dynamicky od připojených poskytovatelů. Použijte kterékoli z těchto ID jako pole modelu – není potřeba žádné nastavení.",
     "autoCatalogExpand": "Rozbalte katalog automatického směrování",
@@ -6079,6 +6079,13 @@
     "claudeLowPriorityModeDescription": "Když tento účet dosáhne svého 5hodinového limitu využití a Anthropic nabídne dráhu s nižší prioritou, OmniRoute ji přijme a bude i nadále odesílat požadavky s anthropic-usage-limit: slow, dokud se okno neobnoví, místo aby spojení ochlazoval. Týdenní limit stále platí a odpovědi mohou čekat na volnou kapacitu.",
     "claudeAutoLimitResetLabel": "Automaticky resetovat limit relace (jednou týdně)",
     "claudeAutoLimitResetDescription": "Když tento účet dosáhne svého 5hodinového limitu využití a je k dispozici reset limitu relace, OmniRoute ho automaticky uplatní a opakuje pokusy plnou rychlostí. Využívá reset účtu dostupný jednou týdně a stále se započítává do týdenního limitu.",
+    "codexPaidCreditsShort": "Extra credits",
+    "codexPaidCreditsToggleTitle": "Allow paid Codex credits after subscription quota runs out (additional charges may apply)",
+    "codexPaidCreditsEnabled": "Codex paid credits enabled (additional charges may apply)",
+    "codexPaidCreditsDisabled": "Codex paid credits disabled",
+    "failedUpdateCodexPaidCredits": "Failed to update Codex paid-credit policy",
+    "allowCodexPaidCreditsLabel": "Allow paid Codex credits",
+    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled.",
     "disableCoolingDescription": "Přeskočit přechodný cooldown, aby toto připojení zůstalo způsobilé i po obnovitelných chybách (konečné stavy jako zablokováno/vypršelo stále platí).",
     "disableCoolingLabel": "Zakázat cooldown pro toto připojení",
     "bulkPasteAdded": "{count, plural, one {Přidán 1 klíč} few {Přidány # klíče} other {Přidáno # klíčů}}",
@@ -6532,6 +6539,7 @@
       "monsterapi": "Získejte API klíč na monsterapi.ai",
       "moonshot": "Připojte Moonshot AI pomocí API klíče.",
       "morph": "Bezplatná úroveň: 250 tisíc kreditů/měsíc, 0 $",
+      "apmix": "Připojte Apmix pomocí API klíče z apmix.ai/dashboard — jedno předplatné, mnoho modelů.",
       "nanogpt": "Připojte NanoGPT pomocí API klíče.",
       "nebius": "~1 $ zkušební kredit při registraci pro testování API",
       "nlpcloud": "NLP Cloud používá proprietární API pro chatboty namísto OpenAI chat/completions. OmniRoute přizpůsobuje zprávy OpenAI vstupu/kontextu/historii a zpřístupňuje lokální katalog podporovaných modelů chatbotů.",
@@ -6628,8 +6636,7 @@
       "kiro": "Bezplatná úroveň: 50 kreditů/měsíc (~25–100 tis. tokenů). ⚠️ Podmínky používání Kiro zakazují používání proxy serverů či testovacích rozhraní třetích stran.",
       "codex": "Připojit OpenAI Codex pomocí stávajícího toku OAuth.",
       "qwen": "Připojit Qwen Code pomocí stávajícího toku OAuth.",
-      "github-models": "Vytvořte GitHub PAT s rozsahem 'models: read' na github.com/settings/tokens",
-      "apmix": "Připojte Apmix pomocí API klíče z apmix.ai/dashboard — jedno předplatné, mnoho modelů."
+      "github-models": "Vytvořte GitHub PAT s rozsahem 'models: read' na github.com/settings/tokens"
     },
     "passthroughModelsDescription": "{provider} přijímá ID modelu nativního poskytovatele. Importujte z /models nebo přidejte vlastní ID pro směrování.",
     "bedrockModelsDescription": "Modely Amazon Bedrock jsou vymezeny podle regionu AWS. Importujte z /models nebo přidejte ID modelu Bedrock povolené ve vybrané oblasti.",
@@ -6801,14 +6808,7 @@
     "rateLimitOverridesModelConcurrencyLabel": "Per-model concurrency caps",
     "rateLimitOverridesModelConcurrencyPlaceholder": "glm-5=1\nglm-4.7=3",
     "rateLimitOverridesModelConcurrencyHint": "Optional: one model=cap per line, matched against the exact upstream model id. Queues excess requests locally; blank means no per-model cap.",
-    "rateLimitOverridesModelConcurrencyInvalid": "Invalid per-model concurrency entry \"{entry}\" — use model=cap with a whole number from 1 to {max}.",
-    "codexPaidCreditsShort": "Extra credits",
-    "codexPaidCreditsToggleTitle": "Allow paid Codex credits after subscription quota runs out (additional charges may apply)",
-    "codexPaidCreditsEnabled": "Codex paid credits enabled (additional charges may apply)",
-    "codexPaidCreditsDisabled": "Codex paid credits disabled",
-    "failedUpdateCodexPaidCredits": "Failed to update Codex paid-credit policy",
-    "allowCodexPaidCreditsLabel": "Allow paid Codex credits",
-    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled."
+    "rateLimitOverridesModelConcurrencyInvalid": "Invalid per-model concurrency entry \"{entry}\" — use model=cap with a whole number from 1 to {max}."
   },
   "settings": {
     "title": "Nastavení",
@@ -9834,6 +9834,10 @@
     "streamTransformFailed": "Transformace streamu se nezdařila"
   },
   "usage": {
+    "codexPaidCreditsLabel": "Paid Codex credits",
+    "codexPaidCreditsAvailable": "Available (balance not reported)",
+    "codexPaidCreditsUnavailable": "Unavailable or spending limit reached",
+    "codexPaidCreditsUnlimited": "Unlimited",
     "title": "Použití",
     "grokExtraUsageCredits": "Další kredit na použití",
     "grokAutoTopUp": "Automatické dobíjení",
@@ -10286,11 +10290,7 @@
     "updatedShort": "Aktualizováno",
     "lastRefreshed": "Naposledy aktualizováno",
     "providerQuota": "Kvóta poskytovatele",
-    "providerQuotaHomeHint": "Aktuální stav napříč připojenými účty",
-    "codexPaidCreditsLabel": "Paid Codex credits",
-    "codexPaidCreditsAvailable": "Available (balance not reported)",
-    "codexPaidCreditsUnavailable": "Unavailable or spending limit reached",
-    "codexPaidCreditsUnlimited": "Unlimited"
+    "providerQuotaHomeHint": "Aktuální stav napříč připojenými účty"
   },
   "modals": {
     "waitingAuth": "Očekávám Autorizaci",
@@ -14845,6 +14845,8 @@
     "council": "Rada",
     "candidates": "Kandidáti",
     "cancel": "Zrušit úkol",
+    "retry": "__MISSING__:Retry task",
+    "retryFailed": "__MISSING__:The hub refused the retry",
     "cancelConfirmTitle": "Zrušit tuto úlohu?",
     "cancelConfirmMessage": "Hub zruší provádění na runneru. Toto nelze vrátit zpět.",
     "cancelFailed": "Hub odmítl zrušení",

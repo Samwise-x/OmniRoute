@@ -3400,13 +3400,13 @@
     "comboRefMember": "Kombo → {name}"
   },
   "combos": {
+    "title": "kombo",
+    "description": "Buat kombo model dengan perutean berbobot dan dukungan fallback",
+    "autoCatalogTitle": "Katalog perutean otomatis",
     "autoTosLoadError": "Kebijakan ketentuan layanan tidak dapat dimuat. Coba lagi sebelum mengubahnya.",
     "autoTosSaveError": "Kebijakan ketentuan layanan tidak dapat disimpan. Pengaturan sebelumnya masih ditampilkan. Coba lagi.",
     "autoTosIncludeLabel": "Sertakan penyedia bertanda ToS: avoid dalam auto",
     "autoTosDescription": "Nonaktif secara bawaan. Berlaku untuk semua kombinasi auto, bukan hanya satu akun. Menghubungkan penyedia tidak mengaktifkan opsi ini.",
-    "title": "kombo",
-    "description": "Buat kombo model dengan perutean berbobot dan dukungan fallback",
-    "autoCatalogTitle": "Katalog perutean otomatis",
     "autoCatalogTemplateCount": "{count} templat",
     "autoCatalogDescription": "Kombo otomatis/* bawaan diselesaikan secara dinamis dari penyedia yang terhubung. Gunakan salah satu ID ini sebagai bidang model — tidak perlu penyiapan.",
     "autoCatalogExpand": "Perluas katalog perutean otomatis",
@@ -6079,6 +6079,13 @@
     "claudeLowPriorityModeDescription": "Saat akun ini mencapai batas penggunaan 5 jam dan Anthropic menawarkan jalur berprioritas lebih rendah, OmniRoute menerimanya dan terus mengirim permintaan dengan anthropic-usage-limit: slow hingga jendela diatur ulang, alih-alih mendinginkan koneksi. Batas mingguan tetap berlaku dan respons mungkin menunggu kapasitas yang tersedia.",
     "claudeAutoLimitResetLabel": "Atur ulang batas sesi secara otomatis (seminggu sekali)",
     "claudeAutoLimitResetDescription": "Saat akun ini mencapai batas penggunaan 5 jam dan pengaturan ulang batas sesi tersedia, OmniRoute mengklaimnya secara otomatis dan mencoba kembali dengan kecepatan penuh. Tindakan ini menggunakan pengaturan ulang akun yang tersedia seminggu sekali dan tetap dihitung terhadap batas mingguan.",
+    "codexPaidCreditsShort": "Kredit tambahan",
+    "codexPaidCreditsToggleTitle": "Izinkan kredit Codex berbayar setelah kuota langganan habis (dapat dikenakan biaya tambahan)",
+    "codexPaidCreditsEnabled": "Kredit Codex berbayar diaktifkan (dapat dikenakan biaya tambahan)",
+    "codexPaidCreditsDisabled": "Kredit Codex berbayar dinonaktifkan",
+    "failedUpdateCodexPaidCredits": "Gagal memperbarui kebijakan kredit Codex berbayar",
+    "allowCodexPaidCreditsLabel": "Izinkan kredit Codex berbayar",
+    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled.",
     "disableCoolingDescription": "Lewati cooldown transien agar koneksi ini tetap memenuhi syarat bahkan setelah kesalahan yang dapat dipulihkan (status terminal seperti diblokir/kedaluwarsa tetap berlaku).",
     "disableCoolingLabel": "Nonaktifkan cooldown untuk koneksi ini",
     "bulkPasteAdded": "{count, plural, one {1 kunci ditambahkan} other {# kunci ditambahkan}}",
@@ -6532,6 +6539,7 @@
       "monsterapi": "Dapatkan kunci API di monsterapi.ai",
       "moonshot": "Hubungkan Moonshot AI dengan kunci API.",
       "morph": "Tingkat gratis: 250 ribu kredit/bulan, $0",
+      "apmix": "Hubungkan Apmix dengan kunci API dari apmix.ai/dashboard — satu langganan, banyak model.",
       "nanogpt": "Hubungkan NanoGPT dengan kunci API.",
       "nebius": "Kredit uji coba ~$1 saat pendaftaran untuk pengujian API",
       "nlpcloud": "NLP Cloud menggunakan API chatbot berpemilik alih-alih chat/completions OpenAI. OmniRoute menyesuaikan pesan OpenAI ke input/konteks/riwayat dan mengekspos katalog lokal model chatbot yang didukung.",
@@ -6628,8 +6636,7 @@
       "kiro": "Tingkat gratis: 50 kredit/bulan (~25K–100K token). ⚠️ ToS Kiro melarang penggunaan proksi/harness pihak ketiga.",
       "codex": "Hubungkan OpenAI Codex dengan alur OAuth yang ada.",
       "qwen": "Hubungkan Qwen Code dengan alur OAuth yang ada.",
-      "github-models": "Buat GitHub PAT dengan cakupan 'models: read' di github.com/settings/tokens",
-      "apmix": "Hubungkan Apmix dengan kunci API dari apmix.ai/dashboard — satu langganan, banyak model."
+      "github-models": "Buat GitHub PAT dengan cakupan 'models: read' di github.com/settings/tokens"
     },
     "passthroughModelsDescription": "{provider} menerima ID model asli penyedia. Impor dari /models atau tambahkan ID khusus untuk perutean.",
     "bedrockModelsDescription": "Model Amazon Bedrock dicakup berdasarkan wilayah AWS. Impor dari /models atau tambahkan ID model Batuan Dasar yang diaktifkan di wilayah yang dipilih.",
@@ -6801,14 +6808,7 @@
     "rateLimitOverridesModelConcurrencyLabel": "Batas konkurensi per model",
     "rateLimitOverridesModelConcurrencyPlaceholder": "glm-5=1\nglm-4.7=3",
     "rateLimitOverridesModelConcurrencyHint": "Opsional: satu model=cap per baris, dicocokkan dengan ID model upstream yang persis sama. Permintaan berlebih diantrekan secara lokal; kosong berarti tanpa batas per model.",
-    "rateLimitOverridesModelConcurrencyInvalid": "Entri konkurensi per model \"{entry}\" tidak valid — gunakan model=cap dengan cap berupa bilangan bulat dari 1 sampai {max}.",
-    "codexPaidCreditsShort": "Kredit tambahan",
-    "codexPaidCreditsToggleTitle": "Izinkan kredit Codex berbayar setelah kuota langganan habis (dapat dikenakan biaya tambahan)",
-    "codexPaidCreditsEnabled": "Kredit Codex berbayar diaktifkan (dapat dikenakan biaya tambahan)",
-    "codexPaidCreditsDisabled": "Kredit Codex berbayar dinonaktifkan",
-    "failedUpdateCodexPaidCredits": "Gagal memperbarui kebijakan kredit Codex berbayar",
-    "allowCodexPaidCreditsLabel": "Izinkan kredit Codex berbayar",
-    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled."
+    "rateLimitOverridesModelConcurrencyInvalid": "Entri konkurensi per model \"{entry}\" tidak valid — gunakan model=cap dengan cap berupa bilangan bulat dari 1 sampai {max}."
   },
   "settings": {
     "title": "Pengaturan",
@@ -9834,6 +9834,10 @@
     "streamTransformFailed": "Gagal mentransformasi stream"
   },
   "usage": {
+    "codexPaidCreditsLabel": "Kredit Codex berbayar",
+    "codexPaidCreditsAvailable": "Tersedia (saldo tidak dilaporkan)",
+    "codexPaidCreditsUnavailable": "Tidak tersedia atau batas pengeluaran tercapai",
+    "codexPaidCreditsUnlimited": "Tak terbatas",
     "title": "Penggunaan",
     "grokExtraUsageCredits": "Kredit Penggunaan Ekstra",
     "grokAutoTopUp": "Isi Ulang Otomatis",
@@ -10286,11 +10290,7 @@
     "updatedShort": "Diperbarui",
     "lastRefreshed": "Terakhir disegarkan",
     "providerQuota": "Kuota Penyedia",
-    "providerQuotaHomeHint": "Status langsung di seluruh akun yang terhubung",
-    "codexPaidCreditsLabel": "Kredit Codex berbayar",
-    "codexPaidCreditsAvailable": "Tersedia (saldo tidak dilaporkan)",
-    "codexPaidCreditsUnavailable": "Tidak tersedia atau batas pengeluaran tercapai",
-    "codexPaidCreditsUnlimited": "Tak terbatas"
+    "providerQuotaHomeHint": "Status langsung di seluruh akun yang terhubung"
   },
   "modals": {
     "waitingAuth": "Menunggu Otorisasi",
@@ -14845,6 +14845,8 @@
     "council": "Dewan",
     "candidates": "Kandidat",
     "cancel": "Batalkan tugas",
+    "retry": "__MISSING__:Retry task",
+    "retryFailed": "__MISSING__:The hub refused the retry",
     "cancelConfirmTitle": "Batalkan tugas ini?",
     "cancelConfirmMessage": "Hub akan membatalkan eksekusi pada runner. Ini tidak dapat dibatalkan.",
     "cancelFailed": "Hub menolak pembatalan",

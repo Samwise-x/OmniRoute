@@ -3400,13 +3400,13 @@
     "comboRefMember": "Combo → {name}"
   },
   "combos": {
-    "autoTosIncludeLabel": "Inkludi fornituri mmarkati ToS: avoid f’auto",
-    "autoTosDescription": "Mitfi awtomatikament. Japplika għall-combos auto kollha, mhux għal kont wieħed biss. Il-konnessjoni ta’ fornitur ma tattivax din l-għażla.",
-    "autoTosSaveError": "Il-politika ToS ma setgħetx tiġi ssejvjata. Għadu jidher l-issettjar ta’ qabel. Erġa’ pprova.",
-    "autoTosLoadError": "Il-politika ToS ma setgħetx titgħabba. Erġa’ pprova qabel tibdilha.",
     "title": "Kombinazzjonijiet",
     "description": "Oħloq kombinazzjonijiet ta’ mudelli b’instradar ponderat u appoġġ għal alternattivi ta’ riżerva",
     "autoCatalogTitle": "Katalgu tal-instradar awtomatiku",
+    "autoTosLoadError": "Il-politika ToS ma setgħetx titgħabba. Erġa’ pprova qabel tibdilha.",
+    "autoTosSaveError": "Il-politika ToS ma setgħetx tiġi ssejvjata. Għadu jidher l-issettjar ta’ qabel. Erġa’ pprova.",
+    "autoTosIncludeLabel": "Inkludi fornituri mmarkati ToS: avoid f’auto",
+    "autoTosDescription": "Mitfi awtomatikament. Japplika għall-combos auto kollha, mhux għal kont wieħed biss. Il-konnessjoni ta’ fornitur ma tattivax din l-għażla.",
     "autoCatalogTemplateCount": "{count} mudelli",
     "autoCatalogDescription": "Kombinazzjonijiet auto/* integrati li jiġu riżolti b’mod dinamiku mill-fornituri konnessi. Uża kwalunkwe wieħed minn dawn l-IDs bħala l-qasam tal-mudell — ebda konfigurazzjoni meħtieġa.",
     "autoCatalogExpand": "Espandi l-katalgu tal-instradar awtomatiku",
@@ -6079,6 +6079,13 @@
     "claudeLowPriorityModeDescription": "Meta dan il-kont jilħaq il-limitu ta' użu tiegħu ta' 5 sigħat u Anthropic toffri l-kanal bi prijorità aktar baxxa, OmniRoute taċċettah u tkompli tibgħat it-talbiet b'anthropic-usage-limit: slow sakemm tiġi rrisettjata t-tieqa, minflok ma tħalli l-konnessjoni tistenna. Il-limitu ta' kull ġimgħa xorta japplika u t-tweġibiet jistgħu jistennew sakemm ikun hemm kapaċità disponibbli.",
     "claudeAutoLimitResetLabel": "Irrisettja awtomatikament il-limitu tas-sessjoni (darba fil-ġimgħa)",
     "claudeAutoLimitResetDescription": "Meta dan il-kont jilħaq il-limitu ta' użu tiegħu ta' 5 sigħat u jkun disponibbli reset tal-limitu tas-sessjoni, OmniRoute tużah awtomatikament u terġa' tipprova bil-veloċità sħiħa. Dan juża r-reset tal-kont ta' darba fil-ġimgħa u xorta jgħodd mal-limitu ta' kull ġimgħa.",
+    "codexPaidCreditsShort": "Extra credits",
+    "codexPaidCreditsToggleTitle": "Allow paid Codex credits after subscription quota runs out (additional charges may apply)",
+    "codexPaidCreditsEnabled": "Codex paid credits enabled (additional charges may apply)",
+    "codexPaidCreditsDisabled": "Codex paid credits disabled",
+    "failedUpdateCodexPaidCredits": "Failed to update Codex paid-credit policy",
+    "allowCodexPaidCreditsLabel": "Allow paid Codex credits",
+    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled.",
     "disableCoolingDescription": "Aqbeż il-perjodu ta’ stennija temporanju sabiex din il-konnessjoni tibqa’ eliġibbli anke wara żbalji li jistgħu jiġu rkuprati (l-istati terminali bħal ipprojbiti jew skaduti xorta jibqgħu japplikaw).",
     "disableCoolingLabel": "Iddiżattiva l-perjodu ta’ stennija għal din il-konnessjoni",
     "bulkPasteAdded": "{count, plural, one {Żdiedet ċavetta waħda} other {Żdiedu # ċwievet}}",
@@ -6532,6 +6539,7 @@
       "monsterapi": "Ikseb ċavetta API fuq monsterapi.ai",
       "moonshot": "Qabbad Kimi b'ċavetta API.",
       "morph": "Livell b'xejn: 250K krediti fix-xahar, $0",
+      "apmix": "Qabbad Apmix bi ċavetta API minn apmix.ai/dashboard — abbonament wieħed, bosta mudelli.",
       "nanogpt": "Qabbad NanoGPT b'ċavetta API.",
       "nebius": "Madwar $1 fi krediti ta' prova mar-reġistrazzjoni għall-ittestjar tal-API",
       "nlpcloud": "NLP Cloud juża API proprjetarja ta' chatbot minflok chat/completions ta' OpenAI. OmniRoute jadatta l-messaġġi ta' OpenAI għal input/context/history u jipprovdi katalgu lokali ta' mudelli ta' chatbot appoġġjati.",
@@ -6628,8 +6636,7 @@
       "kiro": "Livell bla ħlas: 50 kreditu/xahar (~25K–100K token). ⚠️ It-Termini tas-Servizz ta’ Kiro jipprojbixxu l-użu ta’ proxy/harness ta’ parti terza.",
       "codex": "Qabbad OpenAI Codex mal-fluss OAuth eżistenti.",
       "qwen": "Qabbad Qwen Code mal-fluss OAuth eżistenti.",
-      "github-models": "Oħloq GitHub PAT bl-ambitu 'models: read' fuq github.com/settings/tokens",
-      "apmix": "Qabbad Apmix bi ċavetta API minn apmix.ai/dashboard — abbonament wieħed, bosta mudelli."
+      "github-models": "Oħloq GitHub PAT bl-ambitu 'models: read' fuq github.com/settings/tokens"
     },
     "passthroughModelsDescription": "{provider} jaċċetta IDs tal-mudelli nattivi għall-fornitur. Importa minn /models jew żid IDs personalizzati għar-routing.",
     "bedrockModelsDescription": "Il-mudelli ta’ Amazon Bedrock huma limitati skont ir-reġjun AWS. Importa minn /models jew żid IDs tal-mudelli Bedrock attivati fir-reġjun magħżul.",
@@ -6801,14 +6808,7 @@
     "rateLimitOverridesModelConcurrencyLabel": "Per-model concurrency caps",
     "rateLimitOverridesModelConcurrencyPlaceholder": "glm-5=1\nglm-4.7=3",
     "rateLimitOverridesModelConcurrencyHint": "Optional: one model=cap per line, matched against the exact upstream model id. Queues excess requests locally; blank means no per-model cap.",
-    "rateLimitOverridesModelConcurrencyInvalid": "Invalid per-model concurrency entry \"{entry}\" — use model=cap with a whole number from 1 to {max}.",
-    "codexPaidCreditsShort": "Extra credits",
-    "codexPaidCreditsToggleTitle": "Allow paid Codex credits after subscription quota runs out (additional charges may apply)",
-    "codexPaidCreditsEnabled": "Codex paid credits enabled (additional charges may apply)",
-    "codexPaidCreditsDisabled": "Codex paid credits disabled",
-    "failedUpdateCodexPaidCredits": "Failed to update Codex paid-credit policy",
-    "allowCodexPaidCreditsLabel": "Allow paid Codex credits",
-    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled."
+    "rateLimitOverridesModelConcurrencyInvalid": "Invalid per-model concurrency entry \"{entry}\" — use model=cap with a whole number from 1 to {max}."
   },
   "settings": {
     "title": "Issettjar",
@@ -9834,6 +9834,10 @@
     "streamTransformFailed": "It-trasformazzjoni tal-fluss falliet"
   },
   "usage": {
+    "codexPaidCreditsLabel": "Paid Codex credits",
+    "codexPaidCreditsAvailable": "Available (balance not reported)",
+    "codexPaidCreditsUnavailable": "Unavailable or spending limit reached",
+    "codexPaidCreditsUnlimited": "Unlimited",
     "title": "Użu",
     "grokExtraUsageCredits": "Krediti Addizzjonali għall-Użu",
     "grokAutoTopUp": "Rikarga Awtomatika",
@@ -10286,11 +10290,7 @@
     "updatedShort": "Aġġornat",
     "lastRefreshed": "Aġġornat l-aħħar darba",
     "providerQuota": "Kwota tal-Fornitur",
-    "providerQuotaHomeHint": "Status f’ħin reali fil-kontijiet konnessi",
-    "codexPaidCreditsLabel": "Paid Codex credits",
-    "codexPaidCreditsAvailable": "Available (balance not reported)",
-    "codexPaidCreditsUnavailable": "Unavailable or spending limit reached",
-    "codexPaidCreditsUnlimited": "Unlimited"
+    "providerQuotaHomeHint": "Status f’ħin reali fil-kontijiet konnessi"
   },
   "modals": {
     "waitingAuth": "Stennija għall-Awtorizzazzjoni",
@@ -14845,6 +14845,8 @@
     "council": "Kunsill",
     "candidates": "Kandidati",
     "cancel": "Ikkanċella l-kompitu",
+    "retry": "__MISSING__:Retry task",
+    "retryFailed": "__MISSING__:The hub refused the retry",
     "cancelConfirmTitle": "Trid tikkanċella dan il-kompitu?",
     "cancelConfirmMessage": "Il-hub se jwaqqaf l-eżekuzzjoni fuq l-eżekutur. Dan ma jistax jitreġġa’ lura.",
     "cancelFailed": "Il-hub irrifjuta l-kanċellazzjoni",

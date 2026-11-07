@@ -3400,13 +3400,13 @@
     "comboRefMember": "Kombinatsioon → {name}"
   },
   "combos": {
+    "title": "Kombinatsioonid",
+    "description": "Loo kaalutud marsruutimise ja varuvalikute toega mudelikombinatsioone",
+    "autoCatalogTitle": "Automaatse marsruutimise kataloog",
     "autoTosLoadError": "Teenustingimuste reegleid ei saanud laadida. Enne nende muutmist proovige uuesti.",
     "autoTosSaveError": "Teenustingimuste reegleid ei saanud salvestada. Kuvatakse endiselt eelmine säte. Proovige uuesti.",
     "autoTosIncludeLabel": "Kaasa auto-valikusse pakkujad märkega ToS: avoid",
     "autoTosDescription": "Vaikimisi välja lülitatud. Kehtib kõigile auto-kombinatsioonidele, mitte ainult ühele kontole. Pakkuja ühendamine seda valikut ei lülita sisse.",
-    "title": "Kombinatsioonid",
-    "description": "Loo kaalutud marsruutimise ja varuvalikute toega mudelikombinatsioone",
-    "autoCatalogTitle": "Automaatse marsruutimise kataloog",
     "autoCatalogTemplateCount": "{count} malli",
     "autoCatalogDescription": "Sisseehitatud auto/* kombinatsioonid, mis määratakse dünaamiliselt ühendatud teenusepakkujate põhjal. Kasuta mudeli väljal ükskõik millist neist ID-dest — seadistamine pole vajalik.",
     "autoCatalogExpand": "Laienda automaatse marsruutimise kataloogi",
@@ -6079,6 +6079,13 @@
     "claudeLowPriorityModeDescription": "Kui see konto jõuab oma 5-tunnise kasutuslimiidini ja Anthropic pakub madalama prioriteediga riba, aktsepteerib OmniRoute seda ja saadab jätkuvalt päringuid päisega anthropic-usage-limit: slow kuni aken lähtestub, selle asemel et ühendust jahutada. Nädalane limiit kehtib endiselt ja vastused võivad oodata vaba mahtuvuse järele.",
     "claudeAutoLimitResetLabel": "Lähtesta sessioonilimiit automaatselt (üks kord nädalas)",
     "claudeAutoLimitResetDescription": "Kui see konto jõuab oma 5-tunnise kasutuslimiidini ja sessioonilimiidi lähtestamine on saadaval, kasutab OmniRoute selle automaatselt ära ning proovib täiskiirusel uuesti. Kasutab konto ühekordset nädalast lähtestamist ja see arvestatakse endiselt nädalasesse limiiti.",
+    "codexPaidCreditsShort": "Extra credits",
+    "codexPaidCreditsToggleTitle": "Allow paid Codex credits after subscription quota runs out (additional charges may apply)",
+    "codexPaidCreditsEnabled": "Codex paid credits enabled (additional charges may apply)",
+    "codexPaidCreditsDisabled": "Codex paid credits disabled",
+    "failedUpdateCodexPaidCredits": "Failed to update Codex paid-credit policy",
+    "allowCodexPaidCreditsLabel": "Allow paid Codex credits",
+    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled.",
     "disableCoolingDescription": "Jäta ajutine ooteaeg vahele, et see ühendus jääks kasutatavaks ka pärast taastatavaid vigu (lõppolekud, nagu blokeeritud või aegunud, kehtivad endiselt).",
     "disableCoolingLabel": "Keela selle ühenduse ooteaeg",
     "bulkPasteAdded": "{count, plural, one {Lisati 1 võti} other {Lisati # võtit}}",
@@ -6532,6 +6539,7 @@
       "monsterapi": "Hangi API-võti aadressilt monsterapi.ai",
       "moonshot": "Ühenda Kimi API-võtmega.",
       "morph": "Tasuta pakett: 250K krediiti kuus, $0",
+      "apmix": "Ühenda Apmix API võtmega saidilt apmix.ai/dashboard — üks tellimus, palju mudeleid.",
       "nanogpt": "Ühenda NanoGPT API-võtmega.",
       "nebius": "Registreerumisel API testimiseks ~$1 proovikrediiti",
       "nlpcloud": "NLP Cloud kasutab OpenAI chat/completionsi asemel omanduslikku vestlusroboti API-t. OmniRoute kohandab OpenAI sõnumid sisendiks, kontekstiks ja ajalooks ning pakub toetatud vestlusrobotimudelite kohalikku kataloogi.",
@@ -6628,8 +6636,7 @@
       "kiro": "Tasuta pakett: 50 krediiti kuus (~25K–100K tokenit). ⚠️ Kiro kasutustingimused keelavad kolmanda osapoole puhverserveri või rakenduskesta kasutamise.",
       "codex": "Ühenda OpenAI Codex olemasoleva OAuth-vooga.",
       "qwen": "Ühenda Qwen Code olemasoleva OAuth-vooga.",
-      "github-models": "Loo aadressil github.com/settings/tokens GitHub PAT õigusega „models: read”",
-      "apmix": "Ühenda Apmix API võtmega saidilt apmix.ai/dashboard — üks tellimus, palju mudeleid."
+      "github-models": "Loo aadressil github.com/settings/tokens GitHub PAT õigusega „models: read”"
     },
     "passthroughModelsDescription": "{provider} aktsepteerib teenusepakkuja omavormingus mudeli-ID-sid. Impordi need lehelt /models või lisa marsruutimiseks kohandatud ID-d.",
     "bedrockModelsDescription": "Amazon Bedrocki mudelid on seotud AWS-i piirkonnaga. Impordi need lehelt /models või lisa valitud piirkonnas lubatud Bedrocki mudelite ID-d.",
@@ -6801,14 +6808,7 @@
     "rateLimitOverridesModelConcurrencyLabel": "Per-model concurrency caps",
     "rateLimitOverridesModelConcurrencyPlaceholder": "glm-5=1\nglm-4.7=3",
     "rateLimitOverridesModelConcurrencyHint": "Optional: one model=cap per line, matched against the exact upstream model id. Queues excess requests locally; blank means no per-model cap.",
-    "rateLimitOverridesModelConcurrencyInvalid": "Invalid per-model concurrency entry \"{entry}\" — use model=cap with a whole number from 1 to {max}.",
-    "codexPaidCreditsShort": "Extra credits",
-    "codexPaidCreditsToggleTitle": "Allow paid Codex credits after subscription quota runs out (additional charges may apply)",
-    "codexPaidCreditsEnabled": "Codex paid credits enabled (additional charges may apply)",
-    "codexPaidCreditsDisabled": "Codex paid credits disabled",
-    "failedUpdateCodexPaidCredits": "Failed to update Codex paid-credit policy",
-    "allowCodexPaidCreditsLabel": "Allow paid Codex credits",
-    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled."
+    "rateLimitOverridesModelConcurrencyInvalid": "Invalid per-model concurrency entry \"{entry}\" — use model=cap with a whole number from 1 to {max}."
   },
   "settings": {
     "title": "Seaded",
@@ -9834,6 +9834,10 @@
     "streamTransformFailed": "Voo teisendamine nurjus"
   },
   "usage": {
+    "codexPaidCreditsLabel": "Paid Codex credits",
+    "codexPaidCreditsAvailable": "Available (balance not reported)",
+    "codexPaidCreditsUnavailable": "Unavailable or spending limit reached",
+    "codexPaidCreditsUnlimited": "Unlimited",
     "title": "Kasutus",
     "grokExtraUsageCredits": "Täiendavad kasutuskrediidid",
     "grokAutoTopUp": "Automaatne saldo täiendamine",
@@ -10286,11 +10290,7 @@
     "updatedShort": "Uuendatud",
     "lastRefreshed": "Viimati värskendatud",
     "providerQuota": "Teenusepakkuja kvoot",
-    "providerQuotaHomeHint": "Ühendatud kontode reaalajas olek",
-    "codexPaidCreditsLabel": "Paid Codex credits",
-    "codexPaidCreditsAvailable": "Available (balance not reported)",
-    "codexPaidCreditsUnavailable": "Unavailable or spending limit reached",
-    "codexPaidCreditsUnlimited": "Unlimited"
+    "providerQuotaHomeHint": "Ühendatud kontode reaalajas olek"
   },
   "modals": {
     "waitingAuth": "Autoriseerimise ootel",
@@ -14845,6 +14845,8 @@
     "council": "Nõukogu",
     "candidates": "Kandidaadid",
     "cancel": "Tühista ülesanne",
+    "retry": "__MISSING__:Retry task",
+    "retryFailed": "__MISSING__:The hub refused the retry",
     "cancelConfirmTitle": "Kas tühistada see ülesanne?",
     "cancelConfirmMessage": "Hub katkestab käitajas täitmise. Seda ei saa tagasi võtta.",
     "cancelFailed": "Hub keeldus tühistamisest",

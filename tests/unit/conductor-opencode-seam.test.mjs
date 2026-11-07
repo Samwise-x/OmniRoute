@@ -4,8 +4,10 @@
  * These tests drive the real `runner.mjs` process with a stand-in `opencode` binary on
  * `OPENCODE_BIN`, which is enough to pin down everything the seam has to get right:
  *
- *   1. argv — `opencode run "<prompt>" [--model <m>]`, matching
- *      `docs/reference/CLI-TOOLS.md` / `omniroute setup-opencode`. No `--auto`.
+ *   1. argv — `opencode run "<prompt>" --auto [--model <m>]`, matching
+ *      `docs/reference/CLI-TOOLS.md` / `omniroute setup-opencode`. `--auto` is required:
+ *      without it a TTY-less task stalls on an approval prompt until it times out
+ *      (verified against the pinned binary — `opencode run --help`, v1.19.3).
  *   2. routing — the CLI is handed a config that points at OUR gateway, so a
  *      self-hosted deployment never silently falls back to OpenCode's hosted catalog.
  *   3. the credential is referenced through `{env:OMNIROUTE_API_KEY}`, never written.
@@ -19,7 +21,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { spawn, execFileSync } from "node:child_process";
-import { mkdtemp, mkdir, writeFile, chmod, rm, readFile, readdir } from "node:fs/promises";
+import { mkdtemp, mkdir, writeFile, chmod, rm, readFile, readdir, access } from "node:fs/promises";
 import { createServer } from "node:http";
 import os from "node:os";
 import path from "node:path";
@@ -112,6 +114,9 @@ async function makeOpencodeStandIn(dir) {
       `import os from 'node:os';\n` +
       `import path from 'node:path';\n` +
       `const argv = process.argv.slice(2);\n` +
+      // The Runner probes `--version` for capability discovery; that is not an execution,
+      // so it must not overwrite the recorded invocation.
+      `if (argv[0] === '--version') { console.log('1.19.3'); process.exit(0); }\n` +
       `const configPath = path.join(os.homedir(), '.config', 'opencode', 'opencode.json');\n` +
       `let config = null;\n` +
       `try { config = JSON.parse(fs.readFileSync(configPath, 'utf8')); } catch {}\n` +
@@ -203,9 +208,12 @@ test(
       const invocation = JSON.parse(await readFile(standIn.out, "utf8"));
       assert.equal(invocation.argv[0], "run", "uses `opencode run`, not a subcommand-less call");
       assert.equal(invocation.argv[1], "add a note to the fixture", "the task prompt is argv[1]");
-      assert.ok(!invocation.argv.includes("--auto"), "`--auto` is not part of the released CLI");
+      assert.ok(
+        invocation.argv.includes("--auto"),
+        "`--auto` is required so a TTY-less task cannot block on an approval prompt"
+      );
       // No model pinned and no OPENCODE_MODEL default: no --model at all.
-      assert.deepEqual(invocation.argv, ["run", "add a note to the fixture"]);
+      assert.deepEqual(invocation.argv, ["run", "add a note to the fixture", "--auto"]);
 
       // Routing: the CLI was given a config for OUR gateway, keyed by env ref.
       assert.equal(invocation.configExists, true, "the runner seeds an opencode.json");
@@ -261,6 +269,7 @@ test(
       assert.deepEqual(invocation.argv, [
         "run",
         "pinned",
+        "--auto",
         "--model",
         "omniroute/claude-sonnet-4-5",
       ]);
@@ -277,6 +286,7 @@ test(
       assert.deepEqual(invocation.argv, [
         "run",
         "defaulted",
+        "--auto",
         "--model",
         "omniroute/claude-sonnet-4-5",
       ]);
@@ -320,6 +330,89 @@ test(
   }
 );
 
+test(
+  "a harness that does not report a real version gets no version, not a guess",
+  { timeout: 45000 },
+  async () => {
+    const dir = await mkdtemp(path.join(os.tmpdir(), "omni-opencode-version-"));
+    // A wrapper that ignores argv and prints its usual chatter exits 0 — the Runner must
+    // not record that as the harness version (it did, before this guard: the evidence
+    // report ended up claiming the version was "opencode stand-in completed").
+    const bin = path.join(dir, "chatty-opencode");
+    await writeFile(bin, `#!/usr/bin/env node\nconsole.log('opencode stand-in completed');\n`);
+    await chmod(bin, 0o755);
+    const standIn = { file: bin, out: path.join(dir, "invocation.json") };
+    const { url, hub, runner } = await startFleet(dir, { standIn });
+    try {
+      const task = await submit(url, {
+        repo: { url: `file://${await makeRepo(dir)}`, base_ref: "main" },
+        spec: { prompt: "no version here" },
+        requirements: { cli: "opencode" },
+      });
+      assert.equal(task.status, "completed", runner.logs);
+      assert.equal(
+        task.manifest.result.opencode_version,
+        null,
+        "chatter is not a version; record nothing rather than something false"
+      );
+      const fleet = await (await api(url, "/v1/runners", undefined, "GET")).json();
+      assert.equal(
+        fleet[0].capabilities.clis[0].version,
+        undefined,
+        "the fleet must not advertise an invented version"
+      );
+    } finally {
+      await stop(runner);
+      await stop(hub);
+      await rm(dir, { recursive: true, force: true });
+    }
+  }
+);
+
+test(
+  "the capability probe runs in a sandbox, not in the Runner's own directory",
+  { timeout: 45000 },
+  async () => {
+    const dir = await mkdtemp(path.join(os.tmpdir(), "omni-opencode-probe-"));
+    // A harness that writes wherever it is started. The probe spawns it at boot, so this
+    // used to litter the Runner's working directory (the evidence run left an EVIDENCE.md
+    // in the repo root) — and would simply fail on the container's read-only filesystem.
+    const marker = "probe-litter.txt";
+    const bin = path.join(dir, "littering-opencode");
+    await writeFile(
+      bin,
+      `#!/usr/bin/env node\n` +
+        `import fs from 'node:fs';\n` +
+        `fs.writeFileSync(${JSON.stringify(marker)}, 'probe wrote here');\n` +
+        `console.log('1.19.3');\n`
+    );
+    await chmod(bin, 0o755);
+    const standIn = { file: bin, out: path.join(dir, "invocation.json") };
+    const { url, hub, runner } = await startFleet(dir, { standIn });
+    try {
+      // Wait for registration, which is when the probe runs.
+      for (let i = 0; i < 100; i++) {
+        const fleet = await (await api(url, "/v1/runners", undefined, "GET")).json();
+        if (fleet.some((r) => r.online)) break;
+        await wait(40);
+      }
+      const leaked = await access(path.join(ROOT, marker)).then(
+        () => true,
+        () => false
+      );
+      assert.equal(leaked, false, "the probe must not write into the Runner's working directory");
+      // The probe's own output is still used as the version.
+      const fleet = await (await api(url, "/v1/runners", undefined, "GET")).json();
+      assert.equal(fleet[0].capabilities.clis[0].version, "1.19.3");
+      assert.equal(runner.exitCode, null);
+    } finally {
+      await stop(runner);
+      await stop(hub);
+      await rm(dir, { recursive: true, force: true });
+    }
+  }
+);
+
 test("The operator can opt into hosted models explicitly", { timeout: 45000 }, async () => {
   const dir = await mkdtemp(path.join(os.tmpdir(), "omni-opencode-hosted-"));
   const standIn = await makeOpencodeStandIn(dir);
@@ -336,7 +429,7 @@ test("The operator can opt into hosted models explicitly", { timeout: 45000 }, a
     });
     assert.equal(task.status, "completed", runner.logs);
     const invocation = JSON.parse(await readFile(standIn.out, "utf8"));
-    assert.deepEqual(invocation.argv, ["run", "hosted ok", "--model", "gpt-5.5"]);
+    assert.deepEqual(invocation.argv, ["run", "hosted ok", "--auto", "--model", "gpt-5.5"]);
   } finally {
     await stop(runner);
     await stop(hub);

@@ -218,7 +218,8 @@ export interface DelegationInput {
   repoUrl: string;
   prompt: string;
   baseRef?: string;
-  mode?: string;
+  /** Closed set, mirroring the Hub (`solo` | `council`). */
+  mode?: "solo" | "council";
   cli?: string;
   model?: string;
   idempotencyKey?: string;
@@ -240,7 +241,7 @@ export async function createConductorTask(
   const body: Record<string, unknown> = {
     repo: { url: input.repoUrl, base_ref: input.baseRef?.trim() || "main" },
     spec: { prompt: input.prompt },
-    mode: input.mode?.trim() || "solo",
+    mode: input.mode ?? "solo",
   };
   const requirements: Record<string, string> = {};
   if (input.cli?.trim()) requirements.cli = input.cli.trim();
@@ -282,4 +283,112 @@ export async function cancelConductorTask(
   } catch {
     return { ok: false, status: 503 };
   }
+}
+
+/**
+ * Asks the hub to re-queue a terminal task under the same id (Conductor RF5).
+ *
+ * Retry is *in place*: the dashboard already holds `taskId`, and minting a new one
+ * would orphan its event history and its deep link. The hub enforces the retry cap,
+ * so a client cannot loop forever by calling this repeatedly.
+ */
+export async function retryConductorTask(
+  taskId: string,
+  opts: HubProxyOptions = {}
+): Promise<{ ok: boolean; status: number; retries?: number; error?: string }> {
+  const cfg = hubConfig();
+  if (!cfg) return { ok: false, status: 503 };
+  const token = process.env.CONDUCTOR_ORCHESTRATOR_TOKEN?.trim() || cfg.token;
+  try {
+    const doFetch = opts.fetchImpl ?? fetch;
+    const res = await doFetch(`${cfg.url}/v1/tasks/${encodeURIComponent(taskId)}/retry`, {
+      method: "POST",
+      headers: { authorization: `Bearer ${token}` },
+    });
+    if (res.ok) {
+      const data = (await res.json().catch(() => ({}))) as { retries?: number };
+      return { ok: true, status: res.status, retries: data.retries };
+    }
+    // Forward the hub's own refusal (retry cap / not terminal) as a sanitized message.
+    const data = (await res.json().catch(() => ({}))) as { error?: unknown };
+    return {
+      ok: false,
+      status: res.status,
+      error: typeof data.error === "string" ? data.error.slice(0, 300) : undefined,
+    };
+  } catch {
+    return { ok: false, status: 503 };
+  }
+}
+
+/**
+ * Streams the Hub's own event feed to a browser as SSE (`/api/conductor/stream`).
+ *
+ * The dashboard used to learn about task transitions by re-fetching the whole fleet
+ * every 5s, which meant the `task.updated` events the Hub already emits were produced
+ * and then thrown away. This forwards them instead, so the panel reacts to a task
+ * finishing instead of waiting up to a full poll interval — and stops paying for a
+ * fleet fetch per client per 5s.
+ *
+ * The upstream connection is opened with the server-side token (never exposed) and is
+ * aborted when the client goes away, so a closed tab cannot leak a Hub subscription.
+ */
+export function conductorEventStream(
+  request: Request,
+  opts: HubProxyOptions = {}
+): ReadableStream<Uint8Array> | null {
+  const cfg = hubConfig();
+  if (!cfg) return null;
+  const encoder = new TextEncoder();
+  const abort = new AbortController();
+  const lastEventId = request.headers.get("last-event-id");
+  request.signal?.addEventListener("abort", () => abort.abort(), { once: true });
+
+  return new ReadableStream<Uint8Array>({
+    async start(controller) {
+      const send = (frame: string) => {
+        try {
+          controller.enqueue(encoder.encode(frame));
+        } catch {
+          /* client already gone */
+        }
+      };
+      try {
+        const doFetch = opts.fetchImpl ?? fetch;
+        const res = await doFetch(
+          `${cfg.url}/v1/events${lastEventId ? `?last_event_id=${encodeURIComponent(lastEventId)}` : ""}`,
+          {
+            headers: { authorization: `Bearer ${cfg.token}`, accept: "text/event-stream" },
+            signal: abort.signal,
+          }
+        );
+        if (!res.ok || !res.body) {
+          send(
+            `event: error\ndata: ${JSON.stringify({ error: "hub event feed unavailable" })}\n\n`
+          );
+          controller.close();
+          return;
+        }
+        const reader = res.body.getReader();
+        for (;;) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          // Forward Hub frames verbatim: the browser wants the Hub's own event names
+          // and ids (so it can resume with Last-Event-ID), not a re-encoded copy.
+          send(new TextDecoder().decode(value));
+        }
+        controller.close();
+      } catch {
+        send(`event: error\ndata: ${JSON.stringify({ error: "hub event feed interrupted" })}\n\n`);
+        try {
+          controller.close();
+        } catch {
+          /* already closed */
+        }
+      }
+    },
+    cancel() {
+      abort.abort();
+    },
+  });
 }

@@ -3400,13 +3400,13 @@
     "comboRefMember": "Ngwakọta → {name}"
   },
   "combos": {
+    "title": "Ngwakọta",
+    "description": "Mepụta ngwakọta model nwere ntụgharị ụzọ dabere n'ịdị arọ na nkwado fallback",
+    "autoCatalogTitle": "Katalọgụ ntụgharị ụzọ akpaaka",
     "autoTosLoadError": "Enweghị ike ibunye iwu usoro ọrụ. Nwaa ọzọ tupu ị gbanwee ya.",
     "autoTosSaveError": "Enweghị ike ichekwa iwu usoro ọrụ. A ka na-egosi ntọala gara aga. Nwaa ọzọ.",
     "autoTosIncludeLabel": "Tinye ndị na-enye ọrụ nwere akara ToS: avoid na auto",
     "autoTosDescription": "A gbanyụrụ ya na ndabara. Ọ na-emetụta ngwakọta auto niile, ọ bụghị naanị otu akaụntụ. Ijikọta onye na-enye ọrụ anaghị agbanwu nhọrọ a.",
-    "title": "Ngwakọta",
-    "description": "Mepụta ngwakọta model nwere ntụgharị ụzọ dabere n'ịdị arọ na nkwado fallback",
-    "autoCatalogTitle": "Katalọgụ ntụgharị ụzọ akpaaka",
     "autoCatalogTemplateCount": "Template {count}",
     "autoCatalogDescription": "Ngwakọta auto/* arụnyere n'ime sistemụ, nke a na-ekpebi n'ụzọ na-agbanwe agbanwe site na provider ejikọrọ. Jiri ID ọ bụla n'ime ndị a dị ka mpaghara model — nhazi adịghị mkpa.",
     "autoCatalogExpand": "Gbasaa katalọgụ ntụgharị ụzọ akpaaka",
@@ -6539,6 +6539,7 @@
       "monsterapi": "Nweta igodo API na monsterapi.ai",
       "moonshot": "Jikọọ Kimi site na igodo API.",
       "morph": "Ọkwa efu: kredit 250K kwa ọnwa, $0",
+      "apmix": "Jikọọ Apmix na site na akara API si apmix.ai/dashboard — otu ndenye aha, ọtụtụ ụdị.",
       "nanogpt": "Jiri igodo API jikọọ NanoGPT.",
       "nebius": "Kredit nnwale ruru ~$1 mgbe ị debanyere aha maka nnwale API",
       "nlpcloud": "NLP Cloud na-eji API chatbot nke ya kama OpenAI chat/completions. OmniRoute na-eme ka ozi OpenAI kwekọọ na input/context/history ma na-enye katalọgụ mpaghara nke ụdị chatbot a na-akwado.",
@@ -6635,8 +6636,7 @@
       "kiro": "Ọkwa efu: kredit 50 kwa ọnwa (~token 25K–100K). ⚠️ ToS Kiro machibidoro ojiji proxy/harness nke ndị ọzọ.",
       "codex": "Jikọọ OpenAI Codex site na usoro OAuth dị ugbu a.",
       "qwen": "Jikọọ Qwen Code site na usoro OAuth dị ugbu a.",
-      "github-models": "Mepụta GitHub PAT nwere scope 'models: read' na github.com/settings/tokens",
-      "apmix": "Jikọọ Apmix na site na akara API si apmix.ai/dashboard — otu ndenye aha, ọtụtụ ụdị."
+      "github-models": "Mepụta GitHub PAT nwere scope 'models: read' na github.com/settings/tokens"
     },
     "passthroughModelsDescription": "{provider} na-anabata ID ụdị nke provider n’onwe ya. Bubata ha site na /models ma ọ bụ tinye ID ahaziri iche maka routing.",
     "bedrockModelsDescription": "A na-ekewa ụdị Amazon Bedrock dịka mpaghara AWS si dị. Bubata ha site na /models ma ọ bụ tinye ID ụdị Bedrock enyere ikike na mpaghara ahọpụtara.",
@@ -14845,6 +14845,8 @@
     "council": "Kansụl",
     "candidates": "Ndị a na-atụle",
     "cancel": "Kagbuo ọrụ",
+    "retry": "__MISSING__:Retry task",
+    "retryFailed": "__MISSING__:The hub refused the retry",
     "cancelConfirmTitle": "Ị chọrọ ịkagbu ọrụ a?",
     "cancelConfirmMessage": "Ebe etiti ahụ ga-akwụsị mmezu ọrụ ahụ na runner. A pụghị ịgbanwe nke a.",
     "cancelFailed": "Ebe etiti ahụ jụrụ ịkagbu ya",

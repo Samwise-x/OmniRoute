@@ -3400,13 +3400,13 @@
     "comboRefMember": "Teaglaim → {name}"
   },
   "combos": {
+    "title": "Teaglamaí",
+    "description": "Cruthaigh teaglamaí samhlacha le ródú ualaithe agus tacaíocht cúltaca",
+    "autoCatalogTitle": "Catalóg ródaithe uathoibríoch",
     "autoTosLoadError": "Níorbh fhéidir an polasaí téarmaí seirbhíse a lódáil. Bain triail eile as sula n-athraíonn tú é.",
     "autoTosSaveError": "Níorbh fhéidir an polasaí téarmaí seirbhíse a shábháil. Tá an socrú roimhe seo fós á thaispeáint. Bain triail eile as.",
     "autoTosIncludeLabel": "Cuir soláthraithe marcáilte ToS: avoid san áireamh in auto",
     "autoTosDescription": "Múchta de réir réamhshocraithe. Baineann sé le gach teaglaim auto, ní le cuntas amháin. Ní chumasaítear an rogha seo trí sholáthraí a nascadh.",
-    "title": "Teaglamaí",
-    "description": "Cruthaigh teaglamaí samhlacha le ródú ualaithe agus tacaíocht cúltaca",
-    "autoCatalogTitle": "Catalóg ródaithe uathoibríoch",
     "autoCatalogTemplateCount": "{count} teimpléad",
     "autoCatalogDescription": "Teaglamaí auto/* ionsuite a réitítear go dinimiciúil ó sholáthraithe ceangailte. Úsáid aon cheann de na IDs seo mar réimse model — níl aon chumrú de dhíth.",
     "autoCatalogExpand": "Leathnaigh an chatalóg ródaithe uathoibríoch",
@@ -6079,6 +6079,13 @@
     "claudeLowPriorityModeDescription": "Nuair a shroicheann an cuntas seo a theorainn úsáide 5 uair an chloig agus a thairgeann Anthropic an lána tosaíochta níos ísle, glacann OmniRoute leis agus leanann sé d’iarratais a sheoladh le anthropic-usage-limit: slow go dtí go n-athshocraítear an fhuinneog, in ionad ligean don nasc fuarú. Tá feidhm fós ag an teorainn sheachtainiúil agus d’fhéadfadh freagraí fanacht go dtí go mbeidh acmhainn bhreise ar fáil.",
     "claudeAutoLimitResetLabel": "Athshocraigh teorainn an tseisiúin go huathoibríoch (uair sa tseachtain)",
     "claudeAutoLimitResetDescription": "Nuair a shroicheann an cuntas seo a theorainn úsáide 5 uair an chloig agus a bhíonn athshocrú theorainn an tseisiúin ar fáil, éilíonn OmniRoute é go huathoibríoch agus baineann sé triail eile as ar lánluas. Úsáideann sé athshocrú uair sa tseachtain an chuntais agus áirítear é fós sa teorainn sheachtainiúil.",
+    "codexPaidCreditsShort": "Extra credits",
+    "codexPaidCreditsToggleTitle": "Allow paid Codex credits after subscription quota runs out (additional charges may apply)",
+    "codexPaidCreditsEnabled": "Codex paid credits enabled (additional charges may apply)",
+    "codexPaidCreditsDisabled": "Codex paid credits disabled",
+    "failedUpdateCodexPaidCredits": "Failed to update Codex paid-credit policy",
+    "allowCodexPaidCreditsLabel": "Allow paid Codex credits",
+    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled.",
     "disableCoolingDescription": "Scipeáil an tréimhse fhuaraithe neamhbhuan ionas go bhfanann an ceangal seo incháilithe fiú tar éis earráidí in-aisghabhála (tá feidhm fós ag stáit chríochacha amhail toirmiscthe/éagtha).",
     "disableCoolingLabel": "Díchumasaigh an tréimhse fhuaraithe don cheangal seo",
     "bulkPasteAdded": "{count, plural, one {1 eochair curtha leis} other {# eochracha curtha leis}}",
@@ -6532,6 +6539,7 @@
       "monsterapi": "Faigh eochair API ag monsterapi.ai",
       "moonshot": "Ceangail Kimi le heochair API.",
       "morph": "Tier saor in aisce: 250K creidmheasanna/mí, $0",
+      "apmix": "Ceangail Apmix le eochair API ó apmix.ai/dashboard — síntiús amháin, go leor samhlacha.",
       "nanogpt": "Ceangail NanoGPT le heochair API.",
       "nebius": "~$1 creidmheasanna trialach ar chlárú le haghaidh tástála API",
       "nlpcloud": "Úsáideann NLP Cloud API comhrábot dílseánaigh in ionad OpenAI chat/completions. Cuireann OmniRoute teachtaireachtaí OpenAI in oiriúint do input/context/history agus nochtann sé catalóg áitiúil de shamhlacha comhrábot a dtacaítear leo.",
@@ -6628,8 +6636,7 @@
       "kiro": "Sraith saor in aisce: 50 creidmheas/mí (~25K–100K comharthaí). ⚠️ Cuireann ToS Kiro cosc ar úsáid proxy/harness tríú páirtí.",
       "codex": "Ceangail OpenAI Codex leis an sreabhadh OAuth atá ann cheana.",
       "qwen": "Ceangail Qwen Code leis an sreabhadh OAuth atá ann cheana.",
-      "github-models": "Cruthaigh PAT GitHub le scóip 'models: read' ag github.com/settings/tokens",
-      "apmix": "Ceangail Apmix le eochair API ó apmix.ai/dashboard — síntiús amháin, go leor samhlacha."
+      "github-models": "Cruthaigh PAT GitHub le scóip 'models: read' ag github.com/settings/tokens"
     },
     "passthroughModelsDescription": "Glacann {provider} le haitheantais samhlacha atá dúchasach don soláthraí. Iompórtáil ó /models nó cuir aitheantais shaincheaptha leis le haghaidh ródaithe.",
     "bedrockModelsDescription": "Tá samhlacha Amazon Bedrock teoranta de réir réigiún AWS. Iompórtáil ó /models nó cuir aitheantais samhlacha Bedrock atá cumasaithe sa réigiún roghnaithe leis.",
@@ -6801,14 +6808,7 @@
     "rateLimitOverridesModelConcurrencyLabel": "Per-model concurrency caps",
     "rateLimitOverridesModelConcurrencyPlaceholder": "glm-5=1\nglm-4.7=3",
     "rateLimitOverridesModelConcurrencyHint": "Optional: one model=cap per line, matched against the exact upstream model id. Queues excess requests locally; blank means no per-model cap.",
-    "rateLimitOverridesModelConcurrencyInvalid": "Invalid per-model concurrency entry \"{entry}\" — use model=cap with a whole number from 1 to {max}.",
-    "codexPaidCreditsShort": "Extra credits",
-    "codexPaidCreditsToggleTitle": "Allow paid Codex credits after subscription quota runs out (additional charges may apply)",
-    "codexPaidCreditsEnabled": "Codex paid credits enabled (additional charges may apply)",
-    "codexPaidCreditsDisabled": "Codex paid credits disabled",
-    "failedUpdateCodexPaidCredits": "Failed to update Codex paid-credit policy",
-    "allowCodexPaidCreditsLabel": "Allow paid Codex credits",
-    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled."
+    "rateLimitOverridesModelConcurrencyInvalid": "Invalid per-model concurrency entry \"{entry}\" — use model=cap with a whole number from 1 to {max}."
   },
   "settings": {
     "title": "Socruithe",
@@ -9834,6 +9834,10 @@
     "streamTransformFailed": "Theip ar chlaochlú an tsrutha"
   },
   "usage": {
+    "codexPaidCreditsLabel": "Paid Codex credits",
+    "codexPaidCreditsAvailable": "Available (balance not reported)",
+    "codexPaidCreditsUnavailable": "Unavailable or spending limit reached",
+    "codexPaidCreditsUnlimited": "Unlimited",
     "title": "Úsáid",
     "grokExtraUsageCredits": "Creidmheachtaí Úsáide Breise",
     "grokAutoTopUp": "Breisiú Uathoibríoch",
@@ -10286,11 +10290,7 @@
     "updatedShort": "Nuashonraithe",
     "lastRefreshed": "Athnuachan deireanach",
     "providerQuota": "Cuóta Soláthraí",
-    "providerQuotaHomeHint": "Stádas beo trasna na gcuntas nasctha",
-    "codexPaidCreditsLabel": "Paid Codex credits",
-    "codexPaidCreditsAvailable": "Available (balance not reported)",
-    "codexPaidCreditsUnavailable": "Unavailable or spending limit reached",
-    "codexPaidCreditsUnlimited": "Unlimited"
+    "providerQuotaHomeHint": "Stádas beo trasna na gcuntas nasctha"
   },
   "modals": {
     "waitingAuth": "Ag fanacht le húdarú",
@@ -14845,6 +14845,8 @@
     "council": "Comhairle",
     "candidates": "Iarrthóirí",
     "cancel": "Cealaigh an tasc",
+    "retry": "__MISSING__:Retry task",
+    "retryFailed": "__MISSING__:The hub refused the retry",
     "cancelConfirmTitle": "Cealaigh an tasc seo?",
     "cancelConfirmMessage": "Cuirfidh an mol deireadh leis an bhforghníomhú ar an reathaí. Ní féidir é seo a chealú.",
     "cancelFailed": "Dhiúltaigh an mol don chealú",

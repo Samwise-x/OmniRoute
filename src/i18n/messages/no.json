@@ -3400,13 +3400,13 @@
     "comboRefMember": "Kombinasjon → {name}"
   },
   "combos": {
-    "autoTosIncludeLabel": "Inkluder leverandører merket ToS: avoid i auto",
-    "autoTosDescription": "Av som standard. Gjelder alle auto-kombinasjoner, ikke bare én konto. Tilkobling av en leverandør slår ikke på dette valget.",
-    "autoTosSaveError": "Kunne ikke lagre ToS-policyen. Den forrige innstillingen vises fortsatt. Prøv igjen.",
-    "autoTosLoadError": "Kunne ikke laste ToS-policyen. Prøv igjen før du endrer den.",
     "title": "Kombinasjoner",
     "description": "Lag modellkombinasjoner med vektet ruting og reservestøtte",
     "autoCatalogTitle": "Automatisk rutekatalog",
+    "autoTosLoadError": "Kunne ikke laste ToS-policyen. Prøv igjen før du endrer den.",
+    "autoTosSaveError": "Kunne ikke lagre ToS-policyen. Den forrige innstillingen vises fortsatt. Prøv igjen.",
+    "autoTosIncludeLabel": "Inkluder leverandører merket ToS: avoid i auto",
+    "autoTosDescription": "Av som standard. Gjelder alle auto-kombinasjoner, ikke bare én konto. Tilkobling av en leverandør slår ikke på dette valget.",
     "autoCatalogTemplateCount": "{count} maler",
     "autoCatalogDescription": "Innebygde auto/*-kombinasjoner løst dynamisk fra tilkoblede leverandører. Bruk en av disse ID-ene som modellfelt – ingen oppsett er nødvendig.",
     "autoCatalogExpand": "Utvid katalogen for automatisk ruting",
@@ -6079,6 +6079,13 @@
     "claudeLowPriorityModeDescription": "Når denne kontoen når bruksgrensen på 5 timer og Anthropic tilbyr køen med lavere prioritet, godtar OmniRoute dette og fortsetter å sende forespørsler med anthropic-usage-limit: slow til tidsvinduet tilbakestilles, i stedet for å la forbindelsen kjøles ned. Ukesgrensen gjelder fortsatt, og svar må kanskje vente på ledig kapasitet.",
     "claudeAutoLimitResetLabel": "Tilbakestill øktgrensen automatisk (én gang i uken)",
     "claudeAutoLimitResetDescription": "Når denne kontoen når bruksgrensen på 5 timer og en tilbakestilling av øktgrensen er tilgjengelig, aktiverer OmniRoute den automatisk og prøver på nytt med full hastighet. Dette bruker kontoens ukentlige tilbakestilling og teller fortsatt mot ukesgrensen.",
+    "codexPaidCreditsShort": "Extra credits",
+    "codexPaidCreditsToggleTitle": "Allow paid Codex credits after subscription quota runs out (additional charges may apply)",
+    "codexPaidCreditsEnabled": "Codex paid credits enabled (additional charges may apply)",
+    "codexPaidCreditsDisabled": "Codex paid credits disabled",
+    "failedUpdateCodexPaidCredits": "Failed to update Codex paid-credit policy",
+    "allowCodexPaidCreditsLabel": "Allow paid Codex credits",
+    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled.",
     "disableCoolingDescription": "Hopp over den forbigående nedkjølingen slik at denne tilkoblingen forblir kvalifisert selv etter gjenopprettelige feil (sluttilstander som utestengt/utløpt gjelder fortsatt).",
     "disableCoolingLabel": "Deaktiver nedkjøling for denne tilkoblingen",
     "bulkPasteAdded": "{count, plural, one {1 nøkkel lagt til} other {# nøkler lagt til}}",
@@ -6532,6 +6539,7 @@
       "monsterapi": "Hent API-nøkkel på monsterapi.ai",
       "moonshot": "Koble til Moonshot AI med en API-nøkkel.",
       "morph": "Gratisnivå: 250K kreditter/måned, $0",
+      "apmix": "Koble Apmix med en API-nøkkel fra apmix.ai/dashboard — ett abonnement, mange modeller.",
       "nanogpt": "Koble til NanoGPT med en API-nøkkel.",
       "nebius": "~$1 prøvekreditt ved registrering for API-testing",
       "nlpcloud": "NLP Cloud bruker et proprietært chatbot-API i stedet for OpenAI chat/completions. OmniRoute tilpasser OpenAI-meldinger til input/kontekst/historikk og tilbyr en lokal katalog over støttede chatbot-modeller.",
@@ -6628,8 +6636,7 @@
       "kiro": "Gratisnivå: 50 kreditter/måned (~25K–100K tokens). ⚠️ Kiros brukervilkår forbyr bruk av tredjeparts proxy/harness.",
       "codex": "Koble til OpenAI Codex med den eksisterende OAuth-flyten.",
       "qwen": "Koble til Qwen Code med den eksisterende OAuth-flyten.",
-      "github-models": "Opprett et GitHub PAT med 'models: read'-omfang på github.com/settings/tokens",
-      "apmix": "Koble Apmix med en API-nøkkel fra apmix.ai/dashboard — ett abonnement, mange modeller."
+      "github-models": "Opprett et GitHub PAT med 'models: read'-omfang på github.com/settings/tokens"
     },
     "passthroughModelsDescription": "{provider} godtar leverandør-native modell-ID-er. Importer fra /models eller legg til egendefinerte ID-er for ruting.",
     "bedrockModelsDescription": "Amazon Bedrock-modeller er omfattet av AWS-regionen. Importer fra /models eller legg til berggrunnsmodell-IDer aktivert i den valgte regionen.",
@@ -6801,14 +6808,7 @@
     "rateLimitOverridesModelConcurrencyLabel": "Per-model concurrency caps",
     "rateLimitOverridesModelConcurrencyPlaceholder": "glm-5=1\nglm-4.7=3",
     "rateLimitOverridesModelConcurrencyHint": "Optional: one model=cap per line, matched against the exact upstream model id. Queues excess requests locally; blank means no per-model cap.",
-    "rateLimitOverridesModelConcurrencyInvalid": "Invalid per-model concurrency entry \"{entry}\" — use model=cap with a whole number from 1 to {max}.",
-    "codexPaidCreditsShort": "Extra credits",
-    "codexPaidCreditsToggleTitle": "Allow paid Codex credits after subscription quota runs out (additional charges may apply)",
-    "codexPaidCreditsEnabled": "Codex paid credits enabled (additional charges may apply)",
-    "codexPaidCreditsDisabled": "Codex paid credits disabled",
-    "failedUpdateCodexPaidCredits": "Failed to update Codex paid-credit policy",
-    "allowCodexPaidCreditsLabel": "Allow paid Codex credits",
-    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled."
+    "rateLimitOverridesModelConcurrencyInvalid": "Invalid per-model concurrency entry \"{entry}\" — use model=cap with a whole number from 1 to {max}."
   },
   "settings": {
     "title": "Innstillinger",
@@ -9834,6 +9834,10 @@
     "streamTransformFailed": "Kunne ikke transformere strømmen"
   },
   "usage": {
+    "codexPaidCreditsLabel": "Paid Codex credits",
+    "codexPaidCreditsAvailable": "Available (balance not reported)",
+    "codexPaidCreditsUnavailable": "Unavailable or spending limit reached",
+    "codexPaidCreditsUnlimited": "Unlimited",
     "title": "Bruk",
     "grokExtraUsageCredits": "Ekstra Brukskreditter",
     "grokAutoTopUp": "Automatisk Påfylling",
@@ -10286,11 +10290,7 @@
     "updatedShort": "Oppdatert",
     "lastRefreshed": "Sist oppdatert",
     "providerQuota": "Leverandørkvote",
-    "providerQuotaHomeHint": "Sanntidsstatus på tvers av tilkoblede kontoer",
-    "codexPaidCreditsLabel": "Paid Codex credits",
-    "codexPaidCreditsAvailable": "Available (balance not reported)",
-    "codexPaidCreditsUnavailable": "Unavailable or spending limit reached",
-    "codexPaidCreditsUnlimited": "Unlimited"
+    "providerQuotaHomeHint": "Sanntidsstatus på tvers av tilkoblede kontoer"
   },
   "modals": {
     "waitingAuth": "Venter på autorisasjon",
@@ -14845,6 +14845,8 @@
     "council": "Råd",
     "candidates": "Kandidater",
     "cancel": "Avbryt oppgave",
+    "retry": "__MISSING__:Retry task",
+    "retryFailed": "__MISSING__:The hub refused the retry",
     "cancelConfirmTitle": "Avbryt denne oppgaven?",
     "cancelConfirmMessage": "Huben vil avbryte kjøringen på runneren. Dette kan ikke angres.",
     "cancelFailed": "Huben avslo kanselleringen",

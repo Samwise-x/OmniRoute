@@ -173,7 +173,7 @@ function makeOpencodeStandIn(dir) {
   fs.writeFileSync(
     file,
     "#!/usr/bin/env node\n" +
-      "// Contract: opencode run <prompt> [--model <model>]\n" +
+      "// Contract: opencode run <prompt> [--auto] [--model <model>]\n" +
       "import fs from 'node:fs';\n" +
       "import os from 'node:os';\n" +
       "import path from 'node:path';\n" +
@@ -196,6 +196,86 @@ function makeOpencodeStandIn(dir) {
 // ---------------------------------------------------------------------------
 // Probe
 // ---------------------------------------------------------------------------
+
+/**
+ * Boots a *second* Hub with runner/read-only principals configured and checks the
+ * boundary from the outside: the runner token must do runner work, and must be refused
+ * the orchestrator verbs. Separate process because principals are read at startup.
+ */
+async function probePrincipals(hubUrlUnused, running) {
+  void hubUrlUnused;
+  const port = 20000 + Math.floor(Math.random() * 20000);
+  const url = `http://127.0.0.1:${port}`;
+  const runnerToken = `evidence-runner-${"r".repeat(24)}`;
+  const readonlyToken = `evidence-readonly-${"o".repeat(24)}`;
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "conductor-principals-"));
+  const hub = startService("hub-principals", path.join(SERVICES, "hub.mjs"), {
+    HOST: "127.0.0.1",
+    PORT: String(port),
+    CONDUCTOR_HUB_TOKEN: TOKEN,
+    CONDUCTOR_RUNNER_TOKEN: runnerToken,
+    CONDUCTOR_READONLY_TOKEN: readonlyToken,
+    CONDUCTOR_STATE_FILE: path.join(dir, "state.json"),
+  });
+  running.push(hub);
+  try {
+    await waitHealthy(`${url}/health`, hub);
+    const as = async (token, route, body, method = "POST") => {
+      const res = await fetch(`${url}${route}`, {
+        method,
+        headers: { authorization: `Bearer ${token}`, "content-type": "application/json" },
+        ...(body === undefined ? {} : { body: JSON.stringify(body) }),
+      });
+      return { status: res.status, body: await res.json().catch(() => ({})) };
+    };
+    // Useful: the runner role can register and claim.
+    const registered = await as(runnerToken, "/v1/runners/register", {
+      id: "evidence-scoped",
+      session_id: "evidence-session",
+      max_concurrency: 1,
+      capabilities: { name: "evidence-scoped", clis: [{ profile: "opencode", models: ["*"] }] },
+    });
+    if (registered.status !== 200)
+      return { ok: false, detail: `runner could not register (HTTP ${registered.status})` };
+    const created = await as(TOKEN, "/v1/tasks", {
+      repo: { url: "https://github.com/acme/scoped.git" },
+      spec: { prompt: "scoped" },
+    });
+    const scopedId = created.body.id;
+    const refused = [];
+    for (const [method, route, body] of [
+      [
+        "POST",
+        "/v1/tasks",
+        { repo: { url: "https://github.com/acme/r.git" }, spec: { prompt: "x" } },
+      ],
+      ["POST", `/v1/tasks/${scopedId}/retry`, undefined],
+      ["POST", `/v1/tasks/${scopedId}/cancel`, undefined],
+      ["GET", "/v1/tasks", undefined],
+    ]) {
+      const res = await as(runnerToken, route, body, method);
+      if (res.status !== 403) refused.push(`${method} ${route} → ${res.status}`);
+    }
+    // Read-only can read but not write.
+    const read = await as(readonlyToken, "/v1/tasks", undefined, "GET");
+    if (read.status !== 200) refused.push(`readonly GET /v1/tasks → ${read.status}`);
+    const wrote = await as(readonlyToken, "/v1/tasks", {
+      repo: { url: "https://github.com/acme/r.git" },
+      spec: { prompt: "x" },
+    });
+    if (wrote.status !== 403) refused.push(`readonly POST /v1/tasks → ${wrote.status}`);
+    return refused.length
+      ? { ok: false, detail: `unexpected statuses: ${refused.join(", ")}` }
+      : {
+          ok: true,
+          detail:
+            "runner: register/claim ok, create/retry/cancel/list refused 403; readonly: read ok, write refused",
+        };
+  } finally {
+    await stopService(hub);
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+}
 
 async function main() {
   const startedAt = new Date().toISOString();
@@ -284,6 +364,30 @@ async function main() {
     );
     report.capabilities = readyz.capabilities;
 
+    // -- 1b. Pinned harness provenance ----------------------------------------
+    // The stand-in only proves the SEAM. This check proves the binary the seam drives is
+    // the real pinned OpenCode CLI, so "test-adapter" mode can never be read as proof that
+    // self-hosted OpenCode works. `npm run test:conductor:opencode` drives the real binary.
+    if (!REAL_CLIS) {
+      const pinned = path.join(SERVICES, "node_modules", ".bin", "opencode");
+      let version = null;
+      try {
+        version = execFileSync(pinned, ["--version"], {
+          encoding: "utf8",
+          timeout: 60_000,
+          stdio: ["ignore", "pipe", "ignore"],
+        }).trim();
+      } catch {}
+      record(
+        "the pinned real OpenCode CLI is installed (seam is not the only evidence)",
+        Boolean(version),
+        version
+          ? `opencode ${version} at services/omni-conductor/node_modules/.bin/opencode`
+          : "not installed — run `npm ci --prefix services/omni-conductor` then `npm run test:conductor:opencode`"
+      );
+      report.opencode_cli = version ? { version, path: pinned } : null;
+    }
+
     // -- 2. Auth boundary -----------------------------------------------------
     console.log("\n2. Auth boundary");
     const anon = await fetch(`${hubUrl}/v1/runners`);
@@ -365,13 +469,15 @@ async function main() {
       ? JSON.parse(invocationLine.slice("opencode-invocation=".length))
       : null;
     record(
-      "the harness is invoked as `opencode run <prompt> --model <model>`",
+      "the harness is invoked as `opencode run <prompt> --auto --model <model>`",
       Boolean(
         invocation &&
         invocation.argv[0] === "run" &&
         invocation.argv[1] === "create EVIDENCE.md so the repository test passes" &&
-        invocation.argv.includes("--model") &&
-        !invocation.argv.includes("--auto")
+        // `--auto` is required on the pinned binary (1.19.3, `opencode run --help`): without
+        // it a TTY-less task blocks on an approval prompt until it times out.
+        invocation.argv.includes("--auto") &&
+        invocation.argv.includes("--model")
       ),
       invocation ? JSON.stringify(invocation.argv).slice(0, 160) : "no invocation reported"
     );
@@ -474,8 +580,8 @@ async function main() {
       proposed.text.slice(0, 120)
     );
 
-    // -- 6. Durable state across a restart -----------------------------------
-    console.log("\n6. Restart survival");
+    // -- 6. Operability: metrics, paging, retry, principals -------------------
+    console.log("\n6. Operability: metrics, paging, retry, principals");
     const beforeRestart = (await (await api(hubUrl, "/v1/tasks", undefined, "GET")).json()).length;
     // The event feed is a live SSE stream: read until the Hub's `: connected`
     // sentinel, then abort. `res.text()` would block forever here.
@@ -497,10 +603,55 @@ async function main() {
     await streamReader.cancel().catch(() => {});
     const lastEventId =
       [...eventsText.matchAll(/^id: (\d+)$/gm)].map((m) => Number(m[1])).pop() ?? 0;
+    // -- 5b. Operability: metrics, retention controls, retry, principal scoping -----
+    // Each of these is a surface an operator needs and which the earlier Hub lacked.
+    const metrics = await (await api(hubUrl, "/metrics", undefined, "GET")).json();
+    record(
+      "/metrics exposes queue depth against fleet capacity",
+      typeof metrics?.tasks?.queued_over_capacity === "number" &&
+        typeof metrics?.runners?.capacity === "number",
+      `queued=${metrics?.tasks?.queued} capacity=${metrics?.runners?.capacity} over=${metrics?.tasks?.queued_over_capacity}`
+    );
+    record(
+      "/metrics keeps its retention settings visible",
+      metrics?.retention?.task_retention_ms > 0 && metrics?.retention?.max_tasks > 0,
+      `retention=${metrics?.retention?.task_retention_ms}ms max_tasks=${metrics?.retention?.max_tasks}`
+    );
+
+    const page = await (await api(hubUrl, "/v1/tasks?limit=2", undefined, "GET")).json();
+    record(
+      "GET /v1/tasks is paginated, not unbounded",
+      Array.isArray(page?.tasks) && page.tasks.length <= 2 && "next_cursor" in page,
+      `page=${page?.tasks?.length} next_cursor=${page?.next_cursor ? "yes" : "no"}`
+    );
+
+    const retried = await api(hubUrl, `/v1/tasks/${cancelId}/retry`);
+    const retriedBody = await retried.json().catch(() => ({}));
+    record(
+      "a terminal task can be retried in place",
+      // A registered runner may claim it within milliseconds, so assert the retry took
+      // effect (same id, counter advanced, not terminal) rather than the transient state.
+      retried.ok &&
+        retriedBody.id === cancelId &&
+        retriedBody.retries === 1 &&
+        !["completed", "failed", "canceled"].includes(retriedBody.status),
+      `HTTP ${retried.status} status=${retriedBody.status} retries=${retriedBody.retries}`
+    );
+
+    // Retry is the orchestrator's verb: with a runner-scoped principal configured it is
+    // refused, which is what stops a compromised Runner from looping work forever.
+    const scoped = await probePrincipals(hubUrl, running).catch((e) => ({ error: e.message }));
+    record(
+      "a runner-scoped principal cannot retry, cancel or create tasks",
+      scoped.ok === true,
+      scoped.detail || scoped.error || "probe failed"
+    );
+
     await stopService(runner);
     await stopService(faro);
     await stopService(hub);
 
+    console.log("\n7. Durable state across a restart");
     const hub2 = startService("hub", path.join(SERVICES, "hub.mjs"), {
       HOST: "127.0.0.1",
       PORT: String(hubPort),

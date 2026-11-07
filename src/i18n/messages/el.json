@@ -3400,13 +3400,13 @@
     "comboRefMember": "Συνδυασμός → {name}"
   },
   "combos": {
+    "title": "Συνδυασμοί",
+    "description": "Δημιουργήστε συνδυασμούς μοντέλων με σταθμισμένη δρομολόγηση και υποστήριξη εφεδρικών επιλογών",
+    "autoCatalogTitle": "Κατάλογος αυτόματης δρομολόγησης",
     "autoTosLoadError": "Δεν ήταν δυνατή η φόρτωση της πολιτικής όρων χρήσης. Δοκιμάστε ξανά πριν την αλλάξετε.",
     "autoTosSaveError": "Δεν ήταν δυνατή η αποθήκευση της πολιτικής όρων χρήσης. Εμφανίζεται ακόμη η προηγούμενη ρύθμιση. Δοκιμάστε ξανά.",
     "autoTosIncludeLabel": "Συμπερίληψη παρόχων με ένδειξη ToS: avoid στο auto",
     "autoTosDescription": "Απενεργοποιημένο από προεπιλογή. Ισχύει για όλους τους συνδυασμούς auto, όχι μόνο για έναν λογαριασμό. Η σύνδεση παρόχου δεν ενεργοποιεί αυτή την επιλογή.",
-    "title": "Συνδυασμοί",
-    "description": "Δημιουργήστε συνδυασμούς μοντέλων με σταθμισμένη δρομολόγηση και υποστήριξη εφεδρικών επιλογών",
-    "autoCatalogTitle": "Κατάλογος αυτόματης δρομολόγησης",
     "autoCatalogTemplateCount": "{count} πρότυπα",
     "autoCatalogDescription": "Ενσωματωμένοι συνδυασμοί auto/* που επιλύονται δυναμικά από συνδεδεμένους παρόχους. Χρησιμοποιήστε οποιοδήποτε από αυτά τα αναγνωριστικά ως τιμή του πεδίου μοντέλου — δεν απαιτείται ρύθμιση.",
     "autoCatalogExpand": "Ανάπτυξη καταλόγου αυτόματης δρομολόγησης",
@@ -6079,6 +6079,13 @@
     "claudeLowPriorityModeDescription": "Όταν αυτός ο λογαριασμός φτάνει στο όριο χρήσης των 5 ωρών και η Anthropic προσφέρει τη λωρίδα χαμηλότερης προτεραιότητας, το OmniRoute την αποδέχεται και συνεχίζει να στέλνει αιτήματα με anthropic-usage-limit: slow μέχρι να επαναφερθεί το παράθυρο, αντί να θέσει τη σύνδεση σε παύση. Το εβδομαδιαίο όριο εξακολουθεί να ισχύει και οι απαντήσεις ενδέχεται να περιμένουν μέχρι να υπάρξει διαθέσιμη χωρητικότητα.",
     "claudeAutoLimitResetLabel": "Αυτόματη επαναφορά του ορίου συνεδρίας (μία φορά την εβδομάδα)",
     "claudeAutoLimitResetDescription": "Όταν αυτός ο λογαριασμός φτάνει στο όριο χρήσης των 5 ωρών και είναι διαθέσιμη επαναφορά του ορίου συνεδρίας, το OmniRoute την αξιοποιεί αυτόματα και επαναλαμβάνει τις προσπάθειες με πλήρη ταχύτητα. Χρησιμοποιεί την επαναφορά του λογαριασμού που είναι διαθέσιμη μία φορά την εβδομάδα και εξακολουθεί να μετράει στο εβδομαδιαίο όριο.",
+    "codexPaidCreditsShort": "Extra credits",
+    "codexPaidCreditsToggleTitle": "Allow paid Codex credits after subscription quota runs out (additional charges may apply)",
+    "codexPaidCreditsEnabled": "Codex paid credits enabled (additional charges may apply)",
+    "codexPaidCreditsDisabled": "Codex paid credits disabled",
+    "failedUpdateCodexPaidCredits": "Failed to update Codex paid-credit policy",
+    "allowCodexPaidCreditsLabel": "Allow paid Codex credits",
+    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled.",
     "disableCoolingDescription": "Παραλείπει την προσωρινή περίοδο αναμονής, ώστε αυτή η σύνδεση να παραμένει διαθέσιμη προς επιλογή ακόμα και μετά από σφάλματα από τα οποία μπορεί να ανακάμψει (οι τελικές καταστάσεις, όπως η απαγόρευση ή η λήξη, εξακολουθούν να ισχύουν).",
     "disableCoolingLabel": "Απενεργοποίηση περιόδου αναμονής για αυτή τη σύνδεση",
     "bulkPasteAdded": "{count, plural, one {Προστέθηκε 1 κλειδί} other {Προστέθηκαν # κλειδιά}}",
@@ -6532,6 +6539,7 @@
       "monsterapi": "Αποκτήστε κλειδί API στο monsterapi.ai",
       "moonshot": "Συνδέστε το Kimi με ένα κλειδί API.",
       "morph": "Δωρεάν επίπεδο: 250K πιστώσεις/μήνα, $0",
+      "apmix": "Συνδέστε το Apmix με κλειδί API από το apmix.ai/dashboard — μία συνδρομή, πολλά μοντέλα.",
       "nanogpt": "Συνδέστε το NanoGPT με ένα κλειδί API.",
       "nebius": "~$1 δοκιμαστική πίστωση κατά την εγγραφή για δοκιμές API",
       "nlpcloud": "Το NLP Cloud χρησιμοποιεί ιδιόκτητο API chatbot αντί για OpenAI chat/completions. Το OmniRoute προσαρμόζει τα μηνύματα OpenAI σε input/context/history και εκθέτει έναν τοπικό κατάλογο υποστηριζόμενων μοντέλων chatbot.",
@@ -6628,8 +6636,7 @@
       "kiro": "Δωρεάν επίπεδο: 50 πιστώσεις/μήνα (~25K–100K tokens). ⚠️ Οι Όροι Χρήσης του Kiro απαγορεύουν τη χρήση proxy/harness τρίτων.",
       "codex": "Συνδέστε το OpenAI Codex με την υπάρχουσα ροή OAuth.",
       "qwen": "Συνδέστε το Qwen Code με την υπάρχουσα ροή OAuth.",
-      "github-models": "Δημιουργήστε ένα GitHub PAT με εμβέλεια 'models: read' στο github.com/settings/tokens",
-      "apmix": "Συνδέστε το Apmix με κλειδί API από το apmix.ai/dashboard — μία συνδρομή, πολλά μοντέλα."
+      "github-models": "Δημιουργήστε ένα GitHub PAT με εμβέλεια 'models: read' στο github.com/settings/tokens"
     },
     "passthroughModelsDescription": "Το {provider} δέχεται εγγενή αναγνωριστικά μοντέλων του παρόχου. Εισαγάγετε τα από το /models ή προσθέστε προσαρμοσμένα αναγνωριστικά για δρομολόγηση.",
     "bedrockModelsDescription": "Τα μοντέλα Amazon Bedrock ορίζονται ανά περιοχή AWS. Εισαγάγετε από το /models ή προσθέστε αναγνωριστικά μοντέλων Bedrock που είναι ενεργοποιημένα στην επιλεγμένη περιοχή.",
@@ -6801,14 +6808,7 @@
     "rateLimitOverridesModelConcurrencyLabel": "Per-model concurrency caps",
     "rateLimitOverridesModelConcurrencyPlaceholder": "glm-5=1\nglm-4.7=3",
     "rateLimitOverridesModelConcurrencyHint": "Optional: one model=cap per line, matched against the exact upstream model id. Queues excess requests locally; blank means no per-model cap.",
-    "rateLimitOverridesModelConcurrencyInvalid": "Invalid per-model concurrency entry \"{entry}\" — use model=cap with a whole number from 1 to {max}.",
-    "codexPaidCreditsShort": "Extra credits",
-    "codexPaidCreditsToggleTitle": "Allow paid Codex credits after subscription quota runs out (additional charges may apply)",
-    "codexPaidCreditsEnabled": "Codex paid credits enabled (additional charges may apply)",
-    "codexPaidCreditsDisabled": "Codex paid credits disabled",
-    "failedUpdateCodexPaidCredits": "Failed to update Codex paid-credit policy",
-    "allowCodexPaidCreditsLabel": "Allow paid Codex credits",
-    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled."
+    "rateLimitOverridesModelConcurrencyInvalid": "Invalid per-model concurrency entry \"{entry}\" — use model=cap with a whole number from 1 to {max}."
   },
   "settings": {
     "title": "Ρυθμίσεις",
@@ -9834,6 +9834,10 @@
     "streamTransformFailed": "Αποτυχία μετασχηματισμού της ροής"
   },
   "usage": {
+    "codexPaidCreditsLabel": "Paid Codex credits",
+    "codexPaidCreditsAvailable": "Available (balance not reported)",
+    "codexPaidCreditsUnavailable": "Unavailable or spending limit reached",
+    "codexPaidCreditsUnlimited": "Unlimited",
     "title": "Χρήση",
     "grokExtraUsageCredits": "Πρόσθετες πιστώσεις χρήσης",
     "grokAutoTopUp": "Αυτόματη αναπλήρωση",
@@ -10286,11 +10290,7 @@
     "updatedShort": "Ενημερώθηκε",
     "lastRefreshed": "Τελευταία ανανέωση",
     "providerQuota": "Όριο παρόχου",
-    "providerQuotaHomeHint": "Ζωντανή κατάσταση σε όλους τους συνδεδεμένους λογαριασμούς",
-    "codexPaidCreditsLabel": "Paid Codex credits",
-    "codexPaidCreditsAvailable": "Available (balance not reported)",
-    "codexPaidCreditsUnavailable": "Unavailable or spending limit reached",
-    "codexPaidCreditsUnlimited": "Unlimited"
+    "providerQuotaHomeHint": "Ζωντανή κατάσταση σε όλους τους συνδεδεμένους λογαριασμούς"
   },
   "modals": {
     "waitingAuth": "Αναμονή εξουσιοδότησης",
@@ -14845,6 +14845,8 @@
     "council": "Συμβούλιο",
     "candidates": "Υποψήφιοι",
     "cancel": "Ακύρωση εργασίας",
+    "retry": "__MISSING__:Retry task",
+    "retryFailed": "__MISSING__:The hub refused the retry",
     "cancelConfirmTitle": "Να ακυρωθεί αυτή η εργασία;",
     "cancelConfirmMessage": "Ο κόμβος θα διακόψει την εκτέλεση στον εκτελεστή. Αυτή η ενέργεια δεν μπορεί να αναιρεθεί.",
     "cancelFailed": "Ο κόμβος αρνήθηκε την ακύρωση",

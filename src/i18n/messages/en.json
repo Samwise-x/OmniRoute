@@ -14845,6 +14845,8 @@
     "council": "Council",
     "candidates": "Candidates",
     "cancel": "Cancel task",
+    "retry": "Retry task",
+    "retryFailed": "The hub refused the retry",
     "cancelConfirmTitle": "Cancel this task?",
     "cancelConfirmMessage": "The hub will abort the execution on the runner. This cannot be undone.",
     "cancelFailed": "The hub refused the cancellation",

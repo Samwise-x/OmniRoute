@@ -3400,13 +3400,13 @@
     "comboRefMember": "Combo → {name}"
   },
   "combos": {
-    "autoTosIncludeLabel": "Incluir no auto fornecedores marcados como ToS: avoid",
-    "autoTosDescription": "Desativado por predefinição. Aplica-se a todos os combos auto, não apenas a uma conta. Ligar um fornecedor não ativa esta opção.",
-    "autoTosSaveError": "Não foi possível guardar a política de ToS. A definição anterior continua visível. Tente novamente.",
-    "autoTosLoadError": "Não foi possível carregar a política de ToS. Tente novamente antes de a alterar.",
     "title": "Combinações",
     "description": "Crie combinações de modelos com roteamento ponderado e suporte substituto",
     "autoCatalogTitle": "Catálogo de roteamento automático",
+    "autoTosLoadError": "Não foi possível carregar a política de ToS. Tente novamente antes de a alterar.",
+    "autoTosSaveError": "Não foi possível guardar a política de ToS. A definição anterior continua visível. Tente novamente.",
+    "autoTosIncludeLabel": "Incluir no auto fornecedores marcados como ToS: avoid",
+    "autoTosDescription": "Desativado por predefinição. Aplica-se a todos os combos auto, não apenas a uma conta. Ligar um fornecedor não ativa esta opção.",
     "autoCatalogTemplateCount": "{count} modelos",
     "autoCatalogDescription": "Combos automáticos/* integrados resolvidos dinamicamente a partir de provedores conectados. Use qualquer um desses IDs como campo de modelo — nenhuma configuração é necessária.",
     "autoCatalogExpand": "Expanda o catálogo de roteamento automático",
@@ -6079,6 +6079,13 @@
     "claudeLowPriorityModeDescription": "Quando esta conta atinge o limite de utilização de 5 horas e a Anthropic disponibiliza a via de prioridade mais baixa, o OmniRoute aceita-a e continua a enviar pedidos com anthropic-usage-limit: slow até a janela ser reposta, em vez de colocar a ligação em período de espera. O limite semanal continua a aplicar-se e as respostas poderão aguardar por capacidade disponível.",
     "claudeAutoLimitResetLabel": "Repor automaticamente o limite da sessão (uma vez por semana)",
     "claudeAutoLimitResetDescription": "Quando esta conta atinge o limite de utilização de 5 horas e está disponível uma reposição do limite da sessão, o OmniRoute solicita-a automaticamente e tenta novamente à velocidade máxima. Utiliza a reposição semanal da conta e continua a contar para o limite semanal.",
+    "codexPaidCreditsShort": "Créditos extra",
+    "codexPaidCreditsToggleTitle": "Permitir créditos pagos do Codex depois de esgotada a quota da subscrição (podem aplicar-se custos adicionais)",
+    "codexPaidCreditsEnabled": "Créditos pagos do Codex ativados (podem aplicar-se custos adicionais)",
+    "codexPaidCreditsDisabled": "Créditos pagos do Codex desativados",
+    "failedUpdateCodexPaidCredits": "Falha ao atualizar a política de créditos pagos do Codex",
+    "allowCodexPaidCreditsLabel": "Permitir créditos pagos do Codex",
+    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled.",
     "disableCoolingDescription": "Ignorar o cooldown transitório para que esta ligação permaneça elegível mesmo após erros recuperáveis (estados terminais como banido/expirado continuam a aplicar-se).",
     "disableCoolingLabel": "Desativar cooldown para esta ligação",
     "bulkPasteAdded": "{count, plural, one {1 chave adicionada} other {# chaves adicionadas}}",
@@ -6532,6 +6539,7 @@
       "monsterapi": "Obtenha a chave de API em monsterapi.ai",
       "moonshot": "Ligue o Moonshot AI com uma chave de API.",
       "morph": "Nível gratuito: 250K créditos/mês, $0",
+      "apmix": "Ligue o Apmix com uma chave API do apmix.ai/dashboard — uma subscrição, muitos modelos.",
       "nanogpt": "Ligue o NanoGPT com uma chave de API.",
       "nebius": "~$1 em créditos de avaliação no registo para testes de API",
       "nlpcloud": "O NLP Cloud utiliza uma API de chatbot proprietária em vez do chat/completions da OpenAI. O OmniRoute adapta as mensagens da OpenAI para input/context/history e disponibiliza um catálogo local de modelos de chatbot suportados.",
@@ -6628,8 +6636,7 @@
       "kiro": "Nível gratuito: 50 créditos/mês (~25K–100K tokens). ⚠️ Os ToS do Kiro proíbem a utilização de proxy/harness de terceiros.",
       "codex": "Ligar o OpenAI Codex com o fluxo OAuth existente.",
       "qwen": "Ligar o Qwen Code com o fluxo OAuth existente.",
-      "github-models": "Crie um PAT do GitHub com o âmbito 'models: read' em github.com/settings/tokens",
-      "apmix": "Ligue o Apmix com uma chave API do apmix.ai/dashboard — uma subscrição, muitos modelos."
+      "github-models": "Crie um PAT do GitHub com o âmbito 'models: read' em github.com/settings/tokens"
     },
     "passthroughModelsDescription": "{provider} aceita IDs de modelo nativos do provedor. Importe de /models ou adicione IDs personalizados para roteamento.",
     "bedrockModelsDescription": "Os modelos Amazon Bedrock têm escopo definido por região da AWS. Importe de /models ou adicione IDs de modelo Bedrock habilitados na região selecionada.",
@@ -6801,14 +6808,7 @@
     "rateLimitOverridesModelConcurrencyLabel": "Limites de concorrência por modelo",
     "rateLimitOverridesModelConcurrencyPlaceholder": "glm-5=1\nglm-4.7=3",
     "rateLimitOverridesModelConcurrencyHint": "Opcional: um modelo=limite por linha, comparado com o ID exato do modelo no fornecedor. Os pedidos excedentes ficam em fila localmente; em branco significa sem limite por modelo.",
-    "rateLimitOverridesModelConcurrencyInvalid": "Entrada de concorrência por modelo inválida \"{entry}\" — use modelo=limite com um número inteiro de 1 a {max}.",
-    "codexPaidCreditsShort": "Créditos extra",
-    "codexPaidCreditsToggleTitle": "Permitir créditos pagos do Codex depois de esgotada a quota da subscrição (podem aplicar-se custos adicionais)",
-    "codexPaidCreditsEnabled": "Créditos pagos do Codex ativados (podem aplicar-se custos adicionais)",
-    "codexPaidCreditsDisabled": "Créditos pagos do Codex desativados",
-    "failedUpdateCodexPaidCredits": "Falha ao atualizar a política de créditos pagos do Codex",
-    "allowCodexPaidCreditsLabel": "Permitir créditos pagos do Codex",
-    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled."
+    "rateLimitOverridesModelConcurrencyInvalid": "Entrada de concorrência por modelo inválida \"{entry}\" — use modelo=limite com um número inteiro de 1 a {max}."
   },
   "settings": {
     "title": "Configurações",
@@ -9834,6 +9834,10 @@
     "streamTransformFailed": "Falha ao transformar o fluxo"
   },
   "usage": {
+    "codexPaidCreditsLabel": "Créditos pagos do Codex",
+    "codexPaidCreditsAvailable": "Disponíveis (saldo não indicado)",
+    "codexPaidCreditsUnavailable": "Indisponíveis ou limite de gastos atingido",
+    "codexPaidCreditsUnlimited": "Unlimited",
     "title": "Uso",
     "grokExtraUsageCredits": "Créditos de Uso Extra",
     "grokAutoTopUp": "Recarregamento Automático",
@@ -10286,11 +10290,7 @@
     "updatedShort": "Atualizado",
     "lastRefreshed": "Última atualização",
     "providerQuota": "Quota do fornecedor",
-    "providerQuotaHomeHint": "Estado em tempo real em todas as contas associadas",
-    "codexPaidCreditsLabel": "Créditos pagos do Codex",
-    "codexPaidCreditsAvailable": "Disponíveis (saldo não indicado)",
-    "codexPaidCreditsUnavailable": "Indisponíveis ou limite de gastos atingido",
-    "codexPaidCreditsUnlimited": "Unlimited"
+    "providerQuotaHomeHint": "Estado em tempo real em todas as contas associadas"
   },
   "modals": {
     "waitingAuth": "Aguardando autorização",
@@ -14845,6 +14845,8 @@
     "council": "Conselho",
     "candidates": "Candidatos",
     "cancel": "Cancelar tarefa",
+    "retry": "__MISSING__:Retry task",
+    "retryFailed": "__MISSING__:The hub refused the retry",
     "cancelConfirmTitle": "Cancelar esta tarefa?",
     "cancelConfirmMessage": "O hub irá abortar a execução no runner. Isto não pode ser desfeito.",
     "cancelFailed": "O hub recusou o cancelamento",

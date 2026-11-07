@@ -58,6 +58,9 @@ interface TaskDetail extends FleetTask {
 }
 
 const REFRESH_MS = 5000;
+// With a live stream open, polling is only a safety net (a dropped SSE connection
+// between reconnects); the stream is what makes the panel react to a transition.
+const FALLBACK_REFRESH_MS = 60_000;
 const TERMINAL = new Set(["completed", "failed", "canceled"]);
 
 function statusVariant(status: string): "success" | "error" | "warning" | "info" | "default" {
@@ -85,13 +88,44 @@ export default function ConductorPageClient() {
     }
   }, []);
 
+  // Live updates: the Hub emits task events; before this, the panel re-fetched the whole
+  // fleet every 5s and discarded them. EventSource reconnects on its own and resumes via
+  // Last-Event-ID, so a task that finishes while the tab is backgrounded still lands.
+  const [live, setLive] = useState(false);
+  useEffect(() => {
+    if (typeof EventSource === "undefined") return;
+    const source = new EventSource("/api/conductor/stream");
+    let pending = false;
+    const refresh = () => {
+      // Coalesce bursts (a retried task emits several events in a row).
+      if (pending) return;
+      pending = true;
+      void load().finally(() => {
+        pending = false;
+      });
+    };
+    source.onopen = () => setLive(true);
+    source.onerror = () => setLive(false);
+    for (const type of [
+      "task.created",
+      "task.updated",
+      "task.completed",
+      "task.failed",
+      "task.canceled",
+      "task.retried",
+    ]) {
+      source.addEventListener(type, refresh);
+    }
+    return () => source.close();
+  }, [load]);
+
   useEffect(() => {
     void (async () => {
       await load();
     })();
-    const timer = setInterval(() => void load(), REFRESH_MS);
+    const timer = setInterval(() => void load(), live ? FALLBACK_REFRESH_MS : REFRESH_MS);
     return () => clearInterval(timer);
-  }, [load]);
+  }, [load, live]);
 
   const openDetail = async (taskId: string) => {
     setErr("");
@@ -125,6 +159,23 @@ export default function ConductorPageClient() {
     }
   };
 
+  const retryTask = async (taskId: string) => {
+    setErr("");
+    try {
+      const res = await fetch(`/api/conductor/tasks/${encodeURIComponent(taskId)}/retry`, {
+        method: "POST",
+      });
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok) setErr(body?.error || `${t("retryFailed")} (HTTP ${res.status})`);
+      else {
+        await load();
+        await openDetail(taskId);
+      }
+    } catch {
+      setErr(t("retryFailed"));
+    }
+  };
+
   const runners = snapshot?.runners ?? [];
   const tasks = snapshot?.tasks ?? [];
 
@@ -133,6 +184,12 @@ export default function ConductorPageClient() {
       <div>
         <h1 className="text-xl font-semibold">{t("title")}</h1>
         <p className="text-sm text-text-muted">{t("subtitle")}</p>
+      </div>
+
+      <div className="flex items-center gap-2 text-xs text-text-muted">
+        <Badge variant={live ? "success" : "default"} dot>
+          {live ? "live" : "polling"}
+        </Badge>
       </div>
 
       {err && <Badge variant="error">{err}</Badge>}
@@ -300,15 +357,27 @@ export default function ConductorPageClient() {
                 </p>
               </div>
             )}
-            {!TERMINAL.has(detail.status) && (
-              <button
-                type="button"
-                className="text-sm text-red-600 dark:text-red-400 underline"
-                onClick={() => setCancelTarget(detail.id)}
-              >
-                {t("cancel")}
-              </button>
-            )}
+            <div className="flex items-center gap-4">
+              {/* Retry keeps the task id, so the history that explains the failure stays. */}
+              {TERMINAL.has(detail.status) && (
+                <button
+                  type="button"
+                  className="text-sm text-blue-600 dark:text-blue-400 underline"
+                  onClick={() => void retryTask(detail.id)}
+                >
+                  {t("retry")}
+                </button>
+              )}
+              {!TERMINAL.has(detail.status) && (
+                <button
+                  type="button"
+                  className="text-sm text-red-600 dark:text-red-400 underline"
+                  onClick={() => setCancelTarget(detail.id)}
+                >
+                  {t("cancel")}
+                </button>
+              )}
+            </div>
           </div>
         )}
       </Modal>

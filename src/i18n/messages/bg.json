@@ -3400,13 +3400,13 @@
     "comboRefMember": "Комбинация → {name}"
   },
   "combos": {
+    "title": "Комбота",
+    "description": "Създавайте комбинации от модели с претеглено маршрутизиране и резервна поддръжка",
+    "autoCatalogTitle": "Каталог за автоматично маршрутизиране",
     "autoTosLoadError": "Правилата за условията на ползване не могат да се заредят. Опитайте отново, преди да ги променяте.",
     "autoTosSaveError": "Правилата за условията на ползване не могат да се запазят. Все още се показва предишната настройка. Опитайте отново.",
     "autoTosIncludeLabel": "Включване в auto на доставчици, отбелязани с ToS: avoid",
     "autoTosDescription": "Изключено по подразбиране. Важи за всички комбинации auto, а не само за един акаунт. Свързването на доставчик не включва тази опция.",
-    "title": "Комбота",
-    "description": "Създавайте комбинации от модели с претеглено маршрутизиране и резервна поддръжка",
-    "autoCatalogTitle": "Каталог за автоматично маршрутизиране",
     "autoCatalogTemplateCount": "{count} шаблони",
     "autoCatalogDescription": "Вградени автоматични/* комбинации, разрешени динамично от свързани доставчици. Използвайте който и да е от тези идентификатори като поле за модел — не е необходима настройка.",
     "autoCatalogExpand": "Разширете каталога за автоматично маршрутизиране",
@@ -6079,6 +6079,13 @@
     "claudeLowPriorityModeDescription": "Когато този акаунт достигне своя 5-часов лимит на използване и Anthropic предложи лентата с по-нисък приоритет, OmniRoute я приема и продължава да изпраща заявки с anthropic-usage-limit: slow, докато прозорецът се нулира, вместо да охлади връзката. Седмичният лимит все още важи и отговорите може да изчакат за свободен капацитет.",
     "claudeAutoLimitResetLabel": "Автоматично нулиране на лимита на сесията (веднъж седмично)",
     "claudeAutoLimitResetDescription": "Когато този акаунт достигне своя 5-часов лимит на използване и е налично нулиране на лимита на сесията, OmniRoute го задейства автоматично и опитва отново с пълна скорост. Използва еднократното седмично нулиране на акаунта и все още се отчита към седмичния лимит.",
+    "codexPaidCreditsShort": "Extra credits",
+    "codexPaidCreditsToggleTitle": "Allow paid Codex credits after subscription quota runs out (additional charges may apply)",
+    "codexPaidCreditsEnabled": "Codex paid credits enabled (additional charges may apply)",
+    "codexPaidCreditsDisabled": "Codex paid credits disabled",
+    "failedUpdateCodexPaidCredits": "Failed to update Codex paid-credit policy",
+    "allowCodexPaidCreditsLabel": "Allow paid Codex credits",
+    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled.",
     "disableCoolingDescription": "Пропускане на временния период на изчакване, така че тази връзка да остане допустима дори след възстановими грешки (терминалните състояния като блокиран/изтекъл все още се прилагат).",
     "disableCoolingLabel": "Деактивиране на периода на изчакване за тази връзка",
     "bulkPasteAdded": "{count, plural, one {Добавен е 1 ключ} other {Добавени са # ключа}}",
@@ -6532,6 +6539,7 @@
       "monsterapi": "Вземете API ключ на monsterapi.ai",
       "moonshot": "Свържете Moonshot AI с API ключ.",
       "morph": "Безплатен план: 250K кредита/месец, $0",
+      "apmix": "Свържете Apmix с API ключ от apmix.ai/dashboard — един абонамент, много модели.",
       "nanogpt": "Свържете NanoGPT с API ключ.",
       "nebius": "~$1 пробни кредити при регистрация за тестване на API",
       "nlpcloud": "NLP Cloud използва собствен chatbot API вместо OpenAI chat/completions. OmniRoute адаптира съобщенията на OpenAI към input/context/history и предоставя локален каталог от поддържани модели за чатботове.",
@@ -6628,8 +6636,7 @@
       "kiro": "Безплатен план: 50 кредита/месец (~25K–100K токена). ⚠️ Условията за ползване на Kiro забраняват използването на прокси/инструменти от трети страни.",
       "codex": "Свързване на OpenAI Codex със съществуващия OAuth поток.",
       "qwen": "Свързване на Qwen Code със съществуващия OAuth поток.",
-      "github-models": "Създайте GitHub PAT с обхват 'models: read' на github.com/settings/tokens",
-      "apmix": "Свържете Apmix с API ключ от apmix.ai/dashboard — един абонамент, много модели."
+      "github-models": "Създайте GitHub PAT с обхват 'models: read' на github.com/settings/tokens"
     },
     "passthroughModelsDescription": "{provider} приема собствени идентификатори на модела на доставчика. Импортирайте от /models или добавете персонализирани идентификатори за маршрутизиране.",
     "bedrockModelsDescription": "Моделите на Amazon Bedrock са обхванати от регион на AWS. Импортирайте от /models или добавете идентификатори на модел Bedrock, активирани в избрания регион.",
@@ -6801,14 +6808,7 @@
     "rateLimitOverridesModelConcurrencyLabel": "Per-model concurrency caps",
     "rateLimitOverridesModelConcurrencyPlaceholder": "glm-5=1\nglm-4.7=3",
     "rateLimitOverridesModelConcurrencyHint": "Optional: one model=cap per line, matched against the exact upstream model id. Queues excess requests locally; blank means no per-model cap.",
-    "rateLimitOverridesModelConcurrencyInvalid": "Invalid per-model concurrency entry \"{entry}\" — use model=cap with a whole number from 1 to {max}.",
-    "codexPaidCreditsShort": "Extra credits",
-    "codexPaidCreditsToggleTitle": "Allow paid Codex credits after subscription quota runs out (additional charges may apply)",
-    "codexPaidCreditsEnabled": "Codex paid credits enabled (additional charges may apply)",
-    "codexPaidCreditsDisabled": "Codex paid credits disabled",
-    "failedUpdateCodexPaidCredits": "Failed to update Codex paid-credit policy",
-    "allowCodexPaidCreditsLabel": "Allow paid Codex credits",
-    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled."
+    "rateLimitOverridesModelConcurrencyInvalid": "Invalid per-model concurrency entry \"{entry}\" — use model=cap with a whole number from 1 to {max}."
   },
   "settings": {
     "title": "Настройки",
@@ -9834,6 +9834,10 @@
     "streamTransformFailed": "Неуспешно преобразуване на потока"
   },
   "usage": {
+    "codexPaidCreditsLabel": "Paid Codex credits",
+    "codexPaidCreditsAvailable": "Available (balance not reported)",
+    "codexPaidCreditsUnavailable": "Unavailable or spending limit reached",
+    "codexPaidCreditsUnlimited": "Unlimited",
     "title": "Използване",
     "grokExtraUsageCredits": "Допълнителни кредити за използване",
     "grokAutoTopUp": "Автоматично попълване",
@@ -10286,11 +10290,7 @@
     "updatedShort": "Актуализирано",
     "lastRefreshed": "Последно опреснено",
     "providerQuota": "Квота на доставчика",
-    "providerQuotaHomeHint": "Статус в реално време за свързаните акаунти",
-    "codexPaidCreditsLabel": "Paid Codex credits",
-    "codexPaidCreditsAvailable": "Available (balance not reported)",
-    "codexPaidCreditsUnavailable": "Unavailable or spending limit reached",
-    "codexPaidCreditsUnlimited": "Unlimited"
+    "providerQuotaHomeHint": "Статус в реално време за свързаните акаунти"
   },
   "modals": {
     "waitingAuth": "Изчакване на разрешение",
@@ -14845,6 +14845,8 @@
     "council": "Съвет",
     "candidates": "Кандидати",
     "cancel": "Отмяна на задачата",
+    "retry": "__MISSING__:Retry task",
+    "retryFailed": "__MISSING__:The hub refused the retry",
     "cancelConfirmTitle": "Отменете тази задача?",
     "cancelConfirmMessage": "Хъбът ще прекрати изпълнението на изпълнителя. Това не може да бъде отменено.",
     "cancelFailed": "Хъбът отказа анулирането",

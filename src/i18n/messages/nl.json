@@ -3400,13 +3400,13 @@
     "comboRefMember": "Combo → {name}"
   },
   "combos": {
+    "title": "Combo's",
+    "description": "Creëer modelcombinaties met gewogen routing en fallback-ondersteuning",
+    "autoCatalogTitle": "Catalogus voor automatische routering",
     "autoTosLoadError": "Het ToS-beleid kon niet worden geladen. Probeer het opnieuw voordat je het wijzigt.",
     "autoTosSaveError": "Het ToS-beleid kon niet worden opgeslagen. De vorige instelling wordt nog getoond. Probeer het opnieuw.",
     "autoTosIncludeLabel": "Providers met ToS: avoid opnemen in auto",
     "autoTosDescription": "Standaard uitgeschakeld. Geldt voor alle auto-combo’s, niet alleen voor één account. Het verbinden van een provider schakelt deze optie niet in.",
-    "title": "Combo's",
-    "description": "Creëer modelcombinaties met gewogen routing en fallback-ondersteuning",
-    "autoCatalogTitle": "Catalogus voor automatische routering",
     "autoCatalogTemplateCount": "{count} sjablonen",
     "autoCatalogDescription": "Ingebouwde auto/*-combinaties die dynamisch worden opgelost door aangesloten providers. Gebruik een van deze ID's als modelveld; er is geen configuratie nodig.",
     "autoCatalogExpand": "Vouw de autoroutingcatalogus uit",
@@ -6079,6 +6079,13 @@
     "claudeLowPriorityModeDescription": "Wanneer dit account de gebruikslimiet van 5 uur bereikt en Anthropic verwerking met lagere prioriteit aanbiedt, accepteert OmniRoute deze en blijft het verzoeken verzenden met anthropic-usage-limit: slow totdat het tijdvenster wordt gereset, in plaats van de verbinding tijdelijk te vertragen. De wekelijkse limiet blijft van toepassing en reacties moeten mogelijk wachten op beschikbare capaciteit.",
     "claudeAutoLimitResetLabel": "De sessielimiet automatisch resetten (eenmaal per week)",
     "claudeAutoLimitResetDescription": "Wanneer dit account de gebruikslimiet van 5 uur bereikt en er een reset van de sessielimiet beschikbaar is, past OmniRoute deze automatisch toe en probeert het opnieuw op volle snelheid. Dit gebruikt de wekelijkse reset van het account en telt nog steeds mee voor de wekelijkse limiet.",
+    "codexPaidCreditsShort": "Extra credits",
+    "codexPaidCreditsToggleTitle": "Betaalde Codex-credits toestaan nadat het abonnementsquotum op is (extra kosten kunnen van toepassing zijn)",
+    "codexPaidCreditsEnabled": "Betaalde Codex-credits ingeschakeld (extra kosten kunnen van toepassing zijn)",
+    "codexPaidCreditsDisabled": "Betaalde Codex-credits uitgeschakeld",
+    "failedUpdateCodexPaidCredits": "Het beleid voor betaalde Codex-credits bijwerken is mislukt",
+    "allowCodexPaidCreditsLabel": "Betaalde Codex-credits toestaan",
+    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled.",
     "disableCoolingDescription": "Sla de tijdelijke afkoelperiode over, zodat deze verbinding in aanmerking blijft komen, zelfs na herstelbare fouten (definitieve statussen zoals verbannen/verlopen zijn nog steeds van toepassing).",
     "disableCoolingLabel": "Afkoelperiode uitschakelen voor deze verbinding",
     "bulkPasteAdded": "{count, plural, one {1 sleutel toegevoegd} other {# sleutels toegevoegd}}",
@@ -6532,6 +6539,7 @@
       "monsterapi": "Verkrijg een API-sleutel op monsterapi.ai",
       "moonshot": "Verbind Moonshot AI met een API-sleutel.",
       "morph": "Gratis niveau: 250K credits/maand, $0",
+      "apmix": "Verbind Apmix met een API-sleutel van apmix.ai/dashboard — één abonnement, veel modellen.",
       "nanogpt": "Verbind NanoGPT met een API-sleutel.",
       "nebius": "~$1 proeftegoed bij registratie voor API-testen",
       "nlpcloud": "NLP Cloud gebruikt een eigen chatbot-API in plaats van OpenAI chat/completions. OmniRoute past OpenAI-berichten aan naar invoer/context/geschiedenis en stelt een lokale catalogus van ondersteunde chatbotmodellen beschikbaar.",
@@ -6628,8 +6636,7 @@
       "kiro": "Gratis tier: 50 credits/maand (~25K–100K tokens). ⚠️ Kiro ToS verbiedt het gebruik van externe proxy/harness.",
       "codex": "Verbind OpenAI Codex met de bestaande OAuth-flow.",
       "qwen": "Verbind Qwen Code met de bestaande OAuth-flow.",
-      "github-models": "Maak een GitHub PAT aan met de scope 'models: read' op github.com/settings/tokens",
-      "apmix": "Verbind Apmix met een API-sleutel van apmix.ai/dashboard — één abonnement, veel modellen."
+      "github-models": "Maak een GitHub PAT aan met de scope 'models: read' op github.com/settings/tokens"
     },
     "passthroughModelsDescription": "{provider} accepteert provider-native model-ID's. Importeer uit /models of voeg aangepaste ID's toe voor routering.",
     "bedrockModelsDescription": "Amazon Bedrock-modellen zijn afgestemd op de AWS-regio. Importeer uit /models of voeg Bedrock-model-ID's toe die zijn ingeschakeld in de geselecteerde regio.",
@@ -6801,14 +6808,7 @@
     "rateLimitOverridesModelConcurrencyLabel": "Gelijktijdigheidslimieten per model",
     "rateLimitOverridesModelConcurrencyPlaceholder": "glm-5=1\nglm-4.7=3",
     "rateLimitOverridesModelConcurrencyHint": "Optioneel: één model=cap per regel, vergeleken met de exacte upstream-model-id. Extra verzoeken wachten lokaal in de wachtrij; leeg betekent geen limiet per model.",
-    "rateLimitOverridesModelConcurrencyInvalid": "Ongeldige gelijktijdigheidsinvoer per model \"{entry}\" — gebruik model=cap met een geheel getal van 1 tot {max}.",
-    "codexPaidCreditsShort": "Extra credits",
-    "codexPaidCreditsToggleTitle": "Betaalde Codex-credits toestaan nadat het abonnementsquotum op is (extra kosten kunnen van toepassing zijn)",
-    "codexPaidCreditsEnabled": "Betaalde Codex-credits ingeschakeld (extra kosten kunnen van toepassing zijn)",
-    "codexPaidCreditsDisabled": "Betaalde Codex-credits uitgeschakeld",
-    "failedUpdateCodexPaidCredits": "Het beleid voor betaalde Codex-credits bijwerken is mislukt",
-    "allowCodexPaidCreditsLabel": "Betaalde Codex-credits toestaan",
-    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled."
+    "rateLimitOverridesModelConcurrencyInvalid": "Ongeldige gelijktijdigheidsinvoer per model \"{entry}\" — gebruik model=cap met een geheel getal van 1 tot {max}."
   },
   "settings": {
     "title": "Instellingen",
@@ -9834,6 +9834,10 @@
     "streamTransformFailed": "Transformeren van stream mislukt"
   },
   "usage": {
+    "codexPaidCreditsLabel": "Betaalde Codex-credits",
+    "codexPaidCreditsAvailable": "Beschikbaar (saldo niet gemeld)",
+    "codexPaidCreditsUnavailable": "Niet beschikbaar of bestedingslimiet bereikt",
+    "codexPaidCreditsUnlimited": "Onbeperkt",
     "title": "Gebruik",
     "grokExtraUsageCredits": "Extra Gebruikskredieten",
     "grokAutoTopUp": "Automatische Opwaardering",
@@ -10286,11 +10290,7 @@
     "updatedShort": "Bijgewerkt",
     "lastRefreshed": "Laatst vernieuwd",
     "providerQuota": "Providerquota",
-    "providerQuotaHomeHint": "Live status over verbonden accounts",
-    "codexPaidCreditsLabel": "Betaalde Codex-credits",
-    "codexPaidCreditsAvailable": "Beschikbaar (saldo niet gemeld)",
-    "codexPaidCreditsUnavailable": "Niet beschikbaar of bestedingslimiet bereikt",
-    "codexPaidCreditsUnlimited": "Onbeperkt"
+    "providerQuotaHomeHint": "Live status over verbonden accounts"
   },
   "modals": {
     "waitingAuth": "Wachten op toestemming",
@@ -14845,6 +14845,8 @@
     "council": "Raad",
     "candidates": "Kandidaten",
     "cancel": "Taak annuleren",
+    "retry": "__MISSING__:Retry task",
+    "retryFailed": "__MISSING__:The hub refused the retry",
     "cancelConfirmTitle": "Deze taak annuleren?",
     "cancelConfirmMessage": "De hub zal de uitvoering op de runner afbreken. Dit kan niet ongedaan gemaakt worden.",
     "cancelFailed": "De hub heeft de annulering geweigerd",

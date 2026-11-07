@@ -3400,13 +3400,13 @@
     "comboRefMember": "Kombinacija → {name}"
   },
   "combos": {
+    "title": "Kombinacije",
+    "description": "Stvorite kombinacije modela s ponderiranim usmjeravanjem i podrškom za rezervne opcije",
+    "autoCatalogTitle": "Katalog automatskog usmjeravanja",
     "autoTosLoadError": "Pravila uvjeta korištenja nije moguće učitati. Pokušajte ponovno prije promjene.",
     "autoTosSaveError": "Pravila uvjeta korištenja nije moguće spremiti. I dalje se prikazuje prethodna postavka. Pokušajte ponovno.",
     "autoTosIncludeLabel": "Uključi u auto pružatelje označene s ToS: avoid",
     "autoTosDescription": "Isključeno prema zadanim postavkama. Vrijedi za sve auto kombinacije, a ne samo za jedan račun. Povezivanje pružatelja ne uključuje ovu mogućnost.",
-    "title": "Kombinacije",
-    "description": "Stvorite kombinacije modela s ponderiranim usmjeravanjem i podrškom za rezervne opcije",
-    "autoCatalogTitle": "Katalog automatskog usmjeravanja",
     "autoCatalogTemplateCount": "{count} predložaka",
     "autoCatalogDescription": "Ugrađene auto/* kombinacije dinamički se određuju na temelju povezanih pružatelja usluga. Upotrijebite bilo koji od ovih ID-ova kao vrijednost polja model — postavljanje nije potrebno.",
     "autoCatalogExpand": "Proširi katalog automatskog usmjeravanja",
@@ -6079,6 +6079,13 @@
     "claudeLowPriorityModeDescription": "Kada ovaj račun dosegne svoje ograničenje upotrebe od 5 sati i Anthropic ponudi način rada s nižim prioritetom, OmniRoute ga prihvaća i nastavlja slati zahtjeve s anthropic-usage-limit: slow sve dok se vremenski okvir ne poništi, umjesto da privremeno obustavi vezu. Tjedno ograničenje i dalje se primjenjuje, a odgovori mogu čekati na slobodan kapacitet.",
     "claudeAutoLimitResetLabel": "Automatski poništi ograničenje sesije (jednom tjedno)",
     "claudeAutoLimitResetDescription": "Kada ovaj račun dosegne svoje ograničenje upotrebe od 5 sati i dostupno je poništavanje ograničenja sesije, OmniRoute ga automatski aktivira i ponovno pokušava punom brzinom. Time se iskorištava mogućnost poništavanja jednom tjedno za taj račun, a upotreba se i dalje ubraja u tjedno ograničenje.",
+    "codexPaidCreditsShort": "Extra credits",
+    "codexPaidCreditsToggleTitle": "Allow paid Codex credits after subscription quota runs out (additional charges may apply)",
+    "codexPaidCreditsEnabled": "Codex paid credits enabled (additional charges may apply)",
+    "codexPaidCreditsDisabled": "Codex paid credits disabled",
+    "failedUpdateCodexPaidCredits": "Failed to update Codex paid-credit policy",
+    "allowCodexPaidCreditsLabel": "Allow paid Codex credits",
+    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled.",
     "disableCoolingDescription": "Preskoči privremeno razdoblje mirovanja kako bi ova veza ostala dostupna čak i nakon pogrešaka od kojih se moguće oporaviti (terminalna stanja poput zabrane ili isteka i dalje se primjenjuju).",
     "disableCoolingLabel": "Onemogući razdoblje mirovanja za ovu vezu",
     "bulkPasteAdded": "{count, plural, one {dodan 1 ključ} few {dodana # ključa} other {dodano # ključeva}}",
@@ -6532,6 +6539,7 @@
       "monsterapi": "Nabavite API ključ na monsterapi.ai",
       "moonshot": "Povežite Kimi s API ključem.",
       "morph": "Besplatni plan: 250K kredita/mjesečno, $0",
+      "apmix": "Povežite Apmix s API ključem s apmix.ai/dashboard — jedna pretplata, mnogo modela.",
       "nanogpt": "Povežite NanoGPT s API ključem.",
       "nebius": "~$1 probnih kredita pri registraciji za testiranje API-ja",
       "nlpcloud": "NLP Cloud koristi vlastiti chatbot API umjesto OpenAI chat/completions. OmniRoute prilagođava OpenAI poruke u input/context/history i pruža lokalni katalog podržanih chatbot modela.",
@@ -6628,8 +6636,7 @@
       "kiro": "Besplatni plan: 50 kredita/mjesec (~25K–100K tokena). ⚠️ Uvjeti korištenja za Kiro zabranjuju upotrebu proxyja/alata trećih strana.",
       "codex": "Povežite OpenAI Codex putem postojećeg OAuth tijeka.",
       "qwen": "Povežite Qwen Code putem postojećeg OAuth tijeka.",
-      "github-models": "Kreirajte GitHub PAT s opsegom 'models: read' na github.com/settings/tokens",
-      "apmix": "Povežite Apmix s API ključem s apmix.ai/dashboard — jedna pretplata, mnogo modela."
+      "github-models": "Kreirajte GitHub PAT s opsegom 'models: read' na github.com/settings/tokens"
     },
     "passthroughModelsDescription": "{provider} prihvaća ID-ove modela izvorne za pružatelja. Uvezite iz /models ili dodajte prilagođene ID-ove za usmjeravanje.",
     "bedrockModelsDescription": "Amazon Bedrock modeli ograničeni su na određenu AWS regiju. Uvezite ih iz /models ili dodajte ID-ove Bedrock modela omogućenih u odabranoj regiji.",
@@ -6801,14 +6808,7 @@
     "rateLimitOverridesModelConcurrencyLabel": "Per-model concurrency caps",
     "rateLimitOverridesModelConcurrencyPlaceholder": "glm-5=1\nglm-4.7=3",
     "rateLimitOverridesModelConcurrencyHint": "Optional: one model=cap per line, matched against the exact upstream model id. Queues excess requests locally; blank means no per-model cap.",
-    "rateLimitOverridesModelConcurrencyInvalid": "Invalid per-model concurrency entry \"{entry}\" — use model=cap with a whole number from 1 to {max}.",
-    "codexPaidCreditsShort": "Extra credits",
-    "codexPaidCreditsToggleTitle": "Allow paid Codex credits after subscription quota runs out (additional charges may apply)",
-    "codexPaidCreditsEnabled": "Codex paid credits enabled (additional charges may apply)",
-    "codexPaidCreditsDisabled": "Codex paid credits disabled",
-    "failedUpdateCodexPaidCredits": "Failed to update Codex paid-credit policy",
-    "allowCodexPaidCreditsLabel": "Allow paid Codex credits",
-    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled."
+    "rateLimitOverridesModelConcurrencyInvalid": "Invalid per-model concurrency entry \"{entry}\" — use model=cap with a whole number from 1 to {max}."
   },
   "settings": {
     "title": "Postavke",
@@ -9834,6 +9834,10 @@
     "streamTransformFailed": "Pretvorba toka nije uspjela"
   },
   "usage": {
+    "codexPaidCreditsLabel": "Paid Codex credits",
+    "codexPaidCreditsAvailable": "Available (balance not reported)",
+    "codexPaidCreditsUnavailable": "Unavailable or spending limit reached",
+    "codexPaidCreditsUnlimited": "Unlimited",
     "title": "Korištenje",
     "grokExtraUsageCredits": "Dodatni krediti za korištenje",
     "grokAutoTopUp": "Automatsko dopunjavanje",
@@ -10286,11 +10290,7 @@
     "updatedShort": "Ažurirano",
     "lastRefreshed": "Posljednje osvježavanje",
     "providerQuota": "Kvota davatelja",
-    "providerQuotaHomeHint": "Stanje uživo na povezanim računima",
-    "codexPaidCreditsLabel": "Paid Codex credits",
-    "codexPaidCreditsAvailable": "Available (balance not reported)",
-    "codexPaidCreditsUnavailable": "Unavailable or spending limit reached",
-    "codexPaidCreditsUnlimited": "Unlimited"
+    "providerQuotaHomeHint": "Stanje uživo na povezanim računima"
   },
   "modals": {
     "waitingAuth": "Čekanje na autorizaciju",
@@ -14845,6 +14845,8 @@
     "council": "Vijeće",
     "candidates": "Kandidati",
     "cancel": "Otkaži zadatak",
+    "retry": "__MISSING__:Retry task",
+    "retryFailed": "__MISSING__:The hub refused the retry",
     "cancelConfirmTitle": "Otkazati ovaj zadatak?",
     "cancelConfirmMessage": "Hub će prekinuti izvođenje na pokretaču. Ovo se ne može poništiti.",
     "cancelFailed": "Hub je odbio otkazivanje",

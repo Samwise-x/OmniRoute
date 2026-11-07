@@ -10,7 +10,10 @@ import http from "node:http";
 import { randomUUID } from "node:crypto";
 import { setTimeout as delay } from "node:timers/promises";
 const HUB = (process.env.CONDUCTOR_HUB_URL || "http://hub:7910").replace(/\/$/, "");
-const TOKEN = process.env.CONDUCTOR_HUB_TOKEN || "";
+// Prefer the runner-scoped credential: with it, a compromised Runner can only register,
+// heartbeat, claim and report results — it cannot create, cancel or retry tasks. Falls
+// back to the shared token so a single-secret deployment keeps working unchanged.
+const TOKEN = process.env.CONDUCTOR_RUNNER_TOKEN || process.env.CONDUCTOR_HUB_TOKEN || "";
 const ID = process.env.RUNNER_ID || `${os.hostname()}-${process.pid}`;
 const SESSION_ID = randomUUID();
 const POLL_MS = Number(process.env.RUNNER_POLL_MS || 1000),
@@ -24,7 +27,9 @@ const MAX_CONCURRENCY = Math.max(1, Number(process.env.RUNNER_MAX_CONCURRENCY ||
 const HEALTH_HOST = process.env.RUNNER_HEALTH_HOST || "0.0.0.0";
 const HEALTH_PORT = Number(process.env.RUNNER_HEALTH_PORT || 7930);
 if (!TOKEN || TOKEN.length < 16)
-  throw new Error("CONDUCTOR_HUB_TOKEN must contain at least 16 characters");
+  throw new Error(
+    "CONDUCTOR_RUNNER_TOKEN (or CONDUCTOR_HUB_TOKEN) must contain at least 16 characters"
+  );
 const authHeaders = { authorization: `Bearer ${TOKEN}`, "content-type": "application/json" };
 async function api(route, data, method = "POST") {
   const res = await fetch(`${HUB}${route}`, {
@@ -70,20 +75,23 @@ const adapters = {
   /**
    * OpenCode is the reference self-hosted harness for this seam.
    *
-   * Argv follows the invocation documented in `docs/reference/CLI-TOOLS.md` and used by
-   * `omniroute setup-opencode`: `opencode run "<prompt>" --model <model>`. There is no
-   * `--auto`: this adapter runs the released CLI non-interactively, and an unknown flag
-   * makes the CLI exit non-zero before it ever reads the prompt. `--model` is passed even
-   * when the task pins none, because OpenCode's default provider is its own hosted
-   * catalog — the whole point of this seam is that the work is served by OUR gateway.
-   * Both come from the same knobs `omniroute setup-opencode` writes
-   * (`OMNIROUTE_BASE_URL` / `OMNIROUTE_API_KEY`), which `execute()` already forwards.
+   * Argv: `opencode run "<prompt>" --auto [--model <model>]`. Both flags were checked
+   * against the pinned release (`opencode run --help`, opencode-ai 1.19.3): `--auto` is
+   * real and needed (see below), and `-m/--model` takes `provider/model`.
+   * `--model` is passed even when the task pins none, because OpenCode's default provider
+   * is its own hosted catalog — the whole point of this seam is that the work is served by
+   * OUR gateway. The credential and base URL come from the same knobs
+   * `omniroute setup-opencode` writes, which `execute()` already forwards.
    */
   opencode: {
     bin: process.env.OPENCODE_BIN || "opencode",
     args: (prompt, _repo, model) => {
       const resolved = model || process.env.OPENCODE_MODEL || "";
-      return ["run", prompt, ...(resolved ? ["--model", resolved] : [])];
+      // `--auto` IS part of opencode 1.19.3 (`opencode run --help` → "auto-approve
+      // permissions that are not explicitly denied"). It is required here: the task runs
+      // with no TTY, so without it any edit/bash approval prompt blocks until the task
+      // timeout. Containment is the disposable clone + isolated HOME/env, not the prompt.
+      return ["run", prompt, "--auto", ...(resolved ? ["--model", resolved] : [])];
     },
     // A model only makes the runner eligible for the opencode profile when it is
     // provider-qualified (`omniroute/...`), so `requirements.model` can never select
@@ -137,6 +145,25 @@ function isOpencodeGatewayModel(capability, model) {
   if (model.startsWith("omniroute/")) return true;
   return process.env.RUNNER_OPENCODE_ALLOW_HOSTED_MODELS === "true";
 }
+/**
+ * The model ids the seeded OpenCode config must declare.
+ *
+ * OpenCode resolves `--model omniroute/<id>` against this map, so it has to contain the
+ * id the runner is going to pass. Sources, in order: the per-harness allowlist
+ * (`RUNNER_OPENCODE_MODELS`), the `OPENCODE_MODEL` default, and — when the allowlist is
+ * a pure pattern — nothing (the operator's `RUNNER_OPENCODE_MODELS` should list concrete
+ * ids in that case). `omniroute/` is stripped because the map is scoped to the provider.
+ */
+function opencodeModels() {
+  const ids = new Set();
+  for (const raw of modelsFor("opencode")) {
+    if (!raw || raw.includes("*")) continue;
+    ids.add(raw.startsWith("omniroute/") ? raw.slice("omniroute/".length) : raw);
+  }
+  const fallback = (process.env.OPENCODE_MODEL || "").trim();
+  if (fallback) ids.add(fallback.startsWith("omniroute/") ? fallback.slice(10) : fallback);
+  return [...ids];
+}
 function modelsFor(profile) {
   const key = `RUNNER_${profile.toUpperCase()}_MODELS`;
   return (process.env[key] || process.env.RUNNER_MODELS || "*")
@@ -161,6 +188,12 @@ async function seedOpencodeConfig(home) {
   if (!baseUrl) return;
   const dir = path.join(home, ".config", "opencode");
   await fs.mkdir(dir, { recursive: true, mode: 0o700 });
+  // `models` is MANDATORY, and this was verified against opencode 1.19.3, not assumed:
+  // with only baseURL+apiKey the CLI fetches `<baseURL>/models` and then still fails with
+  // `ProviderModelNotFoundError: Model not found: omniroute/<model>` — the listing alone
+  // does not register the id. With an explicit map it issues
+  // `POST <baseURL>/chat/completions` carrying `Authorization: Bearer <key>`, model
+  // `<model>` (prefix stripped). Both were observed on the wire.
   const config = {
     $schema: "https://opencode.ai/config.json",
     provider: {
@@ -168,8 +201,9 @@ async function seedOpencodeConfig(home) {
         npm: "@ai-sdk/openai-compatible",
         name: "OmniRoute",
         options: { baseURL: `${baseUrl}/v1`, apiKey: "{env:OMNIROUTE_API_KEY}" },
-        // An empty map would hide every model; leaving it out makes OpenCode use the
-        // provider's own /v1/models listing, which is the authoritative catalog.
+        ...(opencodeModels().length
+          ? { models: Object.fromEntries(opencodeModels().map((m) => [m, { name: m }])) }
+          : {}),
       },
     },
     autoupdate: false,
@@ -179,11 +213,81 @@ async function seedOpencodeConfig(home) {
   });
 }
 
+/**
+ * `opencode --version` (bounded): recorded so evidence names the binary, not a guess.
+ *
+ * Runs in a throwaway directory with a throwaway HOME, for the same reason every task
+ * gets one: this is a `spawn` of a third-party binary, and a wrapper that ignores argv
+ * (or a CLI that writes a config/cache on startup) must not write into the Runner's own
+ * working directory — `services/omni-conductor` in a checkout, `/opt/omni-conductor`
+ * (read-only) in the container. Without this, capability discovery could litter the
+ * source tree and fail outright on a read-only root filesystem.
+ */
+async function probeVersion(bin) {
+  const sandbox = await fs.mkdtemp(path.join(os.tmpdir(), "omni-probe-"));
+  const home = path.join(sandbox, "home");
+  await fs.mkdir(home, { mode: 0o700 }).catch(() => {});
+  const result = await probeVersionIn(bin, sandbox, home);
+  await fs.rm(sandbox, { recursive: true, force: true }).catch(() => {});
+  return result;
+}
+
+function probeVersionIn(bin, cwd, home) {
+  return new Promise((resolve) => {
+    let out = "";
+    let settled = false;
+    const done = (value) => {
+      if (!settled) {
+        settled = true;
+        resolve(value);
+      }
+    };
+    let p;
+    try {
+      p = spawn(bin, ["--version"], {
+        cwd,
+        env: {
+          PATH: process.env.PATH || "/usr/local/bin:/usr/bin:/bin",
+          HOME: home,
+          USER: process.env.USER || "runner",
+          LANG: "C.UTF-8",
+          GIT_TERMINAL_PROMPT: "0",
+        },
+        stdio: ["ignore", "pipe", "ignore"],
+      });
+    } catch {
+      return done(null);
+    }
+    const timer = setTimeout(() => {
+      try {
+        p.kill("SIGKILL");
+      } catch {}
+      done(null);
+    }, 20_000);
+    timer.unref?.();
+    p.stdout.on("data", (d) => (out = (out + d).slice(-200)));
+    p.on("error", () => {
+      clearTimeout(timer);
+      done(null);
+    });
+    p.on("close", (code) => {
+      clearTimeout(timer);
+      // Accept only something that IS a version. A wrapper that ignores argv and prints
+      // its usual chatter exits 0 too, and recording "opencode stand-in completed" as the
+      // harness version would put a fabricated string into the task manifest and the
+      // evidence report — worse than recording nothing.
+      const line = out.trim().split("\n").pop()?.trim() ?? "";
+      done(code === 0 && /^v?\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?$/.test(line) ? line : null);
+    });
+  });
+}
 async function capabilities() {
   const clis = [];
   for (const profile of PROFILES) {
     const a = adapters[profile];
-    if (a && (await commandExists(a.bin))) clis.push({ profile, models: modelsFor(profile) });
+    if (!a || !(await commandExists(a.bin))) continue;
+    const version = await probeVersion(a.bin);
+    clis.push({ profile, models: modelsFor(profile), ...(version ? { version } : {}) });
   }
   return { name: process.env.RUNNER_NAME || ID, clis, skills: [] };
 }
@@ -360,6 +464,9 @@ async function execute(task) {
       tests: testOutcome,
       result: {
         harness: profile,
+        harness_version: capabilityByProfile.get(profile)?.version ?? null,
+        opencode_version:
+          profile === "opencode" ? (capabilityByProfile.get(profile)?.version ?? null) : undefined,
         duration_ms: Date.now() - started,
         output: (result.stdout || "").slice(-8000),
         worktree: worktree.stdout.trim(),
@@ -598,6 +705,18 @@ async function loop() {
   }
   registered = false;
   await Promise.allSettled([...active]);
+  // Graceful shutdown: hand our in-flight work back instead of leaving it pinned to a
+  // runner that is about to disappear. Without this the Hub keeps assigning work here
+  // until the heartbeat TTL expires, and the queue stalls for that whole interval.
+  // Best-effort — if the Hub is already gone, the TTL path still recovers the work.
+  if (lastHubContact) {
+    try {
+      const result = await api("/v1/runners/deregister", { id: ID, session_id: SESSION_ID });
+      console.log(`deregistered; requeued=${result?.requeued?.length ?? 0}`);
+    } catch (e) {
+      console.error(`deregister failed: ${e.message}`);
+    }
+  }
 }
 for (const signal of ["SIGINT", "SIGTERM"])
   process.on(signal, () => {

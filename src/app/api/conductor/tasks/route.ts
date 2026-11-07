@@ -30,7 +30,8 @@ const createTaskSchema = z.object({
   repoUrl: z.string().min(1),
   prompt: z.string().min(1),
   baseRef: z.string().optional(),
-  mode: z.string().optional(),
+  // Closed set, mirroring the Hub: an unknown mode is a client bug, not a new feature.
+  mode: z.enum(["solo", "council"]).optional(),
   cli: z.string().optional(),
   model: z.string().optional(),
 });

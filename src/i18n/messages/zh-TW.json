@@ -3400,13 +3400,13 @@
     "comboRefMember": "組合 → {name}"
   },
   "combos": {
+    "title": "組合",
+    "description": "建立支援權重路由與故障回退的模型組合",
+    "autoCatalogTitle": "自動路由目錄",
     "autoTosLoadError": "無法載入 ToS 政策。請重試後再進行變更。",
     "autoTosSaveError": "無法儲存 ToS 政策。仍顯示先前的設定，請重試。",
     "autoTosIncludeLabel": "在 auto 中納入標記為 ToS: avoid 的提供者",
     "autoTosDescription": "預設關閉。適用於所有 auto 組合，而非單一帳戶。連線至提供者不會啟用此選項。",
-    "title": "組合",
-    "description": "建立支援權重路由與故障回退的模型組合",
-    "autoCatalogTitle": "自動路由目錄",
     "autoCatalogTemplateCount": "{count} 個模板",
     "autoCatalogDescription": "內建 auto/* 組合，從已連線的提供者動態解析。直接將這些 ID 作為 model 欄位使用——無需設定。",
     "autoCatalogExpand": "展開自動路由目錄",
@@ -6079,6 +6079,13 @@
     "claudeLowPriorityModeDescription": "當此帳戶達到 5 小時用量上限，且 Anthropic 提供較低優先順序的通道時，OmniRoute 會接受該通道，並持續使用 anthropic-usage-limit: slow 傳送請求，直到時間區間重設為止，而非讓連線進入冷卻。每週上限仍然適用，且回應可能需要等待閒置容量。",
     "claudeAutoLimitResetLabel": "自動重設工作階段上限（每週一次）",
     "claudeAutoLimitResetDescription": "當此帳戶達到 5 小時用量上限，且可重設工作階段上限時，OmniRoute 會自動使用該次重設並以完整速度重試。這會使用帳戶每週一次的重設機會，且用量仍會計入每週上限。",
+    "codexPaidCreditsShort": "額外額度",
+    "codexPaidCreditsToggleTitle": "訂閱配額用盡後允許使用付費 Codex 額度（可能產生額外費用）",
+    "codexPaidCreditsEnabled": "已啟用 Codex 付費額度（可能產生額外費用）",
+    "codexPaidCreditsDisabled": "已停用 Codex 付費額度",
+    "failedUpdateCodexPaidCredits": "更新 Codex 付費額度政策失敗",
+    "allowCodexPaidCreditsLabel": "允許使用付費 Codex 額度",
+    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled.",
     "disableCoolingDescription": "跳過暫時冷卻，使此連線在可恢復錯誤後仍保持資格（已停用/已過期等終止狀態仍適用）。",
     "disableCoolingLabel": "對此連線停用冷卻",
     "bulkPasteAdded": "{count, plural, one {已新增 1 個 key} other {已新增 # 個 key}}",
@@ -6532,6 +6539,7 @@
       "monsterapi": "在 monsterapi.ai 取得 API 金鑰",
       "moonshot": "使用 API 金鑰連線 Moonshot AI。",
       "morph": "免費方案：每月 25 萬額度，$0 美元",
+      "apmix": "使用來自 apmix.ai/dashboard 的 API 金鑰連接 Apmix — 一份訂閱，多個模型。",
       "nanogpt": "使用 API 金鑰連線 NanoGPT。",
       "nebius": "註冊即贈約 $1 美元試用額度，供 API 測試使用",
       "nlpcloud": "NLP Cloud 使用專有的聊天機器人 API，而非 OpenAI chat/completions。OmniRoute 將 OpenAI 訊息轉換為 input/context/history，並提供支援的聊天機器人模型本地目錄。",
@@ -6628,8 +6636,7 @@
       "kiro": "免費方案：每月 50 額度（約 2.5 萬至 10 萬 tokens）。⚠️ Kiro 服務條款禁止第三方代理/轉接使用。",
       "codex": "使用現有的 OAuth 流程連線 OpenAI Codex。",
       "qwen": "使用現有的 OAuth 流程連線 Qwen Code。",
-      "github-models": "在 github.com/settings/tokens 建立具有 'models: read' 範圍的 GitHub PAT",
-      "apmix": "使用來自 apmix.ai/dashboard 的 API 金鑰連接 Apmix — 一份訂閱，多個模型。"
+      "github-models": "在 github.com/settings/tokens 建立具有 'models: read' 範圍的 GitHub PAT"
     },
     "passthroughModelsDescription": "{provider} 接受提供者本機模型 ID。從 /models 匯入或新增用於路由的自定義 ID。",
     "bedrockModelsDescription": "Amazon Bedrock 模型的範圍按 AWS 區域劃分。從 /models 匯入或新增在所選區域中啟用的基岩模型 ID。",
@@ -6801,14 +6808,7 @@
     "rateLimitOverridesModelConcurrencyLabel": "各模型並行上限",
     "rateLimitOverridesModelConcurrencyPlaceholder": "glm-5=1\nglm-4.7=3",
     "rateLimitOverridesModelConcurrencyHint": "選填：每行一個 model=cap，與上游模型 ID 完全比對。超出的請求會在本機排隊；留空表示不設各模型上限。",
-    "rateLimitOverridesModelConcurrencyInvalid": "無效的各模型並行項目「{entry}」——請使用 model=cap，其中 cap 為 1 到 {max} 的整數。",
-    "codexPaidCreditsShort": "額外額度",
-    "codexPaidCreditsToggleTitle": "訂閱配額用盡後允許使用付費 Codex 額度（可能產生額外費用）",
-    "codexPaidCreditsEnabled": "已啟用 Codex 付費額度（可能產生額外費用）",
-    "codexPaidCreditsDisabled": "已停用 Codex 付費額度",
-    "failedUpdateCodexPaidCredits": "更新 Codex 付費額度政策失敗",
-    "allowCodexPaidCreditsLabel": "允許使用付費 Codex 額度",
-    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled."
+    "rateLimitOverridesModelConcurrencyInvalid": "無效的各模型並行項目「{entry}」——請使用 model=cap，其中 cap 為 1 到 {max} 的整數。"
   },
   "settings": {
     "title": "設定",
@@ -9834,6 +9834,10 @@
     "streamTransformFailed": "轉換串流失敗"
   },
   "usage": {
+    "codexPaidCreditsLabel": "Codex 付費額度",
+    "codexPaidCreditsAvailable": "可用（未回報餘額）",
+    "codexPaidCreditsUnavailable": "無法使用或已達支出上限",
+    "codexPaidCreditsUnlimited": "無限",
     "title": "用量",
     "grokExtraUsageCredits": "額外使用積分",
     "grokAutoTopUp": "自動加值",
@@ -10286,11 +10290,7 @@
     "updatedShort": "更新於",
     "lastRefreshed": "上次重新整理",
     "providerQuota": "提供者配額",
-    "providerQuotaHomeHint": "已連線帳戶的即時狀態",
-    "codexPaidCreditsLabel": "Codex 付費額度",
-    "codexPaidCreditsAvailable": "可用（未回報餘額）",
-    "codexPaidCreditsUnavailable": "無法使用或已達支出上限",
-    "codexPaidCreditsUnlimited": "無限"
+    "providerQuotaHomeHint": "已連線帳戶的即時狀態"
   },
   "modals": {
     "waitingAuth": "等待授權",
@@ -14845,6 +14845,8 @@
     "council": "議會",
     "candidates": "候選人",
     "cancel": "取消任務",
+    "retry": "__MISSING__:Retry task",
+    "retryFailed": "__MISSING__:The hub refused the retry",
     "cancelConfirmTitle": "取消此任務？",
     "cancelConfirmMessage": "集線器將在執行者上中止執行。這無法撤銷。",
     "cancelFailed": "中心拒絕了取消請求",

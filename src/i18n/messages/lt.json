@@ -3400,13 +3400,13 @@
     "comboRefMember": "Derinys → {name}"
   },
   "combos": {
+    "title": "Kombinacijos",
+    "description": "Kurkite modelių kombinacijas su svertiniu maršrutizavimu ir perėjimo prie atsarginio modelio palaikymu",
+    "autoCatalogTitle": "Automatinio maršrutizavimo katalogas",
     "autoTosLoadError": "Nepavyko įkelti paslaugų teikimo sąlygų politikos. Prieš keisdami bandykite dar kartą.",
     "autoTosSaveError": "Nepavyko išsaugoti paslaugų teikimo sąlygų politikos. Vis dar rodoma ankstesnė nuostata. Bandykite dar kartą.",
     "autoTosIncludeLabel": "Į auto įtraukti teikėjus, pažymėtus ToS: avoid",
     "autoTosDescription": "Pagal numatytuosius nustatymus išjungta. Taikoma visiems auto deriniams, ne tik vienai paskyrai. Teikėjo prijungimas šios parinkties neįjungia.",
-    "title": "Kombinacijos",
-    "description": "Kurkite modelių kombinacijas su svertiniu maršrutizavimu ir perėjimo prie atsarginio modelio palaikymu",
-    "autoCatalogTitle": "Automatinio maršrutizavimo katalogas",
     "autoCatalogTemplateCount": "{count} šabl.",
     "autoCatalogDescription": "Integruotos auto/* kombinacijos, dinamiškai parenkamos iš prijungtų teikėjų. Naudokite bet kurį iš šių ID kaip modelio lauko reikšmę — konfigūruoti nereikia.",
     "autoCatalogExpand": "Išskleisti automatinio maršrutizavimo katalogą",
@@ -6079,6 +6079,13 @@
     "claudeLowPriorityModeDescription": "Kai ši paskyra pasiekia 5 valandų naudojimo limitą ir Anthropic pasiūlo mažesnio prioriteto režimą, OmniRoute jį priima ir toliau siunčia užklausas su anthropic-usage-limit: slow, kol laiko intervalas nustatomas iš naujo, užuot laikinai pristabdęs ryšį. Savaitinis limitas vis tiek taikomas, o atsakymams gali tekti palaukti, kol atsiras laisvų pajėgumų.",
     "claudeAutoLimitResetLabel": "Automatiškai iš naujo nustatyti seanso limitą (kartą per savaitę)",
     "claudeAutoLimitResetDescription": "Kai ši paskyra pasiekia 5 valandų naudojimo limitą ir galima iš naujo nustatyti seanso limitą, OmniRoute automatiškai tuo pasinaudoja ir pakartoja užklausą visu greičiu. Panaudojama paskyrai kartą per savaitę suteikiama limito nustatymo iš naujo galimybė, o naudojimas vis tiek įskaičiuojamas į savaitinį limitą.",
+    "codexPaidCreditsShort": "Extra credits",
+    "codexPaidCreditsToggleTitle": "Allow paid Codex credits after subscription quota runs out (additional charges may apply)",
+    "codexPaidCreditsEnabled": "Codex paid credits enabled (additional charges may apply)",
+    "codexPaidCreditsDisabled": "Codex paid credits disabled",
+    "failedUpdateCodexPaidCredits": "Failed to update Codex paid-credit policy",
+    "allowCodexPaidCreditsLabel": "Allow paid Codex credits",
+    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled.",
     "disableCoolingDescription": "Praleisti laikiną atvėsimo laikotarpį, kad šį ryšį būtų galima naudoti net ir po klaidų, po kurių galima atkurti veikimą (galutinės būsenos, pvz., užblokavimas ar galiojimo pabaiga, vis tiek taikomos).",
     "disableCoolingLabel": "Išjungti šio ryšio atvėsimo laikotarpį",
     "bulkPasteAdded": "{count, plural, one {Pridėtas 1 raktas} other {Pridėta # raktų}}",
@@ -6532,6 +6539,7 @@
       "monsterapi": "Gaukite API raktą svetainėje monsterapi.ai",
       "moonshot": "Prijunkite Kimi naudodami API raktą.",
       "morph": "Nemokamas planas: 250K kreditų per mėnesį, $0",
+      "apmix": "Prijunkite Apmix su API raktu iš apmix.ai/dashboard — vienas prenumeratos planas, daug modelių.",
       "nanogpt": "Prijunkite NanoGPT naudodami API raktą.",
       "nebius": "Užsiregistravus API testavimui suteikiama ~$1 bandomųjų kreditų",
       "nlpcloud": "NLP Cloud vietoje OpenAI chat/completions naudoja nuosavybinę pokalbių roboto API. OmniRoute pritaiko OpenAI pranešimus prie input/context/history ir pateikia vietinį palaikomų pokalbių roboto modelių katalogą.",
@@ -6628,8 +6636,7 @@
       "kiro": "Nemokamas planas: 50 kreditų per mėnesį (~25K–100K žetonų). ⚠️ Kiro ToS draudžia naudoti trečiųjų šalių tarpinius serverius ar valdymo įrankius.",
       "codex": "Prijunkite OpenAI Codex naudodami esamą OAuth procesą.",
       "qwen": "Prijunkite Qwen Code naudodami esamą OAuth procesą.",
-      "github-models": "Sukurkite GitHub PAT su „models: read“ aprėptimi adresu github.com/settings/tokens",
-      "apmix": "Prijunkite Apmix su API raktu iš apmix.ai/dashboard — vienas prenumeratos planas, daug modelių."
+      "github-models": "Sukurkite GitHub PAT su „models: read“ aprėptimi adresu github.com/settings/tokens"
     },
     "passthroughModelsDescription": "{provider} priima teikėjui būdingus modelių ID. Importuokite juos iš /models arba pridėkite pasirinktinius ID maršrutizavimui.",
     "bedrockModelsDescription": "Amazon Bedrock modeliai susieti su AWS regionu. Importuokite juos iš /models arba pridėkite pasirinktame regione įgalintų Bedrock modelių ID.",
@@ -6801,14 +6808,7 @@
     "rateLimitOverridesModelConcurrencyLabel": "Per-model concurrency caps",
     "rateLimitOverridesModelConcurrencyPlaceholder": "glm-5=1\nglm-4.7=3",
     "rateLimitOverridesModelConcurrencyHint": "Optional: one model=cap per line, matched against the exact upstream model id. Queues excess requests locally; blank means no per-model cap.",
-    "rateLimitOverridesModelConcurrencyInvalid": "Invalid per-model concurrency entry \"{entry}\" — use model=cap with a whole number from 1 to {max}.",
-    "codexPaidCreditsShort": "Extra credits",
-    "codexPaidCreditsToggleTitle": "Allow paid Codex credits after subscription quota runs out (additional charges may apply)",
-    "codexPaidCreditsEnabled": "Codex paid credits enabled (additional charges may apply)",
-    "codexPaidCreditsDisabled": "Codex paid credits disabled",
-    "failedUpdateCodexPaidCredits": "Failed to update Codex paid-credit policy",
-    "allowCodexPaidCreditsLabel": "Allow paid Codex credits",
-    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled."
+    "rateLimitOverridesModelConcurrencyInvalid": "Invalid per-model concurrency entry \"{entry}\" — use model=cap with a whole number from 1 to {max}."
   },
   "settings": {
     "title": "Nustatymai",
@@ -9834,6 +9834,10 @@
     "streamTransformFailed": "Nepavyko transformuoti srauto"
   },
   "usage": {
+    "codexPaidCreditsLabel": "Paid Codex credits",
+    "codexPaidCreditsAvailable": "Available (balance not reported)",
+    "codexPaidCreditsUnavailable": "Unavailable or spending limit reached",
+    "codexPaidCreditsUnlimited": "Unlimited",
     "title": "Naudojimas",
     "grokExtraUsageCredits": "Papildomo naudojimo kreditai",
     "grokAutoTopUp": "Automatinis papildymas",
@@ -10286,11 +10290,7 @@
     "updatedShort": "Atnaujinta",
     "lastRefreshed": "Paskutinį kartą atnaujinta",
     "providerQuota": "Teikėjo kvota",
-    "providerQuotaHomeHint": "Būsena realiuoju laiku visose prijungtose paskyrose",
-    "codexPaidCreditsLabel": "Paid Codex credits",
-    "codexPaidCreditsAvailable": "Available (balance not reported)",
-    "codexPaidCreditsUnavailable": "Unavailable or spending limit reached",
-    "codexPaidCreditsUnlimited": "Unlimited"
+    "providerQuotaHomeHint": "Būsena realiuoju laiku visose prijungtose paskyrose"
   },
   "modals": {
     "waitingAuth": "Laukiama autorizacijos",
@@ -14845,6 +14845,8 @@
     "council": "Taryba",
     "candidates": "Kandidatai",
     "cancel": "Atšaukti užduotį",
+    "retry": "__MISSING__:Retry task",
+    "retryFailed": "__MISSING__:The hub refused the retry",
     "cancelConfirmTitle": "Atšaukti šią užduotį?",
     "cancelConfirmMessage": "Centrinis mazgas nutrauks vykdymą vykdytojuje. Šio veiksmo anuliuoti negalima.",
     "cancelFailed": "Centrinis mazgas atmetė atšaukimo užklausą",

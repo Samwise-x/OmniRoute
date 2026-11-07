@@ -3400,13 +3400,13 @@
     "comboRefMember": "បន្សំ → {name}"
   },
   "combos": {
+    "title": "បន្សំ",
+    "description": "បង្កើតបន្សំម៉ូដែលដោយប្រើការបញ្ជូនតាមទម្ងន់ និងការគាំទ្រការបម្រុងទុក",
+    "autoCatalogTitle": "កាតាឡុកបញ្ជូនដោយស្វ័យប្រវត្តិ",
     "autoTosLoadError": "មិនអាចផ្ទុកគោលការណ៍លក្ខខណ្ឌសេវាកម្មបានទេ។ សូមព្យាយាមម្តងទៀតមុនពេលផ្លាស់ប្តូរវា។",
     "autoTosSaveError": "មិនអាចរក្សាទុកគោលការណ៍លក្ខខណ្ឌសេវាកម្មបានទេ។ ការកំណត់ពីមុននៅតែត្រូវបានបង្ហាញ។ សូមព្យាយាមម្តងទៀត។",
     "autoTosIncludeLabel": "រួមបញ្ចូលអ្នកផ្តល់សេវាដែលបានសម្គាល់ ToS: avoid ក្នុង auto",
     "autoTosDescription": "បិទតាមលំនាំដើម។ អនុវត្តចំពោះបន្សំ auto ទាំងអស់ មិនមែនគ្រាន់តែគណនីមួយទេ។ ការភ្ជាប់អ្នកផ្តល់សេវាមិនបើកជម្រើសនេះទេ។",
-    "title": "បន្សំ",
-    "description": "បង្កើតបន្សំម៉ូដែលដោយប្រើការបញ្ជូនតាមទម្ងន់ និងការគាំទ្រការបម្រុងទុក",
-    "autoCatalogTitle": "កាតាឡុកបញ្ជូនដោយស្វ័យប្រវត្តិ",
     "autoCatalogTemplateCount": "គំរូ {count}",
     "autoCatalogDescription": "បន្សំ auto/* ដែលមានស្រាប់ ត្រូវបានកំណត់ជាថាមវន្តពីអ្នកផ្តល់សេវាដែលបានភ្ជាប់។ ប្រើ ID ណាមួយក្នុងចំណោមនេះជាវាលម៉ូដែល — មិនចាំបាច់កំណត់រចនាសម្ព័ន្ធទេ។",
     "autoCatalogExpand": "ពង្រីកកាតាឡុកបញ្ជូនដោយស្វ័យប្រវត្តិ",
@@ -6539,6 +6539,7 @@
       "monsterapi": "ទទួលបាន API key នៅ monsterapi.ai",
       "moonshot": "ភ្ជាប់ Kimi ដោយប្រើ API key។",
       "morph": "កម្រិតឥតគិតថ្លៃ៖ 250K credits/ខែ, $0",
+      "apmix": "ភ្ជាប់ Apmix ជាមួយកូនសោ API ពី apmix.ai/dashboard — ជាវជាប់តែមួយ ម៉ូដែលច្រើន។",
       "nanogpt": "ភ្ជាប់ NanoGPT ដោយប្រើ API key។",
       "nebius": "ឥណទានសាកល្បងប្រហែល $1 នៅពេលចុះឈ្មោះ សម្រាប់ការធ្វើតេស្ត API",
       "nlpcloud": "NLP Cloud ប្រើ chatbot API ដែលជាកម្មសិទ្ធិផ្ទាល់ខ្លួន ជំនួសឱ្យ OpenAI chat/completions។ OmniRoute សម្របសារ OpenAI ទៅជា input/context/history និងផ្តល់កាតាឡុកក្នុងមូលដ្ឋាននៃម៉ូដែល chatbot ដែលគាំទ្រ។",
@@ -6635,8 +6636,7 @@
       "kiro": "កម្រិតឥតគិតថ្លៃ៖ 50 ក្រេឌីត/ខែ (~25K–100K tokens)។ ⚠️ លក្ខខណ្ឌប្រើប្រាស់ Kiro ហាមឃាត់ការប្រើប្រាស់ proxy/harness របស់ភាគីទីបី។",
       "codex": "ភ្ជាប់ OpenAI Codex ដោយប្រើលំហូរ OAuth ដែលមានស្រាប់។",
       "qwen": "ភ្ជាប់ Qwen Code ដោយប្រើលំហូរ OAuth ដែលមានស្រាប់។",
-      "github-models": "បង្កើត GitHub PAT ដែលមាន scope 'models: read' នៅ github.com/settings/tokens",
-      "apmix": "ភ្ជាប់ Apmix ជាមួយកូនសោ API ពី apmix.ai/dashboard — ជាវជាប់តែមួយ ម៉ូដែលច្រើន។"
+      "github-models": "បង្កើត GitHub PAT ដែលមាន scope 'models: read' នៅ github.com/settings/tokens"
     },
     "passthroughModelsDescription": "{provider} ទទួលយក ID ម៉ូដែលដើមរបស់ provider។ នាំចូលពី /models ឬបន្ថែម ID ផ្ទាល់ខ្លួនសម្រាប់ការកំណត់ផ្លូវ។",
     "bedrockModelsDescription": "ម៉ូដែល Amazon Bedrock ត្រូវបានកំណត់តាមតំបន់ AWS។ នាំចូលពី /models ឬបន្ថែម ID ម៉ូដែល Bedrock ដែលបានបើកប្រើក្នុងតំបន់ដែលបានជ្រើសរើស។",
@@ -14845,6 +14845,8 @@
     "council": "ក្រុមប្រឹក្សា",
     "candidates": "បេក្ខជន",
     "cancel": "បោះបង់កិច្ចការ",
+    "retry": "__MISSING__:Retry task",
+    "retryFailed": "__MISSING__:The hub refused the retry",
     "cancelConfirmTitle": "បោះបង់កិច្ចការនេះមែនទេ?",
     "cancelConfirmMessage": "មជ្ឈមណ្ឌលនឹងបញ្ឈប់ការប្រតិបត្តិនៅលើកម្មវិធីដំណើរការ។ សកម្មភាពនេះមិនអាចត្រឡប់វិញបានទេ។",
     "cancelFailed": "មជ្ឈមណ្ឌលបានបដិសេធការបោះបង់",

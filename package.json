@@ -316,8 +316,9 @@
     "i18n:check-keys": "node scripts/i18n/check-key-completeness.mjs",
     "i18n:check-keys:cli": "node scripts/i18n/check-key-completeness.mjs --catalog=cli",
     "check:free-catalog-evidence": "node scripts/check/check-free-catalog-evidence.mjs",
-    "test:conductor": "node --import tsx/esm --test tests/unit/conductor-runtime.test.mjs tests/unit/conductor-runtime-guards.test.mjs tests/unit/conductor-opencode-seam.test.mjs",
+    "test:conductor": "node --import tsx/esm --test tests/unit/conductor-runtime.test.mjs tests/unit/conductor-runtime-guards.test.mjs tests/unit/conductor-opencode-seam.test.mjs tests/unit/conductor-hub-lifecycle.test.mjs tests/unit/conductor-observability.test.mjs tests/unit/conductor-principals.test.mjs",
     "test:conductor:contract": "node --import tsx/esm --import ./open-sse/utils/setupPolyfill.ts --test tests/integration/conductor-hub-contract.test.ts",
+    "test:conductor:opencode": "node --import tsx/esm --test tests/unit/conductor-opencode-real.test.mjs",
     "verify:conductor": "node scripts/ops/conductor-evidence.mjs",
     "verify:conductor:docker": "bash scripts/ops/conductor-docker-verify.sh"
   },

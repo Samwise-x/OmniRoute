@@ -3400,13 +3400,13 @@
     "comboRefMember": "Kombination → {name}"
   },
   "combos": {
-    "autoTosIncludeLabel": "Inkludera leverantörer märkta ToS: avoid i auto",
-    "autoTosDescription": "Av som standard. Gäller alla auto-kombinationer, inte bara ett konto. Att ansluta en leverantör aktiverar inte det här alternativet.",
-    "autoTosSaveError": "Det gick inte att spara ToS-policyn. Den tidigare inställningen visas fortfarande. Försök igen.",
-    "autoTosLoadError": "Det gick inte att läsa in ToS-policyn. Försök igen innan du ändrar den.",
     "title": "Kombinationer",
     "description": "Skapa modellkombinationer med viktad routing och reservstöd",
     "autoCatalogTitle": "Katalog för automatisk routing",
+    "autoTosLoadError": "Det gick inte att läsa in ToS-policyn. Försök igen innan du ändrar den.",
+    "autoTosSaveError": "Det gick inte att spara ToS-policyn. Den tidigare inställningen visas fortfarande. Försök igen.",
+    "autoTosIncludeLabel": "Inkludera leverantörer märkta ToS: avoid i auto",
+    "autoTosDescription": "Av som standard. Gäller alla auto-kombinationer, inte bara ett konto. Att ansluta en leverantör aktiverar inte det här alternativet.",
     "autoCatalogTemplateCount": "{count} mallar",
     "autoCatalogDescription": "Inbyggda auto/*-kombinationer lösts dynamiskt från anslutna leverantörer. Använd något av dessa ID:n som modellfält – ingen installation behövs.",
     "autoCatalogExpand": "Utöka katalogen för automatisk routing",
@@ -6079,6 +6079,13 @@
     "claudeLowPriorityModeDescription": "När det här kontot når sin användningsgräns på 5 timmar och Anthropic erbjuder kön med lägre prioritet, accepterar OmniRoute den och fortsätter att skicka förfrågningar med anthropic-usage-limit: slow tills tidsfönstret återställs, i stället för att låta anslutningen svalna. Veckogränsen gäller fortfarande och svar kan behöva vänta på ledig kapacitet.",
     "claudeAutoLimitResetLabel": "Återställ sessionsgränsen automatiskt (en gång i veckan)",
     "claudeAutoLimitResetDescription": "När det här kontot når sin användningsgräns på 5 timmar och en återställning av sessionsgränsen är tillgänglig, aktiverar OmniRoute den automatiskt och försöker igen med full hastighet. Detta använder kontots återställning som är tillgänglig en gång i veckan och räknas fortfarande mot veckogränsen.",
+    "codexPaidCreditsShort": "Extra credits",
+    "codexPaidCreditsToggleTitle": "Allow paid Codex credits after subscription quota runs out (additional charges may apply)",
+    "codexPaidCreditsEnabled": "Codex paid credits enabled (additional charges may apply)",
+    "codexPaidCreditsDisabled": "Codex paid credits disabled",
+    "failedUpdateCodexPaidCredits": "Failed to update Codex paid-credit policy",
+    "allowCodexPaidCreditsLabel": "Allow paid Codex credits",
+    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled.",
     "disableCoolingDescription": "Hoppa över den tillfälliga cooldown-perioden så att denna anslutning förblir tillgänglig även efter återställningsbara fel (slutgiltiga tillstånd som banned/expired gäller fortfarande).",
     "disableCoolingLabel": "Inaktivera cooldown för denna anslutning",
     "bulkPasteAdded": "{count, plural, one {1 nyckel tillagd} other {# nycklar tillagda}}",
@@ -6532,6 +6539,7 @@
       "monsterapi": "Hämta API-nyckel på monsterapi.ai",
       "moonshot": "Anslut Moonshot AI med en API-nyckel.",
       "morph": "Gratisnivå: 250K krediter/månad, 0 $",
+      "apmix": "Anslut Apmix med en API-nyckel från apmix.ai/dashboard — en prenumeration, många modeller.",
       "nanogpt": "Anslut NanoGPT med en API-nyckel.",
       "nebius": "~1 $ i testkrediter vid registrering för API-testning",
       "nlpcloud": "NLP Cloud använder ett proprietärt chatbot-API istället för OpenAI chat/completions. OmniRoute anpassar OpenAI-meddelanden till indata/kontext/historik och exponerar en lokal katalog över chatbot-modeller som stöds.",
@@ -6628,8 +6636,7 @@
       "kiro": "Gratisnivå: 50 krediter/månad (~25K–100K tokens). ⚠️ Kiros användarvillkor förbjuder användning av tredjepartsproxy/harness.",
       "codex": "Anslut OpenAI Codex med det befintliga OAuth-flödet.",
       "qwen": "Anslut Qwen Code med det befintliga OAuth-flödet.",
-      "github-models": "Skapa en GitHub PAT med omfånget 'models: read' på github.com/settings/tokens",
-      "apmix": "Anslut Apmix med en API-nyckel från apmix.ai/dashboard — en prenumeration, många modeller."
+      "github-models": "Skapa en GitHub PAT med omfånget 'models: read' på github.com/settings/tokens"
     },
     "passthroughModelsDescription": "{provider} accepterar leverantörsbaserade modell-ID:n. Importera från /models eller lägg till anpassade ID:n för routing.",
     "bedrockModelsDescription": "Amazon Bedrock-modeller omfattas av AWS-regionen. Importera från /models eller lägg till Bedrock-modell-ID:n aktiverade i den valda regionen.",
@@ -6801,14 +6808,7 @@
     "rateLimitOverridesModelConcurrencyLabel": "Per-model concurrency caps",
     "rateLimitOverridesModelConcurrencyPlaceholder": "glm-5=1\nglm-4.7=3",
     "rateLimitOverridesModelConcurrencyHint": "Optional: one model=cap per line, matched against the exact upstream model id. Queues excess requests locally; blank means no per-model cap.",
-    "rateLimitOverridesModelConcurrencyInvalid": "Invalid per-model concurrency entry \"{entry}\" — use model=cap with a whole number from 1 to {max}.",
-    "codexPaidCreditsShort": "Extra credits",
-    "codexPaidCreditsToggleTitle": "Allow paid Codex credits after subscription quota runs out (additional charges may apply)",
-    "codexPaidCreditsEnabled": "Codex paid credits enabled (additional charges may apply)",
-    "codexPaidCreditsDisabled": "Codex paid credits disabled",
-    "failedUpdateCodexPaidCredits": "Failed to update Codex paid-credit policy",
-    "allowCodexPaidCreditsLabel": "Allow paid Codex credits",
-    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled."
+    "rateLimitOverridesModelConcurrencyInvalid": "Invalid per-model concurrency entry \"{entry}\" — use model=cap with a whole number from 1 to {max}."
   },
   "settings": {
     "title": "Inställningar",
@@ -9834,6 +9834,10 @@
     "streamTransformFailed": "Misslyckades med att transformera strömmen"
   },
   "usage": {
+    "codexPaidCreditsLabel": "Paid Codex credits",
+    "codexPaidCreditsAvailable": "Available (balance not reported)",
+    "codexPaidCreditsUnavailable": "Unavailable or spending limit reached",
+    "codexPaidCreditsUnlimited": "Unlimited",
     "title": "Användning",
     "grokExtraUsageCredits": "Extra Användningskrediter",
     "grokAutoTopUp": "Automatisk Påfyllning",
@@ -10286,11 +10290,7 @@
     "updatedShort": "Uppdaterad",
     "lastRefreshed": "Senast uppdaterad",
     "providerQuota": "Leverantörskvot",
-    "providerQuotaHomeHint": "Livestatus för anslutna konton",
-    "codexPaidCreditsLabel": "Paid Codex credits",
-    "codexPaidCreditsAvailable": "Available (balance not reported)",
-    "codexPaidCreditsUnavailable": "Unavailable or spending limit reached",
-    "codexPaidCreditsUnlimited": "Unlimited"
+    "providerQuotaHomeHint": "Livestatus för anslutna konton"
   },
   "modals": {
     "waitingAuth": "Väntar på auktorisering",
@@ -14845,6 +14845,8 @@
     "council": "Råd",
     "candidates": "Kandidater",
     "cancel": "Avbryt uppgift",
+    "retry": "__MISSING__:Retry task",
+    "retryFailed": "__MISSING__:The hub refused the retry",
     "cancelConfirmTitle": "Avbryt denna uppgift?",
     "cancelConfirmMessage": "Huben kommer att avbryta körningen på löparen. Detta kan inte ångras.",
     "cancelFailed": "Hubbens avbokning avslogs",

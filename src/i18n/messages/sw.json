@@ -3400,13 +3400,13 @@
     "comboRefMember": "Mchanganyiko → {name}"
   },
   "combos": {
-    "autoTosIncludeLabel": "Jumuisha watoa huduma wenye alama ToS: avoid katika auto",
-    "autoTosDescription": "Imezimwa kwa chaguo-msingi. Inatumika kwa michanganyiko yote ya auto, si akaunti moja tu. Kuunganisha mtoa huduma hakuwezeshi chaguo hili.",
-    "autoTosSaveError": "Imeshindikana kuhifadhi sera ya ToS. Mpangilio wa awali bado unaonyeshwa. Jaribu tena.",
-    "autoTosLoadError": "Imeshindikana kupakia sera ya ToS. Jaribu tena kabla ya kuibadilisha.",
     "title": "Mikusanyiko",
     "description": "Unda mikusanyiko ya modeli yenye uelekezaji wenye uzani na usaidizi wa kutumia mbadala",
     "autoCatalogTitle": "Katalogi ya uelekezaji kiotomatiki",
+    "autoTosLoadError": "Imeshindikana kupakia sera ya ToS. Jaribu tena kabla ya kuibadilisha.",
+    "autoTosSaveError": "Imeshindikana kuhifadhi sera ya ToS. Mpangilio wa awali bado unaonyeshwa. Jaribu tena.",
+    "autoTosIncludeLabel": "Jumuisha watoa huduma wenye alama ToS: avoid katika auto",
+    "autoTosDescription": "Imezimwa kwa chaguo-msingi. Inatumika kwa michanganyiko yote ya auto, si akaunti moja tu. Kuunganisha mtoa huduma hakuwezeshi chaguo hili.",
     "autoCatalogTemplateCount": "{count} violezo",
     "autoCatalogDescription": "Michanganyiko ya kiotomatiki/* iliyojengewa ndani imetatuliwa kutoka kwa watoa huduma waliounganishwa. Tumia kitambulisho chochote kati ya hivi kama sehemu ya kielelezo - hakuna usanidi unaohitajika.",
     "autoCatalogExpand": "Panua katalogi ya uelekezaji kiotomatiki",
@@ -6079,6 +6079,13 @@
     "claudeLowPriorityModeDescription": "Akaunti hii inapofikia kikomo chake cha matumizi cha saa 5 na Anthropic ikatoa njia yenye kipaumbele cha chini, OmniRoute huikubali na kuendelea kutuma maombi yenye anthropic-usage-limit: slow hadi kipindi kiwekwe upya, badala ya kusitisha muunganisho kwa muda. Kikomo cha kila wiki bado kinatumika na huenda majibu yakasubiri hadi nafasi ya ziada ipatikane.",
     "claudeAutoLimitResetLabel": "Weka upya kikomo cha kipindi kiotomatiki (mara moja kwa wiki)",
     "claudeAutoLimitResetDescription": "Akaunti hii inapofikia kikomo chake cha matumizi cha saa 5 na uwekaji upya wa kikomo cha kipindi unapatikana, OmniRoute huutumia kiotomatiki na kujaribu tena kwa kasi kamili. Hii hutumia uwekaji upya wa akaunti wa mara moja kwa wiki na bado huhesabiwa katika kikomo cha kila wiki.",
+    "codexPaidCreditsShort": "Extra credits",
+    "codexPaidCreditsToggleTitle": "Allow paid Codex credits after subscription quota runs out (additional charges may apply)",
+    "codexPaidCreditsEnabled": "Codex paid credits enabled (additional charges may apply)",
+    "codexPaidCreditsDisabled": "Codex paid credits disabled",
+    "failedUpdateCodexPaidCredits": "Failed to update Codex paid-credit policy",
+    "allowCodexPaidCreditsLabel": "Allow paid Codex credits",
+    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled.",
     "disableCoolingDescription": "Ruka muda wa utulivu wa mpito ili muunganisho huu uendelee kustahiki hata baada ya hitilafu zinazoweza kurekebishwa (hali za mwisho kama vile zilizopigwa marufuku/zilizopitwa na wakati bado zinatumika).",
     "disableCoolingLabel": "Zima muda wa utulivu kwa muunganisho huu",
     "bulkPasteAdded": "{count, plural, one {Ufunguo 1 umeongezwa} other {Funguo # zimeongezwa}}",
@@ -6532,6 +6539,7 @@
       "monsterapi": "Pata ufunguo wa API kwenye monsterapi.ai",
       "moonshot": "Unganisha Moonshot AI kwa kutumia ufunguo wa API.",
       "morph": "Kiwango cha bure: salio 250K/mwezi, $0",
+      "apmix": "Unganisha Apmix kwa funguo ya API kutoka apmix.ai/dashboard — usajili mmoja, modeli nyingi.",
       "nanogpt": "Unganisha NanoGPT kwa kutumia ufunguo wa API.",
       "nebius": "Salio la majaribio la ~$1 unapojisajili kwa ajili ya majaribio ya API",
       "nlpcloud": "NLP Cloud hutumia API ya chatbot ya umiliki badala ya OpenAI chat/completions. OmniRoute hurekebisha ujumbe wa OpenAI kulingana na input/context/history na kuweka wazi orodha ya ndani ya modeli za chatbot zinazotumika.",
@@ -6628,8 +6636,7 @@
       "kiro": "Kiwango cha bure: mikopo 50/mwezi (~tokeni 25K–100K). ⚠️ Kiro ToS inakataza matumizi ya proksi/harness ya wahusika wengine.",
       "codex": "Unganisha OpenAI Codex na mtiririko uliopo wa OAuth.",
       "qwen": "Unganisha Qwen Code na mtiririko uliopo wa OAuth.",
-      "github-models": "Unda PAT ya GitHub yenye upeo wa 'models: read' kwenye github.com/settings/tokens",
-      "apmix": "Unganisha Apmix kwa funguo ya API kutoka apmix.ai/dashboard — usajili mmoja, modeli nyingi."
+      "github-models": "Unda PAT ya GitHub yenye upeo wa 'models: read' kwenye github.com/settings/tokens"
     },
     "passthroughModelsDescription": "{provider} inakubali vitambulisho vya asili vya mtoa huduma. Ingiza kutoka /miundo au ongeza vitambulisho maalum vya kuelekeza.",
     "bedrockModelsDescription": "Mitindo ya Amazon Bedrock inatolewa na eneo la AWS. Ingiza kutoka /miundo au ongeza vitambulisho vya muundo wa Bedrock vilivyowezeshwa katika eneo lililochaguliwa.",
@@ -6801,14 +6808,7 @@
     "rateLimitOverridesModelConcurrencyLabel": "Per-model concurrency caps",
     "rateLimitOverridesModelConcurrencyPlaceholder": "glm-5=1\nglm-4.7=3",
     "rateLimitOverridesModelConcurrencyHint": "Optional: one model=cap per line, matched against the exact upstream model id. Queues excess requests locally; blank means no per-model cap.",
-    "rateLimitOverridesModelConcurrencyInvalid": "Invalid per-model concurrency entry \"{entry}\" — use model=cap with a whole number from 1 to {max}.",
-    "codexPaidCreditsShort": "Extra credits",
-    "codexPaidCreditsToggleTitle": "Allow paid Codex credits after subscription quota runs out (additional charges may apply)",
-    "codexPaidCreditsEnabled": "Codex paid credits enabled (additional charges may apply)",
-    "codexPaidCreditsDisabled": "Codex paid credits disabled",
-    "failedUpdateCodexPaidCredits": "Failed to update Codex paid-credit policy",
-    "allowCodexPaidCreditsLabel": "Allow paid Codex credits",
-    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled."
+    "rateLimitOverridesModelConcurrencyInvalid": "Invalid per-model concurrency entry \"{entry}\" — use model=cap with a whole number from 1 to {max}."
   },
   "settings": {
     "title": "Mipangilio",
@@ -9834,6 +9834,10 @@
     "streamTransformFailed": "Imeshindwa kubadilisha mtiririko"
   },
   "usage": {
+    "codexPaidCreditsLabel": "Paid Codex credits",
+    "codexPaidCreditsAvailable": "Available (balance not reported)",
+    "codexPaidCreditsUnavailable": "Unavailable or spending limit reached",
+    "codexPaidCreditsUnlimited": "Unlimited",
     "title": "Matumizi",
     "grokExtraUsageCredits": "Mikopo Ya Ziada",
     "grokAutoTopUp": "Kuongeza Otomatikia",
@@ -10286,11 +10290,7 @@
     "updatedShort": "Imesasishwa",
     "lastRefreshed": "Ilihuishwa mara ya mwisho",
     "providerQuota": "Kiwango cha Mtoa Huduma",
-    "providerQuotaHomeHint": "Hali ya moja kwa moja kwenye akaunti zilizounganishwa",
-    "codexPaidCreditsLabel": "Paid Codex credits",
-    "codexPaidCreditsAvailable": "Available (balance not reported)",
-    "codexPaidCreditsUnavailable": "Unavailable or spending limit reached",
-    "codexPaidCreditsUnlimited": "Unlimited"
+    "providerQuotaHomeHint": "Hali ya moja kwa moja kwenye akaunti zilizounganishwa"
   },
   "modals": {
     "waitingAuth": "Inasubiri Uidhinishaji",
@@ -14845,6 +14845,8 @@
     "council": "Baraza",
     "candidates": "Wagombea",
     "cancel": "Ghairi kazi",
+    "retry": "__MISSING__:Retry task",
+    "retryFailed": "__MISSING__:The hub refused the retry",
     "cancelConfirmTitle": "Ghairi kazi hii?",
     "cancelConfirmMessage": "Kituo kitaacha utekelezaji kwenye mkimbiaji. Hii haiwezi kubadilishwa.",
     "cancelFailed": "Kituo kilikataa kufuta",

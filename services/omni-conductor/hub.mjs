@@ -10,6 +10,21 @@ const HOST = process.env.HOST || "0.0.0.0";
 const TOKEN = process.env.CONDUCTOR_HUB_TOKEN || process.env.HUB_TOKEN || "";
 const STATE_FILE = process.env.CONDUCTOR_STATE_FILE || "/data/conductor-state.json";
 const HEARTBEAT_TTL_MS = Number(process.env.RUNNER_HEARTBEAT_TTL_MS || 30_000);
+const MAX_EVENTS = Number(process.env.CONDUCTOR_MAX_EVENTS || 10_000);
+// Retention: a terminal task is kept for TTL, then dropped. 0 disables pruning entirely
+// (keep every task forever) — the durable default is "prune", because an unbounded list is
+// what a dashboard eventually dies from.
+const TASK_RETENTION_MS = Number(
+  process.env.CONDUCTOR_TASK_RETENTION_MS || 7 * 24 * 60 * 60 * 1000
+);
+const MAX_TASKS = Number(process.env.CONDUCTOR_MAX_TASKS || 5_000);
+// `mode` is a closed set. Anything else is a client bug; silently accepting it means the
+// dashboard, the events and the runner all disagree about what the task is.
+const TASK_MODES = ["solo", "council"];
+const TERMINAL = ["completed", "failed", "canceled"];
+const DEFAULT_LIST_LIMIT = 50;
+const MAX_LIST_LIMIT = 200;
+const MAX_TASK_RETRIES = Number(process.env.CONDUCTOR_MAX_TASK_RETRIES || 3);
 if (!TOKEN || TOKEN.length < 16)
   throw new Error("CONDUCTOR_HUB_TOKEN must contain at least 16 characters");
 
@@ -35,24 +50,147 @@ function persist() {
   fs.writeFileSync(tmp, JSON.stringify(state), { mode: 0o600 });
   fs.renameSync(tmp, STATE_FILE);
 }
+/**
+ * Drop tasks that have been terminal for longer than the retention window, then enforce a
+ * hard cap by dropping the oldest terminal tasks. Running work is never pruned. Returns
+ * the number dropped so the caller can skip a pointless write.
+ */
+function pruneTasks() {
+  const before = state.tasks.length;
+  const cutoff = Date.now() - TASK_RETENTION_MS;
+  if (TASK_RETENTION_MS > 0) {
+    state.tasks = state.tasks.filter((task) => {
+      const ended = Date.parse(task.completed_at || "");
+      if (!TERMINAL.includes(task.status) || Number.isNaN(ended)) return true;
+      return ended >= cutoff;
+    });
+  }
+  if (MAX_TASKS > 0 && state.tasks.length > MAX_TASKS) {
+    const terminal = state.tasks
+      .filter((task) => TERMINAL.includes(task.status))
+      .sort((a, b) => String(a.completed_at).localeCompare(String(b.completed_at)));
+    const excess = state.tasks.length - MAX_TASKS;
+    const drop = new Set(terminal.slice(0, Math.min(excess, terminal.length)).map((t) => t.id));
+    if (drop.size) state.tasks = state.tasks.filter((task) => !drop.has(task.id));
+  }
+  return before - state.tasks.length;
+}
+/**
+ * Operational counters. Kept deliberately tiny and JSON (not Prometheus text): the
+ * dashboard consumes it, and every counter here answers a question an operator has
+ * actually asked — "is work backing up, are runners alive, is anything failing".
+ * `/metrics` sits behind the same bearer auth as the rest of `/v1`, because queue
+ * depth is fleet information.
+ */
+function metrics() {
+  const now = Date.now();
+  const byStatus = {};
+  for (const task of state.tasks) byStatus[task.status] = (byStatus[task.status] || 0) + 1;
+  const online = state.runners.filter((r) => now - r.last_seen < HEARTBEAT_TTL_MS);
+  const requirements = state.tasks.filter((t) => t.status === "queued").length;
+  const capacity = online
+    .filter((r) => !r.draining)
+    .reduce((sum, r) => sum + Math.max(0, (r.max_concurrency || 1) - (r.active || 0)), 0);
+  const oldestQueued = state.tasks
+    .filter((t) => t.status === "queued")
+    .sort((a, b) => a.created_at.localeCompare(b.created_at))[0];
+  return {
+    tasks: {
+      total: state.tasks.length,
+      by_status: byStatus,
+      queued: byStatus.queued || 0,
+      running: byStatus.working || 0,
+      // Depth after capacity: ">0" means nothing can start until a runner frees up.
+      queued_over_capacity: Math.max(0, requirements - capacity),
+      oldest_queued_age_ms: oldestQueued
+        ? Math.max(0, now - Date.parse(oldestQueued.created_at))
+        : 0,
+      retries: state.tasks.reduce((sum, t) => sum + Number(t.retries || 0), 0),
+    },
+    runners: {
+      total: state.runners.length,
+      online: online.length,
+      draining: online.filter((r) => r.draining).length,
+      capacity,
+    },
+    events: { buffered: state.events.length, seq: state.seq, subscribers: subscribers.size },
+    retention: {
+      task_retention_ms: TASK_RETENTION_MS,
+      max_tasks: MAX_TASKS,
+      max_events: MAX_EVENTS,
+    },
+    uptime_ms: Math.round(process.uptime() * 1000),
+  };
+}
 function event(type, task, extra = {}) {
   const e = {
     id: String(++state.seq),
     type,
-    payload: { task_id: task.id, mode: task.mode, ...extra },
+    // Task-scoped events carry their task; lifecycle events (runner.deregistered) pass
+    // nulls rather than inventing an id that no task has.
+    payload: { task_id: task.id ?? null, mode: task.mode ?? null, ...extra },
     ts: new Date().toISOString(),
   };
   state.events.push(e);
-  if (state.events.length > 10_000) state.events.splice(0, state.events.length - 10_000);
+  if (state.events.length > MAX_EVENTS) state.events.splice(0, state.events.length - MAX_EVENTS);
   persist();
   const frame = `id: ${e.id}\nevent: ${type}\ndata: ${JSON.stringify({ ts: e.ts, payload: e.payload })}\n\n`;
   for (const res of subscribers) res.write(frame);
 }
-function auth(req) {
-  const given = (req.headers.authorization || "").replace(/^Bearer\s+/i, "");
+// Principals. One shared secret means a compromised runner can create, cancel and retry
+// tasks anywhere in the fleet — it is the same credential the orchestrator uses. These
+// are optional: unset, the Hub behaves exactly as before (single shared token), so an
+// existing deployment keeps working and can adopt them incrementally.
+//
+//   CONDUCTOR_HUB_TOKEN             full access (admin/orchestrator)  — required
+//   CONDUCTOR_RUNNER_TOKEN          runner-only verbs: register / heartbeat / claim /
+//                                   deregister / result. Cannot create or cancel tasks.
+//   CONDUCTOR_READONLY_TOKEN        GET only.
+const RUNNER_TOKEN = process.env.CONDUCTOR_RUNNER_TOKEN || "";
+const READONLY_TOKEN = process.env.CONDUCTOR_READONLY_TOKEN || "";
+
+// Which verbs each principal may use. The runner surface is exactly what `runner.mjs`
+// calls; anything wider is deliberately absent.
+const RUNNER_ROUTES = new Set([
+  "/v1/runners/register",
+  "/v1/runners/heartbeat",
+  "/v1/runners/deregister",
+  "/v1/runner/claim",
+]);
+const RUNNER_PATTERNS = [/^\/v1\/tasks\/[^/]+\/result$/];
+
+function matches(given, secret) {
   const a = Buffer.from(given),
-    b = Buffer.from(TOKEN);
+    b = Buffer.from(secret);
   return a.length === b.length && timingSafeEqual(a, b);
+}
+
+/**
+ * Resolves the caller's principal from its bearer token, or `null` when unauthorized.
+ * Constant-time comparison against every configured secret (no early exit, so timing
+ * does not reveal which secret matched).
+ */
+function principal(req) {
+  const given = (req.headers.authorization || "").replace(/^Bearer\s+/i, "");
+  if (!given) return null;
+  let found = null;
+  if (matches(given, TOKEN)) found = "admin";
+  if (RUNNER_TOKEN && matches(given, RUNNER_TOKEN)) found = "runner";
+  if (READONLY_TOKEN && matches(given, READONLY_TOKEN)) found = "readonly";
+  return found;
+}
+
+/** Does `who` get to call `method path`? Admin: everything. Others: a strict subset. */
+function authorize(who, method, pathname) {
+  if (!who) return false;
+  if (who === "admin") return true;
+  if (who === "readonly") return method === "GET" || method === "HEAD";
+  if (who === "runner") {
+    if (method === "GET" && pathname === "/v1/runners") return true;
+    if (method !== "POST") return false;
+    return RUNNER_ROUTES.has(pathname) || RUNNER_PATTERNS.some((re) => re.test(pathname));
+  }
+  return false;
 }
 function json(res, status, body) {
   res.writeHead(status, {
@@ -170,16 +308,73 @@ const server = http.createServer(async (req, res) => {
       tasks: state.tasks.length,
       runners: state.runners.filter((r) => Date.now() - r.last_seen < HEARTBEAT_TTL_MS).length,
     });
-  if (!auth(req)) return json(res, 401, { error: "unauthorized" });
+  const who = principal(req);
+  if (!who) return json(res, 401, { error: "unauthorized" });
+  if (!authorize(who, req.method, url.pathname))
+    return json(res, 403, { error: `principal '${who}' may not ${req.method} ${url.pathname}` });
   try {
+    // Queue depth is fleet information: behind the same bearer gate as /v1/*.
+    if (req.method === "GET" && url.pathname === "/metrics") return json(res, 200, metrics());
     if (req.method === "GET" && url.pathname === "/v1/runners")
       return json(res, 200, state.runners.map(cleanRunner));
-    if (req.method === "GET" && url.pathname === "/v1/tasks")
-      return json(
-        res,
-        200,
-        state.tasks.slice().sort((a, b) => b.created_at.localeCompare(a.created_at))
+    if (req.method === "GET" && url.pathname === "/v1/tasks") {
+      // Keyset pagination on (created_at, id): `?limit=&cursor=&status=&mode=`.
+      // A plain array is still returned when no cursor/limit is asked for, so existing
+      // clients keep working; asking for a page switches to `{ tasks, next_cursor }`.
+      const limitRaw = url.searchParams.get("limit");
+      const paginated =
+        limitRaw !== null ||
+        url.searchParams.has("cursor") ||
+        url.searchParams.has("status") ||
+        url.searchParams.has("mode");
+      const limit = Math.min(
+        Math.max(
+          Number.isFinite(Number(limitRaw)) && Number(limitRaw) > 0
+            ? Number(limitRaw)
+            : DEFAULT_LIST_LIMIT,
+          1
+        ),
+        MAX_LIST_LIMIT
       );
+      const status = url.searchParams.get("status");
+      const mode = url.searchParams.get("mode");
+      if (status && ![...TERMINAL, "queued", "running"].includes(status))
+        return json(res, 400, { error: "invalid status filter" });
+      if (mode && !TASK_MODES.includes(mode))
+        return json(res, 400, { error: `mode must be one of: ${TASK_MODES.join(", ")}` });
+
+      let rows = state.tasks.slice();
+      if (status) rows = rows.filter((t) => t.status === status);
+      if (mode) rows = rows.filter((t) => t.mode === mode);
+      rows.sort((a, b) => b.created_at.localeCompare(a.created_at) || b.id.localeCompare(a.id));
+
+      if (!paginated) return json(res, 200, rows);
+
+      const cursor = url.searchParams.get("cursor");
+      if (cursor) {
+        let decoded;
+        try {
+          decoded = JSON.parse(Buffer.from(cursor, "base64url").toString("utf8"));
+        } catch {
+          return json(res, 400, { error: "invalid cursor" });
+        }
+        if (typeof decoded?.created_at !== "string" || typeof decoded?.id !== "string")
+          return json(res, 400, { error: "invalid cursor" });
+        const { created_at, id } = decoded;
+        rows = rows.filter(
+          (t) => t.created_at < created_at || (t.created_at === created_at && t.id < id)
+        );
+      }
+      const page = rows.slice(0, limit);
+      const last = page.at(-1);
+      const next_cursor =
+        rows.length > limit && last
+          ? Buffer.from(JSON.stringify({ created_at: last.created_at, id: last.id })).toString(
+              "base64url"
+            )
+          : null;
+      return json(res, 200, { tasks: page, next_cursor });
+    }
     if (req.method === "GET" && url.pathname === "/v1/events") {
       const cursor = Number(url.searchParams.get("last_event_id") || 0);
       res.writeHead(200, {
@@ -213,6 +408,9 @@ const server = http.createServer(async (req, res) => {
         return json(res, 400, { error: "repo.url and spec.prompt are required" });
       if (input.spec.prompt.length > 40_000 || input.repo.url.length > 2_000)
         return json(res, 413, { error: "task input too large" });
+      const mode = input.mode || "solo";
+      if (!TASK_MODES.includes(mode))
+        return json(res, 400, { error: `mode must be one of: ${TASK_MODES.join(", ")}` });
       const idempotencyKey = req.headers["idempotency-key"];
       if (idempotencyKey && (typeof idempotencyKey !== "string" || idempotencyKey.length > 200))
         return json(res, 400, { error: "invalid idempotency key" });
@@ -222,7 +420,7 @@ const server = http.createServer(async (req, res) => {
           prior.repo.url === input.repo.url.trim() &&
           prior.repo.base_ref === (input.repo.base_ref || "main") &&
           prior.spec.prompt === input.spec.prompt &&
-          prior.mode === (input.mode || "solo") &&
+          prior.mode === mode &&
           JSON.stringify(prior.requirements || {}) === JSON.stringify(input.requirements || {});
         return same
           ? json(res, 200, { id: prior.id })
@@ -234,7 +432,7 @@ const server = http.createServer(async (req, res) => {
         id,
         ...(idempotencyKey ? { idempotency_key: idempotencyKey } : {}),
         status: "queued",
-        mode: input.mode || "solo",
+        mode,
         repo: { url: input.repo.url.trim(), base_ref: input.repo.base_ref || "main" },
         spec: { prompt: input.spec.prompt },
         requirements: input.requirements || {},
@@ -280,7 +478,13 @@ const server = http.createServer(async (req, res) => {
       }
       runner.capabilities = {
         name: String(input.capabilities.name || input.id),
-        clis: input.capabilities.clis,
+        // Preserve the harness versions the Runner reported: an operator needs to know
+        // which binary a task actually ran on, and the fleet view is where they look.
+        clis: input.capabilities.clis.map((cli) => ({
+          profile: cli.profile,
+          models: cli.models,
+          ...(cli.version ? { version: cli.version } : {}),
+        })),
         skills: input.capabilities.skills || [],
       };
       runner.max_concurrency = Math.max(1, Math.min(32, Number(input.max_concurrency) || 1));
@@ -301,6 +505,35 @@ const server = http.createServer(async (req, res) => {
       persist();
       schedule();
       return json(res, 200, { ok: true });
+    }
+    if (req.method === "POST" && url.pathname === "/v1/runners/deregister") {
+      // Graceful shutdown: a Runner that is going away says so, instead of leaving its
+      // work pinned to a ghost until the heartbeat TTL expires (up to a full interval of
+      // a stuck queue). Its in-flight work is returned to the queue immediately and is
+      // eligible for any other runner on the next schedule pass.
+      const input = await body(req);
+      const runner = state.runners.find((r) => r.id === input.id);
+      if (!runner) return json(res, 404, { error: "runner not registered" });
+      if (runner.session_id && input.session_id !== runner.session_id)
+        return json(res, 409, { error: "runner session is stale" });
+      const requeued = [];
+      for (const task of state.tasks.filter(
+        (t) => t.status === "working" && t.assigned_runner === runner.id
+      )) {
+        task.status = "queued";
+        task.assigned_runner = null;
+        delete task.claimed_at;
+        delete task.claimed_session_id;
+        task.updated_at = new Date().toISOString();
+        requeued.push(task.id);
+        event("task.recovered", task, { runner_id: runner.id, reason: "runner_deregistered" });
+      }
+      runner.active = 0;
+      state.runners = state.runners.filter((r) => r.id !== runner.id);
+      persist();
+      event("runner.deregistered", { id: null, mode: null }, { runner_id: runner.id, requeued });
+      schedule();
+      return json(res, 200, { id: runner.id, deregistered: true, requeued });
     }
     if (req.method === "POST" && url.pathname === "/v1/runner/claim") {
       const input = await body(req);
@@ -323,11 +556,42 @@ const server = http.createServer(async (req, res) => {
       persist();
       return json(res, 200, task);
     }
-    const match = url.pathname.match(/^\/v1\/tasks\/([^/]+)(?:\/(cancel|result))?$/);
+    const match = url.pathname.match(/^\/v1\/tasks\/([^/]+)(?:\/(cancel|result|retry))?$/);
     if (match) {
       const task = state.tasks.find((t) => t.id === decodeURIComponent(match[1]));
       if (!task) return json(res, 404, { error: "task not found" });
       if (req.method === "GET" && !match[2]) return json(res, 200, task);
+      if (req.method === "POST" && match[2] === "retry") {
+        // Re-queue a terminal task, in place, under the same id: the dashboard already
+        // holds that id, and a fresh id would orphan its event history. Non-terminal
+        // tasks are refused — retrying something already running is a double execution.
+        if (!TERMINAL.includes(task.status))
+          return json(res, 409, { error: "task is not terminal; nothing to retry" });
+        const retries = Number(task.retries || 0) + 1;
+        if (retries > MAX_TASK_RETRIES)
+          return json(res, 409, {
+            error: `retry limit reached (${MAX_TASK_RETRIES})`,
+            retries: task.retries || 0,
+          });
+        const previous = {
+          status: task.status,
+          error: task.manifest?.error ?? null,
+          completed_at: task.completed_at ?? null,
+        };
+        task.status = "queued";
+        task.claimed_at = null;
+        task.claimed_session_id = null;
+        task.assigned_runner = null;
+        task.completed_at = null;
+        task.manifest = null;
+        task.retries = retries;
+        task.updated_at = new Date().toISOString();
+        task.retry_history = [...(task.retry_history || []), previous].slice(-MAX_TASK_RETRIES);
+        persist();
+        event("task.retried", task, { retries, previous_status: previous.status });
+        schedule();
+        return json(res, 200, { id: task.id, status: task.status, retries });
+      }
       if (req.method === "POST" && match[2] === "cancel") {
         if (["completed", "failed", "canceled"].includes(task.status))
           return json(res, 409, { error: "task is already terminal" });
@@ -386,6 +650,12 @@ const server = http.createServer(async (req, res) => {
     return json(res, 400, { error: "invalid request" });
   }
 });
+if (pruneTasks()) persist();
+const pruneTimer = setInterval(() => {
+  if (pruneTasks()) persist();
+}, 60_000);
+pruneTimer.unref?.();
+
 server.listen(PORT, HOST, () =>
   console.log(`OmniConductor Hub listening on ${HOST}:${PORT}; state=${STATE_FILE}`)
 );

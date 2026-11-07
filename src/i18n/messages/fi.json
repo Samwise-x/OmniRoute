@@ -3400,13 +3400,13 @@
     "comboRefMember": "Yhdistelmä → {name}"
   },
   "combos": {
+    "title": "Yhdistelmät",
+    "description": "Luo mallikomboja painotetulla reitityksellä ja varatuella",
+    "autoCatalogTitle": "Automaattinen reititysluettelo",
     "autoTosLoadError": "Käyttöehtokäytäntöä ei voitu ladata. Yritä uudelleen ennen sen muuttamista.",
     "autoTosSaveError": "Käyttöehtokäytäntöä ei voitu tallentaa. Aiempi asetus näkyy edelleen. Yritä uudelleen.",
     "autoTosIncludeLabel": "Sisällytä ToS: avoid -merkityt palveluntarjoajat auto-valintaan",
     "autoTosDescription": "Oletuksena pois käytöstä. Koskee kaikkia auto-yhdistelmiä, ei vain yhtä tiliä. Palveluntarjoajan yhdistäminen ei ota tätä asetusta käyttöön.",
-    "title": "Yhdistelmät",
-    "description": "Luo mallikomboja painotetulla reitityksellä ja varatuella",
-    "autoCatalogTitle": "Automaattinen reititysluettelo",
     "autoCatalogTemplateCount": "{count} malleja",
     "autoCatalogDescription": "Sisäänrakennetut auto/*-yhdistelmät, jotka on ratkaistu dynaamisesti yhdistettyjen palveluntarjoajien kautta. Käytä mitä tahansa näistä tunnuksista mallikenttänä – asetusta ei tarvita.",
     "autoCatalogExpand": "Laajenna automaattisen reitityksen luettelo",
@@ -6079,6 +6079,13 @@
     "claudeLowPriorityModeDescription": "Kun tämä tili saavuttaa 5 tunnin käyttörajan ja Anthropic tarjoaa matalamman prioriteetin kaistaa, OmniRoute hyväksyy sen ja jatkaa pyyntöjen lähettämistä anthropic-usage-limit: slow -tilassa, kunnes ikkuna nollautuu, sen sijaan että jäähdyttäisi yhteyden. Viikoittainen raja on edelleen voimassa ja vastaukset saattavat odottaa vapaata kapasiteettia.",
     "claudeAutoLimitResetLabel": "Nollaa istuntoraja automaattisesti (kerran viikossa)",
     "claudeAutoLimitResetDescription": "Kun tämä tili saavuttaa 5 tunnin käyttörajan ja istuntorajan nollaus on saatavilla, OmniRoute käyttää sen automaattisesti ja yrittää uudelleen täydellä nopeudella. Käyttää tilin kerran viikossa tapahtuvaa nollausta ja lasketaan edelleen viikoittaiseen rajaan.",
+    "codexPaidCreditsShort": "Extra credits",
+    "codexPaidCreditsToggleTitle": "Allow paid Codex credits after subscription quota runs out (additional charges may apply)",
+    "codexPaidCreditsEnabled": "Codex paid credits enabled (additional charges may apply)",
+    "codexPaidCreditsDisabled": "Codex paid credits disabled",
+    "failedUpdateCodexPaidCredits": "Failed to update Codex paid-credit policy",
+    "allowCodexPaidCreditsLabel": "Allow paid Codex credits",
+    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled.",
     "disableCoolingDescription": "Ohita tilapäinen jäädytysaika, jotta tämä yhteys pysyy käytettävissä myös palautettavien virheiden jälkeen (lopulliset tilat, kuten estetty/vanhentunut, ovat edelleen voimassa).",
     "disableCoolingLabel": "Poista jäädytysaika käytöstä tälle yhteydelle",
     "bulkPasteAdded": "{count, plural, one {1 avain lisätty} other {# avainta lisätty}}",
@@ -6532,6 +6539,7 @@
       "monsterapi": "Hanki API-avain osoitteesta monsterapi.ai",
       "moonshot": "Yhdistä Moonshot AI API-avaimella.",
       "morph": "Ilmainen taso: 250K krediittiä/kk, $0",
+      "apmix": "Yhdistä Apmix API-avaimella osoitteesta apmix.ai/dashboard — yksi tilaus, monta mallia.",
       "nanogpt": "Yhdistä NanoGPT API-avaimella.",
       "nebius": "~$1 kokeilusaldoa rekisteröitymisen yhteydessä API-testaukseen",
       "nlpcloud": "NLP Cloud käyttää omaa chatbot-API:aan OpenAI:n chat/completions-rajapinnan sijaan. OmniRoute mukauttaa OpenAI-viestit muotoon input/context/history ja tarjoaa paikallisen luettelon tuetuista chatbot-malleista.",
@@ -6628,8 +6636,7 @@
       "kiro": "Maksuton taso: 50 krediittiä kuukaudessa (~25K–100K tokenia). ⚠️ Kiro ToS kieltää kolmannen osapuolen välityspalvelujen ja harness-työkalujen käytön.",
       "codex": "Yhdistä OpenAI Codex olemassa olevalla OAuth-työnkululla.",
       "qwen": "Yhdistä Qwen Code olemassa olevalla OAuth-työnkululla.",
-      "github-models": "Luo GitHub PAT -tunniste 'models: read' -käyttöoikeudella osoitteessa github.com/settings/tokens",
-      "apmix": "Yhdistä Apmix API-avaimella osoitteesta apmix.ai/dashboard — yksi tilaus, monta mallia."
+      "github-models": "Luo GitHub PAT -tunniste 'models: read' -käyttöoikeudella osoitteessa github.com/settings/tokens"
     },
     "passthroughModelsDescription": "{provider} hyväksyy palveluntarjoajan alkuperäiset mallitunnukset. Tuo /modelsista tai lisää mukautettuja tunnuksia reititystä varten.",
     "bedrockModelsDescription": "Amazon Bedrock -mallit on luokiteltu AWS-alueen mukaan. Tuo osoitteesta /models tai lisää valitulla alueella käytössä olevat kallioperän mallitunnukset.",
@@ -6801,14 +6808,7 @@
     "rateLimitOverridesModelConcurrencyLabel": "Per-model concurrency caps",
     "rateLimitOverridesModelConcurrencyPlaceholder": "glm-5=1\nglm-4.7=3",
     "rateLimitOverridesModelConcurrencyHint": "Optional: one model=cap per line, matched against the exact upstream model id. Queues excess requests locally; blank means no per-model cap.",
-    "rateLimitOverridesModelConcurrencyInvalid": "Invalid per-model concurrency entry \"{entry}\" — use model=cap with a whole number from 1 to {max}.",
-    "codexPaidCreditsShort": "Extra credits",
-    "codexPaidCreditsToggleTitle": "Allow paid Codex credits after subscription quota runs out (additional charges may apply)",
-    "codexPaidCreditsEnabled": "Codex paid credits enabled (additional charges may apply)",
-    "codexPaidCreditsDisabled": "Codex paid credits disabled",
-    "failedUpdateCodexPaidCredits": "Failed to update Codex paid-credit policy",
-    "allowCodexPaidCreditsLabel": "Allow paid Codex credits",
-    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled."
+    "rateLimitOverridesModelConcurrencyInvalid": "Invalid per-model concurrency entry \"{entry}\" — use model=cap with a whole number from 1 to {max}."
   },
   "settings": {
     "title": "Asetukset",
@@ -9834,6 +9834,10 @@
     "streamTransformFailed": "Virran muuntaminen epäonnistui"
   },
   "usage": {
+    "codexPaidCreditsLabel": "Paid Codex credits",
+    "codexPaidCreditsAvailable": "Available (balance not reported)",
+    "codexPaidCreditsUnavailable": "Unavailable or spending limit reached",
+    "codexPaidCreditsUnlimited": "Unlimited",
     "title": "Käyttö",
     "grokExtraUsageCredits": "Lisäkäyttöluottoja",
     "grokAutoTopUp": "Automaattinen Lataus",
@@ -10286,11 +10290,7 @@
     "updatedShort": "Päivitetty",
     "lastRefreshed": "Viimeksi päivitetty",
     "providerQuota": "Tarjoajan kiintiö",
-    "providerQuotaHomeHint": "Reaaliaikainen tila yhdistetyissä tileissä",
-    "codexPaidCreditsLabel": "Paid Codex credits",
-    "codexPaidCreditsAvailable": "Available (balance not reported)",
-    "codexPaidCreditsUnavailable": "Unavailable or spending limit reached",
-    "codexPaidCreditsUnlimited": "Unlimited"
+    "providerQuotaHomeHint": "Reaaliaikainen tila yhdistetyissä tileissä"
   },
   "modals": {
     "waitingAuth": "Odotetaan valtuutusta",
@@ -14845,6 +14845,8 @@
     "council": "Neuvosto",
     "candidates": "Ehdokkaat",
     "cancel": "Peruuta tehtävä",
+    "retry": "__MISSING__:Retry task",
+    "retryFailed": "__MISSING__:The hub refused the retry",
     "cancelConfirmTitle": "Peruuta tämä tehtävä?",
     "cancelConfirmMessage": "Hub keskeyttää suorituksen suorittimella. Tätä ei voi peruuttaa.",
     "cancelFailed": "Keskus hylkäsi peruutuksen",

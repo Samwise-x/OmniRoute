@@ -3400,13 +3400,13 @@
     "comboRefMember": "Kombinácia → {name}"
   },
   "combos": {
-    "autoTosIncludeLabel": "Zahrnúť do auto poskytovateľov označených ToS: avoid",
-    "autoTosDescription": "Predvolene vypnuté. Platí pre všetky kombinácie auto, nielen pre jeden účet. Pripojenie poskytovateľa túto možnosť nezapne.",
-    "autoTosSaveError": "Pravidlá ToS sa nepodarilo uložiť. Stále sa zobrazuje predchádzajúce nastavenie. Skúste to znova.",
-    "autoTosLoadError": "Pravidlá ToS sa nepodarilo načítať. Pred ich zmenou to skúste znova.",
     "title": "kombá",
     "description": "Vytvárajte kombinácie modelov s váženým smerovaním a záložnou podporou",
     "autoCatalogTitle": "Katalóg automatického smerovania",
+    "autoTosLoadError": "Pravidlá ToS sa nepodarilo načítať. Pred ich zmenou to skúste znova.",
+    "autoTosSaveError": "Pravidlá ToS sa nepodarilo uložiť. Stále sa zobrazuje predchádzajúce nastavenie. Skúste to znova.",
+    "autoTosIncludeLabel": "Zahrnúť do auto poskytovateľov označených ToS: avoid",
+    "autoTosDescription": "Predvolene vypnuté. Platí pre všetky kombinácie auto, nielen pre jeden účet. Pripojenie poskytovateľa túto možnosť nezapne.",
     "autoCatalogTemplateCount": "{count} šablón",
     "autoCatalogDescription": "Vstavané automatické/* kombá rozlíšené dynamicky od pripojených poskytovateľov. Ako pole modelu použite ktorýkoľvek z týchto identifikátorov – nie je potrebné žiadne nastavenie.",
     "autoCatalogExpand": "Rozbaľte katalóg automatického smerovania",
@@ -6079,6 +6079,13 @@
     "claudeLowPriorityModeDescription": "Keď tento účet dosiahne svoj 5-hodinový limit používania a Anthropic ponúkne režim s nižšou prioritou, OmniRoute ho prijme a bude naďalej odosielať požiadavky s anthropic-usage-limit: slow až do obnovenia časového okna namiesto pozastavenia pripojenia. Týždenný limit sa naďalej uplatňuje a odpovede môžu čakať na voľnú kapacitu.",
     "claudeAutoLimitResetLabel": "Automaticky obnoviť limit relácie (raz týždenne)",
     "claudeAutoLimitResetDescription": "Keď tento účet dosiahne svoj 5-hodinový limit používania a je k dispozícii obnovenie limitu relácie, OmniRoute ho automaticky aktivuje a zopakuje pokus plnou rýchlosťou. Využije sa tým obnovenie účtu dostupné raz týždenne, pričom používanie sa naďalej započítava do týždenného limitu.",
+    "codexPaidCreditsShort": "Extra credits",
+    "codexPaidCreditsToggleTitle": "Allow paid Codex credits after subscription quota runs out (additional charges may apply)",
+    "codexPaidCreditsEnabled": "Codex paid credits enabled (additional charges may apply)",
+    "codexPaidCreditsDisabled": "Codex paid credits disabled",
+    "failedUpdateCodexPaidCredits": "Failed to update Codex paid-credit policy",
+    "allowCodexPaidCreditsLabel": "Allow paid Codex credits",
+    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled.",
     "disableCoolingDescription": "Preskočiť prechodný cooldown (doba chladnutia), aby toto pripojenie zostalo oprávnené aj po odstrániteľných chybách (konečné stavy ako zablokované/vypršané stále platia).",
     "disableCoolingLabel": "Zakázať cooldown pre toto pripojenie",
     "bulkPasteAdded": "{count, plural, one {Pridaný 1 kľúč} few {Pridané # kľúče} other {Pridaných # kľúčov}}",
@@ -6532,6 +6539,7 @@
       "monsterapi": "Získajte API kľúč na monsterapi.ai",
       "moonshot": "Pripojte Moonshot AI pomocou API kľúča.",
       "morph": "Bezplatná úroveň: 250 tisíc kreditov/mesiac, 0 $",
+      "apmix": "Pripojte Apmix pomocou API kľúča z apmix.ai/dashboard — jedno predplatné, mnoho modelov.",
       "nanogpt": "Pripojte NanoGPT pomocou API kľúča.",
       "nebius": "Skúšobný kredit cca 1 $ pri registrácii na testovanie API",
       "nlpcloud": "NLP Cloud používa proprietárne API pre chatbotov namiesto OpenAI chat/completions. OmniRoute prispôsobuje správy OpenAI pre vstup/kontext/históriu a poskytuje lokálny katalóg podporovaných modelov chatbotov.",
@@ -6628,8 +6636,7 @@
       "kiro": "Bezplatná úroveň: 50 kreditov/mesiac (~25k – 100k tokenov). ⚠️ Podmienky používania (ToS) Kiro zakazujú používanie proxy/harness tretích strán.",
       "codex": "Pripojte OpenAI Codex pomocou existujúceho toku OAuth.",
       "qwen": "Pripojte Qwen Code pomocou existujúceho toku OAuth.",
-      "github-models": "Vytvorte si GitHub PAT s rozsahom 'models: read' na adrese github.com/settings/tokens",
-      "apmix": "Pripojte Apmix pomocou API kľúča z apmix.ai/dashboard — jedno predplatné, mnoho modelov."
+      "github-models": "Vytvorte si GitHub PAT s rozsahom 'models: read' na adrese github.com/settings/tokens"
     },
     "passthroughModelsDescription": "{provider} akceptuje ID modelu natívneho poskytovateľa. Importujte z /models alebo pridajte vlastné ID pre smerovanie.",
     "bedrockModelsDescription": "Modely Amazon Bedrock sú vymedzené podľa regiónu AWS. Importovať z /models alebo pridať ID modelu Bedrock povolené vo vybranom regióne.",
@@ -6801,14 +6808,7 @@
     "rateLimitOverridesModelConcurrencyLabel": "Per-model concurrency caps",
     "rateLimitOverridesModelConcurrencyPlaceholder": "glm-5=1\nglm-4.7=3",
     "rateLimitOverridesModelConcurrencyHint": "Optional: one model=cap per line, matched against the exact upstream model id. Queues excess requests locally; blank means no per-model cap.",
-    "rateLimitOverridesModelConcurrencyInvalid": "Invalid per-model concurrency entry \"{entry}\" — use model=cap with a whole number from 1 to {max}.",
-    "codexPaidCreditsShort": "Extra credits",
-    "codexPaidCreditsToggleTitle": "Allow paid Codex credits after subscription quota runs out (additional charges may apply)",
-    "codexPaidCreditsEnabled": "Codex paid credits enabled (additional charges may apply)",
-    "codexPaidCreditsDisabled": "Codex paid credits disabled",
-    "failedUpdateCodexPaidCredits": "Failed to update Codex paid-credit policy",
-    "allowCodexPaidCreditsLabel": "Allow paid Codex credits",
-    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled."
+    "rateLimitOverridesModelConcurrencyInvalid": "Invalid per-model concurrency entry \"{entry}\" — use model=cap with a whole number from 1 to {max}."
   },
   "settings": {
     "title": "Nastavenia",
@@ -9834,6 +9834,10 @@
     "streamTransformFailed": "Nepodarilo sa transformovať stream"
   },
   "usage": {
+    "codexPaidCreditsLabel": "Paid Codex credits",
+    "codexPaidCreditsAvailable": "Available (balance not reported)",
+    "codexPaidCreditsUnavailable": "Unavailable or spending limit reached",
+    "codexPaidCreditsUnlimited": "Unlimited",
     "title": "Použitie",
     "grokExtraUsageCredits": "Extra Kredit na Použitie",
     "grokAutoTopUp": "Automatické dobíjanie",
@@ -10286,11 +10290,7 @@
     "updatedShort": "Aktualizované",
     "lastRefreshed": "Naposledy obnovené",
     "providerQuota": "Kvóta poskytovateľa",
-    "providerQuotaHomeHint": "Aktuálny stav naprieč pripojenými účtami",
-    "codexPaidCreditsLabel": "Paid Codex credits",
-    "codexPaidCreditsAvailable": "Available (balance not reported)",
-    "codexPaidCreditsUnavailable": "Unavailable or spending limit reached",
-    "codexPaidCreditsUnlimited": "Unlimited"
+    "providerQuotaHomeHint": "Aktuálny stav naprieč pripojenými účtami"
   },
   "modals": {
     "waitingAuth": "Čaká sa na autorizáciu",
@@ -14845,6 +14845,8 @@
     "council": "Rada",
     "candidates": "Kandidáti",
     "cancel": "Zrušiť úlohu",
+    "retry": "__MISSING__:Retry task",
+    "retryFailed": "__MISSING__:The hub refused the retry",
     "cancelConfirmTitle": "Zrušiť túto úlohu?",
     "cancelConfirmMessage": "Centrum zruší vykonávanie na bežci. Toto nie je možné zvrátiť.",
     "cancelFailed": "Hub odmietol zrušenie",

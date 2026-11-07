@@ -3400,13 +3400,13 @@
     "comboRefMember": "שילוב → {name}"
   },
   "combos": {
+    "title": "שילובים",
+    "description": "צור שילובי דגמים עם ניתוב משוקלל ותמיכה ב-fallback",
+    "autoCatalogTitle": "קטלוג ניתוב אוטומטי",
     "autoTosLoadError": "לא ניתן לטעון את מדיניות תנאי השירות. יש לנסות שוב לפני שמשנים אותה.",
     "autoTosSaveError": "לא ניתן לשמור את מדיניות תנאי השירות. ההגדרה הקודמת עדיין מוצגת. יש לנסות שוב.",
     "autoTosIncludeLabel": "כלול ב-auto ספקים המסומנים ToS: avoid",
     "autoTosDescription": "כבוי כברירת מחדל. חל על כל שילובי auto, ולא רק על חשבון אחד. חיבור ספק אינו מפעיל אפשרות זו.",
-    "title": "שילובים",
-    "description": "צור שילובי דגמים עם ניתוב משוקלל ותמיכה ב-fallback",
-    "autoCatalogTitle": "קטלוג ניתוב אוטומטי",
     "autoCatalogTemplateCount": "{count} תבניות",
     "autoCatalogDescription": "שילובי אוטומטי/* מובנים שנפתרו באופן דינמי מספקים מחוברים. השתמש בכל אחד מהמזהים האלה בתור שדה הדגם - אין צורך בהגדרה.",
     "autoCatalogExpand": "הרחב את קטלוג הניתוב האוטומטי",
@@ -6079,6 +6079,13 @@
     "claudeLowPriorityModeDescription": "כאשר החשבון הזה מגיע למגבלת השימוש שלו ל-5 שעות ו-Anthropic מציעה את המסלול בעדיפות הנמוכה יותר, OmniRoute מקבל אותו וממשיך לשלוח בקשות עם anthropic-usage-limit: slow עד לאיפוס חלון הזמן, במקום לצנן את החיבור. המגבלה השבועית עדיין חלה, וייתכן שהתגובות ימתינו לקיבולת פנויה.",
     "claudeAutoLimitResetLabel": "איפוס אוטומטי של מגבלת ההפעלה (פעם בשבוע)",
     "claudeAutoLimitResetDescription": "כאשר החשבון הזה מגיע למגבלת השימוש שלו ל-5 שעות ואיפוס מגבלת ההפעלה זמין, OmniRoute מממש אותו אוטומטית ומנסה שוב במהירות מלאה. הפעולה מנצלת את האיפוס השבועי החד-פעמי של החשבון ועדיין נספרת במסגרת המגבלה השבועית.",
+    "codexPaidCreditsShort": "Extra credits",
+    "codexPaidCreditsToggleTitle": "Allow paid Codex credits after subscription quota runs out (additional charges may apply)",
+    "codexPaidCreditsEnabled": "Codex paid credits enabled (additional charges may apply)",
+    "codexPaidCreditsDisabled": "Codex paid credits disabled",
+    "failedUpdateCodexPaidCredits": "Failed to update Codex paid-credit policy",
+    "allowCodexPaidCreditsLabel": "Allow paid Codex credits",
+    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled.",
     "disableCoolingDescription": "דלג על תקופת הצינון הזמנית כדי שחיבור זה יישאר זמין גם לאחר שגיאות הניתנות לשחזור (מצבים סופיים כמו חסום/פג תוקף עדיין חלים).",
     "disableCoolingLabel": "השבת תקופת צינון עבור חיבור זה",
     "bulkPasteAdded": "{count, plural, one {נוסף מפתח אחד} other {נוספו # מפתחות}}",
@@ -6532,6 +6539,7 @@
       "monsterapi": "קבל מפתח API ב-monsterapi.ai",
       "moonshot": "חבר את Moonshot AI באמצעות מפתח API.",
       "morph": "מסלול חינמי: 250K קרדיטים/חודש, $0",
+      "apmix": "חבר את Apmix עם מפתח API מ־apmix.ai/dashboard — מינוי אחד, הרבה מודלים.",
       "nanogpt": "חבר את NanoGPT באמצעות מפתח API.",
       "nebius": "קרדיט ניסיון של כ-$1 בהרשמה לבדיקת ה-API",
       "nlpcloud": "NLP Cloud משתמשת ב-API צ'אטבוט קנייני במקום ב-chat/completions של OpenAI. OmniRoute מתאימה הודעות OpenAI ל-input/context/history וחושפת קטלוג מקומי של מודלי צ'אטבוט נתמכים.",
@@ -6628,8 +6636,7 @@
       "kiro": "מסלול חינמי: 50 קרדיטים לחודש (~25K–100K טוקנים). ⚠️ תנאי השימוש של Kiro אוסרים על שימוש בפרוקסי/harness של צד שלישי.",
       "codex": "חבר את OpenAI Codex באמצעות תהליך ה-OAuth הקיים.",
       "qwen": "חבר את Qwen Code באמצעות תהליך ה-OAuth הקיים.",
-      "github-models": "צור GitHub PAT עם הרשאת 'models: read' ב-github.com/settings/tokens",
-      "apmix": "חבר את Apmix עם מפתח API מ־apmix.ai/dashboard — מינוי אחד, הרבה מודלים."
+      "github-models": "צור GitHub PAT עם הרשאת 'models: read' ב-github.com/settings/tokens"
     },
     "passthroughModelsDescription": "{provider} מקבל מזהי מודל מקוריים של ספק. ייבא מ /models או הוסף מזהים מותאמים אישית לניתוב.",
     "bedrockModelsDescription": "הדגמים של Amazon Bedrock נמצאים לפי אזור AWS. ייבא מ-/models או הוסף מזהי דגמי Bedrock המופעלים באזור הנבחר.",
@@ -6801,14 +6808,7 @@
     "rateLimitOverridesModelConcurrencyLabel": "Per-model concurrency caps",
     "rateLimitOverridesModelConcurrencyPlaceholder": "glm-5=1\nglm-4.7=3",
     "rateLimitOverridesModelConcurrencyHint": "Optional: one model=cap per line, matched against the exact upstream model id. Queues excess requests locally; blank means no per-model cap.",
-    "rateLimitOverridesModelConcurrencyInvalid": "Invalid per-model concurrency entry \"{entry}\" — use model=cap with a whole number from 1 to {max}.",
-    "codexPaidCreditsShort": "Extra credits",
-    "codexPaidCreditsToggleTitle": "Allow paid Codex credits after subscription quota runs out (additional charges may apply)",
-    "codexPaidCreditsEnabled": "Codex paid credits enabled (additional charges may apply)",
-    "codexPaidCreditsDisabled": "Codex paid credits disabled",
-    "failedUpdateCodexPaidCredits": "Failed to update Codex paid-credit policy",
-    "allowCodexPaidCreditsLabel": "Allow paid Codex credits",
-    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled."
+    "rateLimitOverridesModelConcurrencyInvalid": "Invalid per-model concurrency entry \"{entry}\" — use model=cap with a whole number from 1 to {max}."
   },
   "settings": {
     "title": "הגדרות",
@@ -9834,6 +9834,10 @@
     "streamTransformFailed": "המרת הזרם נכשלה"
   },
   "usage": {
+    "codexPaidCreditsLabel": "Paid Codex credits",
+    "codexPaidCreditsAvailable": "Available (balance not reported)",
+    "codexPaidCreditsUnavailable": "Unavailable or spending limit reached",
+    "codexPaidCreditsUnlimited": "Unlimited",
     "title": "שימוש",
     "grokExtraUsageCredits": "קרדיטים נוספים לשימוש",
     "grokAutoTopUp": "טעינה אוטומטית",
@@ -10286,11 +10290,7 @@
     "updatedShort": "עודכן",
     "lastRefreshed": "רענון אחרון",
     "providerQuota": "מכסת ספק",
-    "providerQuotaHomeHint": "סטטוס בזמן אמת בכל החשבונות המחוברים",
-    "codexPaidCreditsLabel": "Paid Codex credits",
-    "codexPaidCreditsAvailable": "Available (balance not reported)",
-    "codexPaidCreditsUnavailable": "Unavailable or spending limit reached",
-    "codexPaidCreditsUnlimited": "Unlimited"
+    "providerQuotaHomeHint": "סטטוס בזמן אמת בכל החשבונות המחוברים"
   },
   "modals": {
     "waitingAuth": "ממתין לאישור",
@@ -14845,6 +14845,8 @@
     "council": "מועצה",
     "candidates": "מועמדים",
     "cancel": "בטל משימה",
+    "retry": "__MISSING__:Retry task",
+    "retryFailed": "__MISSING__:The hub refused the retry",
     "cancelConfirmTitle": "לבטל את המשימה הזו?",
     "cancelConfirmMessage": "המרכז יפסיק את הביצוע על הרץ. זה לא ניתן לביטול.",
     "cancelFailed": "המרכז סירב לבטל את ההזמנה",

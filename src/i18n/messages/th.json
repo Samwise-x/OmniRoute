@@ -3400,13 +3400,13 @@
     "comboRefMember": "คอมโบ → {name}"
   },
   "combos": {
+    "title": "คอมโบ",
+    "description": "สร้างโมเดลคอมโบด้วยการกำหนดเส้นทางแบบถ่วงน้ำหนักและการสนับสนุนทางเลือก",
+    "autoCatalogTitle": "แค็ตตาล็อกการกำหนดเส้นทางอัตโนมัติ",
     "autoTosLoadError": "โหลดนโยบาย ToS ไม่สำเร็จ โปรดลองอีกครั้งก่อนเปลี่ยนแปลง",
     "autoTosSaveError": "บันทึกนโยบาย ToS ไม่สำเร็จ ยังคงแสดงการตั้งค่าเดิม โปรดลองอีกครั้ง",
     "autoTosIncludeLabel": "รวมผู้ให้บริการที่ระบุ ToS: avoid ใน auto",
     "autoTosDescription": "ปิดไว้โดยค่าเริ่มต้น มีผลกับคอมโบ auto ทั้งหมด ไม่ใช่แค่บัญชีเดียว การเชื่อมต่อผู้ให้บริการจะไม่เปิดตัวเลือกนี้",
-    "title": "คอมโบ",
-    "description": "สร้างโมเดลคอมโบด้วยการกำหนดเส้นทางแบบถ่วงน้ำหนักและการสนับสนุนทางเลือก",
-    "autoCatalogTitle": "แค็ตตาล็อกการกำหนดเส้นทางอัตโนมัติ",
     "autoCatalogTemplateCount": "{count} เทมเพลต",
     "autoCatalogDescription": "คอมโบอัตโนมัติ/* ในตัวได้รับการแก้ไขแบบไดนามิกจากผู้ให้บริการที่เชื่อมต่อ ใช้รหัสเหล่านี้เป็นช่องโมเดล โดยไม่จำเป็นต้องตั้งค่าใดๆ",
     "autoCatalogExpand": "ขยายแค็ตตาล็อกการกำหนดเส้นทางอัตโนมัติ",
@@ -6079,6 +6079,13 @@
     "claudeLowPriorityModeDescription": "เมื่อบัญชีนี้ถึงขีดจำกัดการใช้งาน 5 ชั่วโมงและ Anthropic เปิดให้ใช้ช่องทางที่มีลำดับความสำคัญต่ำลง OmniRoute จะยอมรับและส่งคำขอต่อไปโดยใช้ anthropic-usage-limit: slow จนกว่ารอบเวลาจะรีเซ็ต แทนที่จะพักการเชื่อมต่อ ขีดจำกัดรายสัปดาห์ยังคงมีผล และการตอบกลับอาจต้องรอความจุที่ว่าง",
     "claudeAutoLimitResetLabel": "รีเซ็ตขีดจำกัดเซสชันโดยอัตโนมัติ (สัปดาห์ละครั้ง)",
     "claudeAutoLimitResetDescription": "เมื่อบัญชีนี้ถึงขีดจำกัดการใช้งาน 5 ชั่วโมงและสามารถรีเซ็ตขีดจำกัดเซสชันได้ OmniRoute จะใช้สิทธิ์รีเซ็ตโดยอัตโนมัติและลองอีกครั้งด้วยความเร็วเต็มที่ โดยใช้สิทธิ์รีเซ็ตของบัญชีที่มีให้สัปดาห์ละครั้ง และยังคงนับรวมในขีดจำกัดรายสัปดาห์",
+    "codexPaidCreditsShort": "เครดิตเพิ่มเติม",
+    "codexPaidCreditsToggleTitle": "อนุญาตเครดิต Codex แบบชำระเงินหลังโควตาการสมัครสมาชิกหมด (อาจมีค่าใช้จ่ายเพิ่มเติม)",
+    "codexPaidCreditsEnabled": "เปิดใช้เครดิต Codex แบบชำระเงินแล้ว (อาจมีค่าใช้จ่ายเพิ่มเติม)",
+    "codexPaidCreditsDisabled": "ปิดใช้เครดิต Codex แบบชำระเงินแล้ว",
+    "failedUpdateCodexPaidCredits": "อัปเดตนโยบายเครดิต Codex แบบชำระเงินไม่สำเร็จ",
+    "allowCodexPaidCreditsLabel": "อนุญาตเครดิต Codex แบบชำระเงิน",
+    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled.",
     "disableCoolingDescription": "ข้ามคูลดาวน์ชั่วคราวเพื่อให้การเชื่อมต่อนี้ยังคงมีสิทธิ์ใช้งานได้แม้หลังจากเกิดข้อผิดพลาดที่กู้คืนได้ (สถานะสิ้นสุด เช่น ถูกแบน/หมดอายุ ยังคงมีผลอยู่)",
     "disableCoolingLabel": "ปิดใช้งานคูลดาวน์สำหรับการเชื่อมต่อนี้",
     "bulkPasteAdded": "{count, plural, one {เพิ่มคีย์แล้ว 1 คีย์} other {เพิ่มคีย์แล้ว # คีย์}}",
@@ -6532,6 +6539,7 @@
       "monsterapi": "รับ API key ได้ที่ monsterapi.ai",
       "moonshot": "เชื่อมต่อ Moonshot AI ด้วย API key.",
       "morph": "ระดับฟรี: 250K เครดิต/เดือน, $0",
+      "apmix": "เชื่อมต่อ Apmix ด้วยคีย์ API จาก apmix.ai/dashboard — สมาชิกเดียว หลายโมเดล",
       "nanogpt": "เชื่อมต่อ NanoGPT ด้วย API key.",
       "nebius": "เครดิตทดลองใช้ ~$1 เมื่อลงทะเบียนสำหรับการทดสอบ API",
       "nlpcloud": "NLP Cloud ใช้ API แชทบอทที่เป็นกรรมสิทธิ์แทน OpenAI chat/completions โดย OmniRoute จะปรับข้อความ OpenAI ให้เข้ากับ input/context/history และแสดงแคตตาล็อกภายในเครื่องของโมเดลแชทบอทที่รองรับ.",
@@ -6628,8 +6636,7 @@
       "kiro": "ระดับฟรี: 50 เครดิต/เดือน (~25K–100K โทเค็น) ⚠️ ToS ของ Kiro ห้ามใช้พร็อกซี/harness ของบุคคลที่สาม",
       "codex": "เชื่อมต่อ OpenAI Codex ด้วยโฟลว์ OAuth ที่มีอยู่",
       "qwen": "เชื่อมต่อ Qwen Code ด้วยโฟลว์ OAuth ที่มีอยู่",
-      "github-models": "สร้าง GitHub PAT ที่มีขอบเขต 'models: read' ที่ github.com/settings/tokens",
-      "apmix": "เชื่อมต่อ Apmix ด้วยคีย์ API จาก apmix.ai/dashboard — สมาชิกเดียว หลายโมเดล"
+      "github-models": "สร้าง GitHub PAT ที่มีขอบเขต 'models: read' ที่ github.com/settings/tokens"
     },
     "passthroughModelsDescription": "{provider} ยอมรับ ID โมเดลดั้งเดิมของผู้ให้บริการ นำเข้าจาก /models หรือเพิ่ม ID ที่กำหนดเองสำหรับการกำหนดเส้นทาง",
     "bedrockModelsDescription": "โมเดล Amazon Bedrock มีการกำหนดขอบเขตตามภูมิภาค AWS นำเข้าจาก /models หรือเพิ่มรหัสรุ่น Bedrock ที่เปิดใช้งานในภูมิภาคที่เลือก",
@@ -6801,14 +6808,7 @@
     "rateLimitOverridesModelConcurrencyLabel": "ขีดจำกัดการทำงานพร้อมกันต่อโมเดล",
     "rateLimitOverridesModelConcurrencyPlaceholder": "glm-5=1\nglm-4.7=3",
     "rateLimitOverridesModelConcurrencyHint": "ไม่บังคับ: หนึ่ง model=cap ต่อบรรทัด จับคู่กับ ID โมเดลอัปสตรีมที่ตรงกันทุกตัวอักษร คำขอส่วนเกินจะเข้าคิวในเครื่อง ปล่อยว่างหมายถึงไม่จำกัดต่อโมเดล",
-    "rateLimitOverridesModelConcurrencyInvalid": "รายการการทำงานพร้อมกันต่อโมเดล \"{entry}\" ไม่ถูกต้อง — ใช้ model=cap โดย cap เป็นจำนวนเต็มตั้งแต่ 1 ถึง {max}",
-    "codexPaidCreditsShort": "เครดิตเพิ่มเติม",
-    "codexPaidCreditsToggleTitle": "อนุญาตเครดิต Codex แบบชำระเงินหลังโควตาการสมัครสมาชิกหมด (อาจมีค่าใช้จ่ายเพิ่มเติม)",
-    "codexPaidCreditsEnabled": "เปิดใช้เครดิต Codex แบบชำระเงินแล้ว (อาจมีค่าใช้จ่ายเพิ่มเติม)",
-    "codexPaidCreditsDisabled": "ปิดใช้เครดิต Codex แบบชำระเงินแล้ว",
-    "failedUpdateCodexPaidCredits": "อัปเดตนโยบายเครดิต Codex แบบชำระเงินไม่สำเร็จ",
-    "allowCodexPaidCreditsLabel": "อนุญาตเครดิต Codex แบบชำระเงิน",
-    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled."
+    "rateLimitOverridesModelConcurrencyInvalid": "รายการการทำงานพร้อมกันต่อโมเดล \"{entry}\" ไม่ถูกต้อง — ใช้ model=cap โดย cap เป็นจำนวนเต็มตั้งแต่ 1 ถึง {max}"
   },
   "settings": {
     "title": "การตั้งค่า",
@@ -9834,6 +9834,10 @@
     "streamTransformFailed": "แปลงสตรีมล้มเหลว"
   },
   "usage": {
+    "codexPaidCreditsLabel": "เครดิต Codex แบบชำระเงิน",
+    "codexPaidCreditsAvailable": "พร้อมใช้งาน (ไม่รายงานยอดคงเหลือ)",
+    "codexPaidCreditsUnavailable": "ไม่พร้อมใช้งานหรือถึงขีดจำกัดการใช้จ่ายแล้ว",
+    "codexPaidCreditsUnlimited": "ไม่จำกัด",
     "title": "การใช้งาน",
     "grokExtraUsageCredits": "เครดิตการใช้งานเพิ่มเติม",
     "grokAutoTopUp": "เติมเงินอัตโนมัติ",
@@ -10286,11 +10290,7 @@
     "updatedShort": "อัปเดตแล้ว",
     "lastRefreshed": "รีเฟรชล่าสุดเมื่อ",
     "providerQuota": "โควตาผู้ให้บริการ",
-    "providerQuotaHomeHint": "สถานะแบบเรียลไทม์ของบัญชีที่เชื่อมต่อทั้งหมด",
-    "codexPaidCreditsLabel": "เครดิต Codex แบบชำระเงิน",
-    "codexPaidCreditsAvailable": "พร้อมใช้งาน (ไม่รายงานยอดคงเหลือ)",
-    "codexPaidCreditsUnavailable": "ไม่พร้อมใช้งานหรือถึงขีดจำกัดการใช้จ่ายแล้ว",
-    "codexPaidCreditsUnlimited": "ไม่จำกัด"
+    "providerQuotaHomeHint": "สถานะแบบเรียลไทม์ของบัญชีที่เชื่อมต่อทั้งหมด"
   },
   "modals": {
     "waitingAuth": "รอการอนุญาต",
@@ -14845,6 +14845,8 @@
     "council": "สภา",
     "candidates": "ผู้สมัคร",
     "cancel": "ยกเลิกงาน",
+    "retry": "__MISSING__:Retry task",
+    "retryFailed": "__MISSING__:The hub refused the retry",
     "cancelConfirmTitle": "ยกเลิกงานนี้ใช่ไหม?",
     "cancelConfirmMessage": "ฮับจะยกเลิกการดำเนินการบนรันเนอร์ นี่ไม่สามารถย้อนกลับได้",
     "cancelFailed": "ศูนย์ปฏิเสธการยกเลิก",

@@ -3400,13 +3400,13 @@
     "comboRefMember": "Kombinasyon → {name}"
   },
   "combos": {
+    "title": "Kombolar",
+    "description": "Ağırlıklı yönlendirme ve yedek model desteğiyle model komboları oluşturun",
+    "autoCatalogTitle": "Otomatik yönlendirme kataloğu",
     "autoTosLoadError": "ToS politikası yüklenemedi. Değiştirmeden önce yeniden deneyin.",
     "autoTosSaveError": "ToS politikası kaydedilemedi. Önceki ayar gösterilmeye devam ediyor. Yeniden deneyin.",
     "autoTosIncludeLabel": "ToS: avoid olarak işaretlenen sağlayıcıları auto'ya dahil et",
     "autoTosDescription": "Varsayılan olarak kapalıdır. Yalnızca bir hesaba değil, tüm auto kombinasyonlarına uygulanır. Sağlayıcı bağlamak bu seçeneği açmaz.",
-    "title": "Kombolar",
-    "description": "Ağırlıklı yönlendirme ve yedek model desteğiyle model komboları oluşturun",
-    "autoCatalogTitle": "Otomatik yönlendirme kataloğu",
     "autoCatalogTemplateCount": "{count} şablonları",
     "autoCatalogDescription": "Yerleşik otomatik/* kombinasyonları, bağlı sağlayıcılardan dinamik olarak çözümlenir. Bu kimliklerden herhangi birini model alanı olarak kullanın; kurulum gerekmez.",
     "autoCatalogExpand": "Otomatik yönlendirme kataloğunu genişletin",
@@ -6079,6 +6079,13 @@
     "claudeLowPriorityModeDescription": "Bu hesap 5 saatlik kullanım sınırına ulaştığında ve Anthropic daha düşük öncelikli hattı sunduğunda, OmniRoute bunu kabul eder ve pencere sıfırlanana kadar bağlantıyı beklemeye almak yerine anthropic-usage-limit: slow ile istek göndermeye devam eder. Haftalık sınır uygulanmaya devam eder ve yanıtlar boş kapasite oluşana kadar bekleyebilir.",
     "claudeAutoLimitResetLabel": "Oturum sınırını otomatik olarak sıfırla (haftada bir kez)",
     "claudeAutoLimitResetDescription": "Bu hesap 5 saatlik kullanım sınırına ulaştığında ve oturum sınırı sıfırlaması kullanılabilir olduğunda, OmniRoute bunu otomatik olarak talep eder ve tam hızda yeniden dener. Hesabın haftada bir kez kullanılabilen sıfırlama hakkını kullanır ve kullanım yine haftalık sınıra dahil edilir.",
+    "codexPaidCreditsShort": "Ek krediler",
+    "codexPaidCreditsToggleTitle": "Abonelik kotası bittikten sonra ücretli Codex kredilerine izin ver (ek ücret uygulanabilir)",
+    "codexPaidCreditsEnabled": "Ücretli Codex kredileri etkin (ek ücret uygulanabilir)",
+    "codexPaidCreditsDisabled": "Ücretli Codex kredileri devre dışı",
+    "failedUpdateCodexPaidCredits": "Codex ücretli kredi ilkesi güncellenemedi",
+    "allowCodexPaidCreditsLabel": "Ücretli Codex kredilerine izin ver",
+    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled.",
     "disableCoolingDescription": "Geçici bekleme süresini atlayın; böylece bu bağlantı kurtarılabilir hatalardan sonra bile uygun kalmaya devam eder (yasaklandı/süresi doldu gibi nihai durumlar yine de geçerlidir).",
     "disableCoolingLabel": "Bu bağlantı için bekleme süresini devre dışı bırak",
     "bulkPasteAdded": "{count, plural, one {1 anahtar eklendi} other {# anahtar eklendi}}",
@@ -6532,6 +6539,7 @@
       "monsterapi": "API anahtarını monsterapi.ai adresinden alın",
       "moonshot": "Moonshot AI'ı bir API anahtarı ile bağlayın.",
       "morph": "Ücretsiz katman: Aylık 250 bin kredi, 0 $",
+      "apmix": "apmix.ai/dashboard'tan bir API anahtarıyla Apmix'i bağlayın — tek abonelik, çok sayıda model.",
       "nanogpt": "NanoGPT'yi bir API anahtarı ile bağlayın.",
       "nebius": "API testi için kayıtta ~1 $ deneme kredisi",
       "nlpcloud": "NLP Cloud, OpenAI chat/completions yerine tescilli bir sohbet robotu API'si kullanır. OmniRoute, OpenAI mesajlarını girdi/bağlam/geçmişe uyarlar ve desteklenen sohbet robotu modellerinin yerel bir kataloğunu sunar.",
@@ -6628,8 +6636,7 @@
       "kiro": "Ücretsiz katman: ayda 50 kredi (~25 bin–100 bin jeton). ⚠️ Kiro Kullanım Koşulları, üçüncü taraf proxy/çalıştırma düzeneği kullanımını yasaklar.",
       "codex": "Mevcut OAuth akışı ile OpenAI Codex'i bağlayın.",
       "qwen": "Mevcut OAuth akışı ile Qwen Code'u bağlayın.",
-      "github-models": "github.com/settings/tokens adresinde 'models: read' kapsamına sahip bir GitHub PAT oluşturun",
-      "apmix": "apmix.ai/dashboard'tan bir API anahtarıyla Apmix'i bağlayın — tek abonelik, çok sayıda model."
+      "github-models": "github.com/settings/tokens adresinde 'models: read' kapsamına sahip bir GitHub PAT oluşturun"
     },
     "passthroughModelsDescription": "{provider} sağlayıcıya özgü model kimliklerini kabul eder. /models'den içe aktarın veya yönlendirme için özel kimlikler ekleyin.",
     "bedrockModelsDescription": "Amazon Bedrock modelleri AWS bölgesi kapsamındadır. /models'den içe aktarın veya seçilen bölgede etkin olan Bedrock model kimliklerini ekleyin.",
@@ -6801,14 +6808,7 @@
     "rateLimitOverridesModelConcurrencyLabel": "Model başına eşzamanlılık üst sınırları",
     "rateLimitOverridesModelConcurrencyPlaceholder": "glm-5=1\nglm-4.7=3",
     "rateLimitOverridesModelConcurrencyHint": "İsteğe bağlı: her satıra bir model=cap yazın; yukarı akıştaki tam model kimliğiyle eşleştirilir. Fazla istekler yerelde kuyruğa alınır; boş bırakılırsa model başına üst sınır yoktur.",
-    "rateLimitOverridesModelConcurrencyInvalid": "Geçersiz model başına eşzamanlılık girdisi \"{entry}\" — model=cap biçimini kullanın; cap, 1 ile {max} arasında bir tam sayı olmalıdır.",
-    "codexPaidCreditsShort": "Ek krediler",
-    "codexPaidCreditsToggleTitle": "Abonelik kotası bittikten sonra ücretli Codex kredilerine izin ver (ek ücret uygulanabilir)",
-    "codexPaidCreditsEnabled": "Ücretli Codex kredileri etkin (ek ücret uygulanabilir)",
-    "codexPaidCreditsDisabled": "Ücretli Codex kredileri devre dışı",
-    "failedUpdateCodexPaidCredits": "Codex ücretli kredi ilkesi güncellenemedi",
-    "allowCodexPaidCreditsLabel": "Ücretli Codex kredilerine izin ver",
-    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled."
+    "rateLimitOverridesModelConcurrencyInvalid": "Geçersiz model başına eşzamanlılık girdisi \"{entry}\" — model=cap biçimini kullanın; cap, 1 ile {max} arasında bir tam sayı olmalıdır."
   },
   "settings": {
     "title": "Ayarlar",
@@ -9834,6 +9834,10 @@
     "streamTransformFailed": "Akış dönüştürülemedi"
   },
   "usage": {
+    "codexPaidCreditsLabel": "Ücretli Codex kredileri",
+    "codexPaidCreditsAvailable": "Kullanılabilir (bakiye bildirilmedi)",
+    "codexPaidCreditsUnavailable": "Kullanılamıyor veya harcama limitine ulaşıldı",
+    "codexPaidCreditsUnlimited": "Sınırsız",
     "title": "Kullanım",
     "grokExtraUsageCredits": "Ekstra Kullanım Kredileri",
     "grokAutoTopUp": "Otomatik Yenileme",
@@ -10286,11 +10290,7 @@
     "updatedShort": "Güncellendi",
     "lastRefreshed": "Son yenileme",
     "providerQuota": "Sağlayıcı Kotası",
-    "providerQuotaHomeHint": "Bağlı hesaplar genelinde canlı durum",
-    "codexPaidCreditsLabel": "Ücretli Codex kredileri",
-    "codexPaidCreditsAvailable": "Kullanılabilir (bakiye bildirilmedi)",
-    "codexPaidCreditsUnavailable": "Kullanılamıyor veya harcama limitine ulaşıldı",
-    "codexPaidCreditsUnlimited": "Sınırsız"
+    "providerQuotaHomeHint": "Bağlı hesaplar genelinde canlı durum"
   },
   "modals": {
     "waitingAuth": "Yetkilendirme bekleniyor",
@@ -14845,6 +14845,8 @@
     "council": "Konsey",
     "candidates": "Adaylar",
     "cancel": "Görevi iptal et",
+    "retry": "__MISSING__:Retry task",
+    "retryFailed": "__MISSING__:The hub refused the retry",
     "cancelConfirmTitle": "Bu görevi iptal etmek istiyor musunuz?",
     "cancelConfirmMessage": "Hub, çalıştırıcıda yürütmeyi iptal edecektir. Bu geri alınamaz.",
     "cancelFailed": "Merkez iptali reddetti",

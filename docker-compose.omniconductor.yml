@@ -11,6 +11,14 @@ services:
       CONDUCTOR_HUB_TOKEN: ${CONDUCTOR_HUB_TOKEN:?Set CONDUCTOR_HUB_TOKEN in .env}
       CONDUCTOR_STATE_FILE: /data/conductor-state.json
       RUNNER_HEARTBEAT_TTL_MS: ${RUNNER_HEARTBEAT_TTL_MS:-90000}
+      # Optional least-privilege principals (unset = single shared secret, as before).
+      CONDUCTOR_RUNNER_TOKEN: ${CONDUCTOR_RUNNER_TOKEN:-}
+      CONDUCTOR_READONLY_TOKEN: ${CONDUCTOR_READONLY_TOKEN:-}
+      # Task history retention: terminal tasks only; running work is never pruned.
+      CONDUCTOR_TASK_RETENTION_MS: ${CONDUCTOR_TASK_RETENTION_MS:-604800000}
+      CONDUCTOR_MAX_TASKS: ${CONDUCTOR_MAX_TASKS:-5000}
+      CONDUCTOR_MAX_EVENTS: ${CONDUCTOR_MAX_EVENTS:-10000}
+      CONDUCTOR_MAX_TASK_RETRIES: ${CONDUCTOR_MAX_TASK_RETRIES:-3}
     volumes:
       - conductor-data:/data
     ports:
@@ -75,6 +83,9 @@ services:
       hub: { condition: service_healthy }
     environment:
       CONDUCTOR_HUB_URL: http://hub:7910
+      # Prefer a runner-scoped credential: a Runner then cannot create, cancel or retry
+      # tasks anywhere in the fleet. Falls back to the shared secret when unset.
+      CONDUCTOR_RUNNER_TOKEN: ${CONDUCTOR_RUNNER_TOKEN:-}
       CONDUCTOR_HUB_TOKEN: ${CONDUCTOR_HUB_TOKEN:?Set CONDUCTOR_HUB_TOKEN in .env}
       RUNNER_NAME: ${RUNNER_NAME:-omni-runner}
       # OpenCode is the reference self-hosted harness; add claude/codex explicitly.

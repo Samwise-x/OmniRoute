@@ -3400,13 +3400,13 @@
     "comboRefMember": "कॉम्बो → {name}"
   },
   "combos": {
-    "autoTosIncludeLabel": "ToS: avoid म्हणून चिन्हांकित प्रदाते auto मध्ये समाविष्ट करा",
-    "autoTosDescription": "मूलतः बंद. केवळ एका खात्याला नव्हे, सर्व auto कॉम्बोंना लागू होते. प्रदाता जोडल्याने हा पर्याय सुरू होत नाही.",
-    "autoTosSaveError": "ToS धोरण जतन करता आले नाही. आधीची सेटिंगच दिसत आहे. पुन्हा प्रयत्न करा.",
-    "autoTosLoadError": "ToS धोरण लोड करता आले नाही. बदलण्यापूर्वी पुन्हा प्रयत्न करा.",
     "title": "कॉम्बोज",
     "description": "भारित रूटिंग आणि फॉलबॅक समर्थनासह मॉडेल कॉम्बोज तयार करा",
     "autoCatalogTitle": "ऑटो-राउटिंग कॅटलॉग",
+    "autoTosLoadError": "ToS धोरण लोड करता आले नाही. बदलण्यापूर्वी पुन्हा प्रयत्न करा.",
+    "autoTosSaveError": "ToS धोरण जतन करता आले नाही. आधीची सेटिंगच दिसत आहे. पुन्हा प्रयत्न करा.",
+    "autoTosIncludeLabel": "ToS: avoid म्हणून चिन्हांकित प्रदाते auto मध्ये समाविष्ट करा",
+    "autoTosDescription": "मूलतः बंद. केवळ एका खात्याला नव्हे, सर्व auto कॉम्बोंना लागू होते. प्रदाता जोडल्याने हा पर्याय सुरू होत नाही.",
     "autoCatalogTemplateCount": "{count} टेम्पलेट्स",
     "autoCatalogDescription": "बिल्ट-इन ऑटो/* कॉम्बो कनेक्ट केलेल्या प्रदात्यांकडून डायनॅमिकपणे निराकरण केले. यापैकी कोणतेही आयडी मॉडेल फील्ड म्हणून वापरा — कोणत्याही सेटअपची आवश्यकता नाही.",
     "autoCatalogExpand": "स्वयं-राउटिंग कॅटलॉग विस्तृत करा",
@@ -6079,6 +6079,13 @@
     "claudeLowPriorityModeDescription": "जेव्हा हे खाते त्याच्या 5-तासांच्या वापर मर्यादेपर्यंत पोहोचते आणि Anthropic कमी-प्राधान्याचा मार्ग उपलब्ध करून देते, तेव्हा OmniRoute तो स्वीकारते आणि कनेक्शन थंड होऊ देण्याऐवजी विंडो रीसेट होईपर्यंत anthropic-usage-limit: slow सह विनंत्या पाठवत राहते. साप्ताहिक मर्यादा तरीही लागू राहते आणि अतिरिक्त क्षमता उपलब्ध होईपर्यंत प्रतिसादांना प्रतीक्षा करावी लागू शकते.",
     "claudeAutoLimitResetLabel": "सत्र मर्यादा स्वयंचलितपणे रीसेट करा (आठवड्यातून एकदा)",
     "claudeAutoLimitResetDescription": "जेव्हा हे खाते त्याच्या 5-तासांच्या वापर मर्यादेपर्यंत पोहोचते आणि सत्र-मर्यादा रीसेट उपलब्ध असतो, तेव्हा OmniRoute त्याचा स्वयंचलितपणे वापर करते आणि पूर्ण वेगाने पुन्हा प्रयत्न करते. यासाठी खात्याचा आठवड्यातून एकदा उपलब्ध असलेला रीसेट वापरला जातो आणि हा वापर तरीही साप्ताहिक मर्यादेत मोजला जातो.",
+    "codexPaidCreditsShort": "Extra credits",
+    "codexPaidCreditsToggleTitle": "Allow paid Codex credits after subscription quota runs out (additional charges may apply)",
+    "codexPaidCreditsEnabled": "Codex paid credits enabled (additional charges may apply)",
+    "codexPaidCreditsDisabled": "Codex paid credits disabled",
+    "failedUpdateCodexPaidCredits": "Failed to update Codex paid-credit policy",
+    "allowCodexPaidCreditsLabel": "Allow paid Codex credits",
+    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled.",
     "disableCoolingDescription": "अस्थायी कूलडाउन वगळा जेणेकरून पुनर्प्राप्त करण्यायोग्य त्रुटींनंतरही हे कनेक्शन पात्र राहील (प्रतिबंधित/कालबाह्य यांसारख्या अंतिम स्थिती अजूनही लागू होतात).",
     "disableCoolingLabel": "या कनेक्शनसाठी कूलडाउन अक्षम करा",
     "bulkPasteAdded": "{count, plural, one {1 key जोडली} other {# keys जोडल्या}}",
@@ -6532,6 +6539,7 @@
       "monsterapi": "monsterapi.ai वर API की मिळवा",
       "moonshot": "Moonshot AI ला API की सह कनेक्ट करा.",
       "morph": "विनामूल्य स्तर: 250K क्रेडिट्स/महिना, $0",
+      "apmix": "apmix.ai/dashboard वरून API की सह Apmix कनेक्ट करा — एक सदस्यता, अनेक मॉडेल्स.",
       "nanogpt": "NanoGPT ला API की सह कनेक्ट करा.",
       "nebius": "API चाचणीसाठी साइनअपवर ~$1 चाचणी क्रेडिट्स",
       "nlpcloud": "NLP Cloud OpenAI chat/completions ऐवजी मालकीचे चॅटबॉट API वापरते. OmniRoute OpenAI संदेशांना इनपुट/संदर्भ/इतिहासाशी जुळवून घेते आणि समर्थित चॅटबॉट मॉडेल्सची स्थानिक कॅटलॉग प्रदर्शित करते.",
@@ -6628,8 +6636,7 @@
       "kiro": "मोफत स्तर: 50 क्रेडिट्स/महिना (~25K–100K टोकन्स). ⚠️ Kiro ToS तृतीय-पक्ष प्रॉक्सी/हार्नेसच्या वापरावर बंदी घालते.",
       "codex": "सध्याच्या OAuth फ्लोसह OpenAI Codex कनेक्ट करा.",
       "qwen": "सध्याच्या OAuth फ्लोसह Qwen Code कनेक्ट करा.",
-      "github-models": "github.com/settings/tokens वर 'models: read' स्कोपसह GitHub PAT तयार करा",
-      "apmix": "apmix.ai/dashboard वरून API की सह Apmix कनेक्ट करा — एक सदस्यता, अनेक मॉडेल्स."
+      "github-models": "github.com/settings/tokens वर 'models: read' स्कोपसह GitHub PAT तयार करा"
     },
     "passthroughModelsDescription": "{provider} प्रदाता-नेटिव्ह मॉडेल आयडी स्वीकारते. /मॉडेलमधून आयात करा किंवा राउटिंगसाठी सानुकूल आयडी जोडा.",
     "bedrockModelsDescription": "Amazon बेडरॉक मॉडेल्स AWS क्षेत्राद्वारे व्यापलेले आहेत. /मॉडेल्समधून आयात करा किंवा निवडलेल्या प्रदेशात सक्षम केलेले बेडरॉक मॉडेल आयडी जोडा.",
@@ -6801,14 +6808,7 @@
     "rateLimitOverridesModelConcurrencyLabel": "Per-model concurrency caps",
     "rateLimitOverridesModelConcurrencyPlaceholder": "glm-5=1\nglm-4.7=3",
     "rateLimitOverridesModelConcurrencyHint": "Optional: one model=cap per line, matched against the exact upstream model id. Queues excess requests locally; blank means no per-model cap.",
-    "rateLimitOverridesModelConcurrencyInvalid": "Invalid per-model concurrency entry \"{entry}\" — use model=cap with a whole number from 1 to {max}.",
-    "codexPaidCreditsShort": "Extra credits",
-    "codexPaidCreditsToggleTitle": "Allow paid Codex credits after subscription quota runs out (additional charges may apply)",
-    "codexPaidCreditsEnabled": "Codex paid credits enabled (additional charges may apply)",
-    "codexPaidCreditsDisabled": "Codex paid credits disabled",
-    "failedUpdateCodexPaidCredits": "Failed to update Codex paid-credit policy",
-    "allowCodexPaidCreditsLabel": "Allow paid Codex credits",
-    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled."
+    "rateLimitOverridesModelConcurrencyInvalid": "Invalid per-model concurrency entry \"{entry}\" — use model=cap with a whole number from 1 to {max}."
   },
   "settings": {
     "title": "सेटिंग्ज",
@@ -9834,6 +9834,10 @@
     "streamTransformFailed": "स्ट्रीम रूपांतरित करण्यात अयशस्वी"
   },
   "usage": {
+    "codexPaidCreditsLabel": "Paid Codex credits",
+    "codexPaidCreditsAvailable": "Available (balance not reported)",
+    "codexPaidCreditsUnavailable": "Unavailable or spending limit reached",
+    "codexPaidCreditsUnlimited": "Unlimited",
     "title": "वापर",
     "grokExtraUsageCredits": "अतिरिक्त वापर क्रेडिट्स",
     "grokAutoTopUp": "स्वयंचलित टॉप-अप",
@@ -10286,11 +10290,7 @@
     "updatedShort": "अपडेट केले",
     "lastRefreshed": "शेवटचे रिफ्रेश केलेले",
     "providerQuota": "प्रदाता कोटा",
-    "providerQuotaHomeHint": "कनेक्ट केलेल्या खात्यांमधील थेट स्थिती",
-    "codexPaidCreditsLabel": "Paid Codex credits",
-    "codexPaidCreditsAvailable": "Available (balance not reported)",
-    "codexPaidCreditsUnavailable": "Unavailable or spending limit reached",
-    "codexPaidCreditsUnlimited": "Unlimited"
+    "providerQuotaHomeHint": "कनेक्ट केलेल्या खात्यांमधील थेट स्थिती"
   },
   "modals": {
     "waitingAuth": "अधिकृततेची प्रतीक्षा करत आहे",
@@ -14845,6 +14845,8 @@
     "council": "परिषद",
     "candidates": "उम्मीदवार",
     "cancel": "कार्य रद्द करा",
+    "retry": "__MISSING__:Retry task",
+    "retryFailed": "__MISSING__:The hub refused the retry",
     "cancelConfirmTitle": "या कार्य रद्द करायचे का?",
     "cancelConfirmMessage": "हब रनरवर कार्यान्वयन थांबवेल. हे पूर्ववत केले जाऊ शकत नाही.",
     "cancelFailed": "हबने रद्द करण्यास नकार दिला",

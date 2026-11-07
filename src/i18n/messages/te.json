@@ -3400,13 +3400,13 @@
     "comboRefMember": "కాంబో → {name}"
   },
   "combos": {
-    "autoTosIncludeLabel": "ToS: avoid అని గుర్తించిన ప్రొవైడర్లను autoలో చేర్చండి",
-    "autoTosDescription": "డిఫాల్ట్‌గా ఆఫ్‌లో ఉంటుంది. ఒక్క ఖాతాకే కాకుండా అన్ని auto కాంబోలకు వర్తిస్తుంది. ప్రొవైడర్‌ను కనెక్ట్ చేయడం ఈ ఎంపికను ప్రారంభించదు.",
-    "autoTosSaveError": "ToS విధానాన్ని సేవ్ చేయలేకపోయాము. మునుపటి సెట్టింగ్ ఇంకా చూపబడుతోంది. మళ్లీ ప్రయత్నించండి.",
-    "autoTosLoadError": "ToS విధానాన్ని లోడ్ చేయలేకపోయాము. మార్చే ముందు మళ్లీ ప్రయత్నించండి.",
     "title": "కాంబోలు",
     "description": "వెయిటెడ్ రూటింగ్ మరియు ఫాల్బ్యాక్ మద్దతుతో మోడల్ కాంబోలను సృష్టించండి",
     "autoCatalogTitle": "ఆటో-రూటింగ్ కేటలాగ్",
+    "autoTosLoadError": "ToS విధానాన్ని లోడ్ చేయలేకపోయాము. మార్చే ముందు మళ్లీ ప్రయత్నించండి.",
+    "autoTosSaveError": "ToS విధానాన్ని సేవ్ చేయలేకపోయాము. మునుపటి సెట్టింగ్ ఇంకా చూపబడుతోంది. మళ్లీ ప్రయత్నించండి.",
+    "autoTosIncludeLabel": "ToS: avoid అని గుర్తించిన ప్రొవైడర్లను autoలో చేర్చండి",
+    "autoTosDescription": "డిఫాల్ట్‌గా ఆఫ్‌లో ఉంటుంది. ఒక్క ఖాతాకే కాకుండా అన్ని auto కాంబోలకు వర్తిస్తుంది. ప్రొవైడర్‌ను కనెక్ట్ చేయడం ఈ ఎంపికను ప్రారంభించదు.",
     "autoCatalogTemplateCount": "{count} టెంప్లేట్‌లు",
     "autoCatalogDescription": "కనెక్ట్ చేయబడిన ప్రొవైడర్ల నుండి అంతర్నిర్మిత ఆటో/* కాంబోలు డైనమిక్‌గా పరిష్కరించబడతాయి. ఈ IDలలో దేనినైనా మోడల్ ఫీల్డ్‌గా ఉపయోగించండి — సెటప్ అవసరం లేదు.",
     "autoCatalogExpand": "ఆటో-రూటింగ్ కేటలాగ్‌ని విస్తరించండి",
@@ -6079,6 +6079,13 @@
     "claudeLowPriorityModeDescription": "ఈ ఖాతా తన 5 గంటల వినియోగ పరిమితిని చేరుకున్నప్పుడు మరియు Anthropic తక్కువ ప్రాధాన్యత గల లేన్ను అందించినప్పుడు, OmniRoute దాన్ని అంగీకరించి, కనెక్షన్ను కూల్డౌన్ చేయడానికి బదులుగా విండో రీసెట్ అయ్యే వరకు anthropic-usage-limit: slowతో అభ్యర్థనలను పంపడం కొనసాగిస్తుంది. వారపు పరిమితి ఇప్పటికీ వర్తిస్తుంది మరియు ఖాళీ సామర్థ్యం అందుబాటులోకి వచ్చే వరకు ప్రతిస్పందనలు వేచి ఉండవచ్చు.",
     "claudeAutoLimitResetLabel": "సెషన్ పరిమితిని స్వయంచాలకంగా రీసెట్ చేయండి (వారానికి ఒకసారి)",
     "claudeAutoLimitResetDescription": "ఈ ఖాతా తన 5 గంటల వినియోగ పరిమితిని చేరుకున్నప్పుడు మరియు సెషన్ పరిమితి రీసెట్ అందుబాటులో ఉన్నప్పుడు, OmniRoute దాన్ని స్వయంచాలకంగా క్లెయిమ్ చేసి పూర్తి వేగంతో మళ్లీ ప్రయత్నిస్తుంది. ఇది ఖాతాకు వారానికి ఒకసారి లభించే రీసెట్ను ఉపయోగిస్తుంది మరియు ఇప్పటికీ వారపు పరిమితిలో లెక్కించబడుతుంది.",
+    "codexPaidCreditsShort": "Extra credits",
+    "codexPaidCreditsToggleTitle": "Allow paid Codex credits after subscription quota runs out (additional charges may apply)",
+    "codexPaidCreditsEnabled": "Codex paid credits enabled (additional charges may apply)",
+    "codexPaidCreditsDisabled": "Codex paid credits disabled",
+    "failedUpdateCodexPaidCredits": "Failed to update Codex paid-credit policy",
+    "allowCodexPaidCreditsLabel": "Allow paid Codex credits",
+    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled.",
     "disableCoolingDescription": "తాత్కాలిక కూల్‌డౌన్‌ను దాటవేయండి, తద్వారా రికవర్ చేయగల ఎర్రర్‌ల తర్వాత కూడా ఈ కనెక్షన్ అర్హత కలిగి ఉంటుంది (banned/expired వంటి టెర్మినల్ స్థితులు ఇప్పటికీ వర్తిస్తాయి).",
     "disableCoolingLabel": "ఈ కనెక్షన్ కోసం కూల్‌డౌన్‌ను నిలిపివేయండి",
     "bulkPasteAdded": "{count, plural, one {1 కీ జోడించబడింది} other {# కీలు జోడించబడ్డాయి}}",
@@ -6532,6 +6539,7 @@
       "monsterapi": "monsterapi.ai వద్ద API కీని పొందండి",
       "moonshot": "API కీతో Moonshot AIని కనెక్ట్ చేయండి.",
       "morph": "ఉచిత శ్రేణి: 250K క్రెడిట్‌లు/నెల, $0",
+      "apmix": "apmix.ai/dashboard నుండి API కీతో Apmix ని కనెక్ట్ చేయండి — ఒక సభ్యతా, చాలా మోడల్స్.",
       "nanogpt": "API కీతో NanoGPTని కనెక్ట్ చేయండి.",
       "nebius": "API పరీక్ష కోసం సైన్ అప్ చేసినప్పుడు ~$1 ట్రయల్ క్రెడిట్‌లు",
       "nlpcloud": "NLP Cloud, OpenAI chat/completions కు బదులుగా యాజమాన్య చాట్‌బాట్ APIని ఉపయోగిస్తుంది. OmniRoute OpenAI సందేశాలను ఇన్‌పుట్/సందర్భం/చరిత్రకు అనుగుణంగా మారుస్తుంది మరియు మద్దతు ఉన్న చాట్‌బాట్ మోడల్‌ల స్థానిక కేటలాగ్‌ను బహిర్గతం చేస్తుంది.",
@@ -6628,8 +6636,7 @@
       "kiro": "ఉచిత శ్రేణి: 50 క్రెడిట్‌లు/నెల (~25K–100K టోకెన్‌లు). ⚠️ Kiro ToS థర్డ్-పార్టీ ప్రాక్సీ/హార్నెస్ వినియోగాన్ని నిషేధిస్తుంది.",
       "codex": "ప్రస్తుత OAuth flowతో OpenAI Codexని కనెక్ట్ చేయండి.",
       "qwen": "ప్రస్తుత OAuth flowతో Qwen Codeని కనెక్ట్ చేయండి.",
-      "github-models": "github.com/settings/tokens వద్ద 'models: read' స్కోప్‌తో GitHub PATని సృష్టించండి",
-      "apmix": "apmix.ai/dashboard నుండి API కీతో Apmix ని కనెక్ట్ చేయండి — ఒక సభ్యతా, చాలా మోడల్స్."
+      "github-models": "github.com/settings/tokens వద్ద 'models: read' స్కోప్‌తో GitHub PATని సృష్టించండి"
     },
     "passthroughModelsDescription": "{provider} ప్రొవైడర్-స్థానిక మోడల్ IDలను అంగీకరిస్తుంది. /మోడల్స్ నుండి దిగుమతి చేయండి లేదా రూటింగ్ కోసం అనుకూల IDలను జోడించండి.",
     "bedrockModelsDescription": "అమెజాన్ బెడ్‌రాక్ మోడల్‌లు AWS ప్రాంతం ద్వారా స్కోప్ చేయబడ్డాయి. /మోడల్స్ నుండి దిగుమతి చేయండి లేదా ఎంచుకున్న ప్రాంతంలో ప్రారంభించబడిన బెడ్‌రాక్ మోడల్ IDలను జోడించండి.",
@@ -6801,14 +6808,7 @@
     "rateLimitOverridesModelConcurrencyLabel": "Per-model concurrency caps",
     "rateLimitOverridesModelConcurrencyPlaceholder": "glm-5=1\nglm-4.7=3",
     "rateLimitOverridesModelConcurrencyHint": "Optional: one model=cap per line, matched against the exact upstream model id. Queues excess requests locally; blank means no per-model cap.",
-    "rateLimitOverridesModelConcurrencyInvalid": "Invalid per-model concurrency entry \"{entry}\" — use model=cap with a whole number from 1 to {max}.",
-    "codexPaidCreditsShort": "Extra credits",
-    "codexPaidCreditsToggleTitle": "Allow paid Codex credits after subscription quota runs out (additional charges may apply)",
-    "codexPaidCreditsEnabled": "Codex paid credits enabled (additional charges may apply)",
-    "codexPaidCreditsDisabled": "Codex paid credits disabled",
-    "failedUpdateCodexPaidCredits": "Failed to update Codex paid-credit policy",
-    "allowCodexPaidCreditsLabel": "Allow paid Codex credits",
-    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled."
+    "rateLimitOverridesModelConcurrencyInvalid": "Invalid per-model concurrency entry \"{entry}\" — use model=cap with a whole number from 1 to {max}."
   },
   "settings": {
     "title": "సెట్టింగ్లు",
@@ -9834,6 +9834,10 @@
     "streamTransformFailed": "స్ట్రీమ్‌ను మార్చడం విఫలమైంది"
   },
   "usage": {
+    "codexPaidCreditsLabel": "Paid Codex credits",
+    "codexPaidCreditsAvailable": "Available (balance not reported)",
+    "codexPaidCreditsUnavailable": "Unavailable or spending limit reached",
+    "codexPaidCreditsUnlimited": "Unlimited",
     "title": "వినియోగం",
     "grokExtraUsageCredits": "అదనపు వినియోగ క్రెడిట్స్",
     "grokAutoTopUp": "ఆటో టాప్-అప్",
@@ -10286,11 +10290,7 @@
     "updatedShort": "అప్‌డేట్ చేయబడింది",
     "lastRefreshed": "చివరిగా రిఫ్రెష్ చేయబడింది",
     "providerQuota": "ప్రొవైడర్ కోటా",
-    "providerQuotaHomeHint": "కనెక్ట్ చేయబడిన ఖాతాల ప్రత్యక్ష స్థితి",
-    "codexPaidCreditsLabel": "Paid Codex credits",
-    "codexPaidCreditsAvailable": "Available (balance not reported)",
-    "codexPaidCreditsUnavailable": "Unavailable or spending limit reached",
-    "codexPaidCreditsUnlimited": "Unlimited"
+    "providerQuotaHomeHint": "కనెక్ట్ చేయబడిన ఖాతాల ప్రత్యక్ష స్థితి"
   },
   "modals": {
     "waitingAuth": "అనుమతి కోసం వేచి ఉంది",
@@ -14845,6 +14845,8 @@
     "council": "కౌన్సిల్",
     "candidates": "అర్హులు",
     "cancel": "పనిని రద్దు చేయండి",
+    "retry": "__MISSING__:Retry task",
+    "retryFailed": "__MISSING__:The hub refused the retry",
     "cancelConfirmTitle": "ఈ పనిని రద్దు చేయాలా?",
     "cancelConfirmMessage": "హబ్ రన్నర్‌పై అమలును నిలిపివేస్తుంది. ఇది తిరిగి చేయలేరు.",
     "cancelFailed": "హబ్ రద్దును తిరస్కరించింది",

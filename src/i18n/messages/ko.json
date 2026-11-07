@@ -3400,13 +3400,13 @@
     "comboRefMember": "조합 → {name}"
   },
   "combos": {
+    "title": "콤보",
+    "description": "가중치 기반 라우팅 및 폴백 지원을 통해 모델 콤보 생성",
+    "autoCatalogTitle": "자동 라우팅 카탈로그",
     "autoTosLoadError": "서비스 약관 정책을 불러오지 못했습니다. 변경하기 전에 다시 시도하세요.",
     "autoTosSaveError": "서비스 약관 정책을 저장하지 못했습니다. 이전 설정이 계속 표시됩니다. 다시 시도하세요.",
     "autoTosIncludeLabel": "ToS: avoid로 표시된 제공자를 auto에 포함",
     "autoTosDescription": "기본적으로 꺼져 있습니다. 한 계정뿐 아니라 모든 auto 콤보에 적용됩니다. 제공자를 연결해도 이 옵션은 활성화되지 않습니다.",
-    "title": "콤보",
-    "description": "가중치 기반 라우팅 및 폴백 지원을 통해 모델 콤보 생성",
-    "autoCatalogTitle": "자동 라우팅 카탈로그",
     "autoCatalogTemplateCount": "{count} 템플릿",
     "autoCatalogDescription": "내장된 auto/* 콤보는 연결된 공급자로부터 동적으로 확인됩니다. 이러한 ID 중 하나를 모델 필드로 사용하세요 — 설정이 필요하지 않습니다.",
     "autoCatalogExpand": "자동 라우팅 카탈로그 확장",
@@ -6079,6 +6079,13 @@
     "claudeLowPriorityModeDescription": "이 계정이 5시간 사용 한도에 도달하고 Anthropic에서 낮은 우선순위 처리 경로를 제공하면, OmniRoute는 이를 수락하고 연결을 일시 중지하는 대신 사용량 기간이 초기화될 때까지 anthropic-usage-limit: slow을 사용하여 요청을 계속 전송합니다. 주간 한도는 계속 적용되며, 여유 처리 용량이 생길 때까지 응답이 대기할 수 있습니다.",
     "claudeAutoLimitResetLabel": "세션 한도 자동 초기화(주 1회)",
     "claudeAutoLimitResetDescription": "이 계정이 5시간 사용 한도에 도달하고 세션 한도 초기화를 사용할 수 있으면, OmniRoute가 이를 자동으로 적용하고 최대 속도로 다시 시도합니다. 계정의 주 1회 초기화 기회를 사용하며, 사용량은 계속 주간 한도에 포함됩니다.",
+    "codexPaidCreditsShort": "추가 크레딧",
+    "codexPaidCreditsToggleTitle": "구독 할당량을 모두 사용한 후 유료 Codex 크레딧 허용(추가 요금이 부과될 수 있음)",
+    "codexPaidCreditsEnabled": "Codex 유료 크레딧 사용 설정됨(추가 요금이 부과될 수 있음)",
+    "codexPaidCreditsDisabled": "Codex 유료 크레딧 사용 안 함",
+    "failedUpdateCodexPaidCredits": "Codex 유료 크레딧 정책을 업데이트하지 못했습니다",
+    "allowCodexPaidCreditsLabel": "유료 Codex 크레딧 허용",
+    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled.",
     "disableCoolingDescription": "일시적인 쿨다운을 건너뛰어 복구 가능한 오류가 발생한 후에도 이 연결이 사용 가능한 상태로 유지되도록 합니다(차단됨/만료됨과 같은 최종 상태는 여전히 적용됨).",
     "disableCoolingLabel": "이 연결에 대한 쿨다운 비활성화",
     "bulkPasteAdded": "{count, plural, one {키 1개 추가됨} other {키 #개 추가됨}}",
@@ -6532,6 +6539,7 @@
       "monsterapi": "monsterapi.ai에서 API 키 받기",
       "moonshot": "API 키로 Moonshot AI를 연결합니다.",
       "morph": "무료 티어: 월 250K 크레딧, $0",
+      "apmix": "apmix.ai/dashboard에서 API 키로 Apmix를 연결하세요 — 하나의 구독으로 다양한 모델.",
       "nanogpt": "API 키로 NanoGPT를 연결합니다.",
       "nebius": "API 테스트를 위한 가입 시 약 $1 체험 크레딧 제공",
       "nlpcloud": "NLP Cloud는 OpenAI chat/completions 대신 자체 챗봇 API를 사용합니다. OmniRoute는 OpenAI 메시지를 input/context/history에 맞게 변환하고 지원되는 챗봇 모델의 로컬 카탈로그를 제공합니다.",
@@ -6628,8 +6636,7 @@
       "kiro": "무료 티어: 월 50 크레딧(~25K–100K 토큰). ⚠️ Kiro ToS는 서드파티 프록시/하네스 사용을 금지합니다.",
       "codex": "기존 OAuth 흐름으로 OpenAI Codex를 연결합니다.",
       "qwen": "기존 OAuth 흐름으로 Qwen Code를 연결합니다.",
-      "github-models": "github.com/settings/tokens 에서 'models: read' 범위(scope)를 가진 GitHub PAT를 생성하세요.",
-      "apmix": "apmix.ai/dashboard에서 API 키로 Apmix를 연결하세요 — 하나의 구독으로 다양한 모델."
+      "github-models": "github.com/settings/tokens 에서 'models: read' 범위(scope)를 가진 GitHub PAT를 생성하세요."
     },
     "passthroughModelsDescription": "{provider}은 공급자 기본 모델 ID를 허용합니다. /models에서 가져오거나 라우팅을 위한 사용자 정의 ID를 추가하세요.",
     "bedrockModelsDescription": "Amazon Bedrock 모델은 AWS 지역별로 범위가 지정됩니다. /models에서 가져오거나 선택한 지역에서 활성화된 Bedrock 모델 ID를 추가하세요.",
@@ -6801,14 +6808,7 @@
     "rateLimitOverridesModelConcurrencyLabel": "모델별 동시 실행 상한",
     "rateLimitOverridesModelConcurrencyPlaceholder": "glm-5=1\nglm-4.7=3",
     "rateLimitOverridesModelConcurrencyHint": "선택 사항: 한 줄에 model=cap 하나를 입력합니다. 업스트림 모델 ID와 정확히 일치해야 합니다. 초과 요청은 로컬에서 대기하며, 비워 두면 모델별 상한이 없습니다.",
-    "rateLimitOverridesModelConcurrencyInvalid": "모델별 동시 실행 항목 \"{entry}\"이(가) 올바르지 않습니다 — model=cap 형식을 사용하고 cap은 1에서 {max} 사이의 정수여야 합니다.",
-    "codexPaidCreditsShort": "추가 크레딧",
-    "codexPaidCreditsToggleTitle": "구독 할당량을 모두 사용한 후 유료 Codex 크레딧 허용(추가 요금이 부과될 수 있음)",
-    "codexPaidCreditsEnabled": "Codex 유료 크레딧 사용 설정됨(추가 요금이 부과될 수 있음)",
-    "codexPaidCreditsDisabled": "Codex 유료 크레딧 사용 안 함",
-    "failedUpdateCodexPaidCredits": "Codex 유료 크레딧 정책을 업데이트하지 못했습니다",
-    "allowCodexPaidCreditsLabel": "유료 Codex 크레딧 허용",
-    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled."
+    "rateLimitOverridesModelConcurrencyInvalid": "모델별 동시 실행 항목 \"{entry}\"이(가) 올바르지 않습니다 — model=cap 형식을 사용하고 cap은 1에서 {max} 사이의 정수여야 합니다."
   },
   "settings": {
     "title": "설정",
@@ -9834,6 +9834,10 @@
     "streamTransformFailed": "스트림 변환 실패"
   },
   "usage": {
+    "codexPaidCreditsLabel": "Codex 유료 크레딧",
+    "codexPaidCreditsAvailable": "사용 가능(잔액 미보고)",
+    "codexPaidCreditsUnavailable": "사용 불가 또는 지출 한도 도달",
+    "codexPaidCreditsUnlimited": "무제한",
     "title": "사용량",
     "grokExtraUsageCredits": "추가 사용 크레딧",
     "grokAutoTopUp": "자동 충전",
@@ -10286,11 +10290,7 @@
     "updatedShort": "업데이트됨",
     "lastRefreshed": "마지막 새로고침",
     "providerQuota": "제공자 할당량",
-    "providerQuotaHomeHint": "연결된 계정의 실시간 상태",
-    "codexPaidCreditsLabel": "Codex 유료 크레딧",
-    "codexPaidCreditsAvailable": "사용 가능(잔액 미보고)",
-    "codexPaidCreditsUnavailable": "사용 불가 또는 지출 한도 도달",
-    "codexPaidCreditsUnlimited": "무제한"
+    "providerQuotaHomeHint": "연결된 계정의 실시간 상태"
   },
   "modals": {
     "waitingAuth": "승인을 기다리는 중",
@@ -14845,6 +14845,8 @@
     "council": "의회",
     "candidates": "후보자",
     "cancel": "작업 취소",
+    "retry": "__MISSING__:Retry task",
+    "retryFailed": "__MISSING__:The hub refused the retry",
     "cancelConfirmTitle": "이 작업을 취소하시겠습니까?",
     "cancelConfirmMessage": "허브는 러너에서 실행을 중단합니다. 이는 되돌릴 수 없습니다.",
     "cancelFailed": "허브가 취소를 거부했습니다.",

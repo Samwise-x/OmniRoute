@@ -1517,8 +1517,13 @@ jobs:
       - run: npm run test:security
 
   # OmniConductor / Omniconductor Hub. The suite starts the REAL hub.mjs, faro.mjs and
-  # runner.mjs processes and drives them over HTTP; the coding-agent harness is a
-  # documented-contract stand-in for `opencode run`, and no provider credential is used.
+  # runner.mjs processes and drives them over HTTP; no provider credential is used.
+  # Two grades of harness evidence, both kept honest by naming them differently:
+  #   - the seam suite drives a documented-contract stand-in for `opencode run`;
+  #   - `test:conductor:opencode` drives the REAL pinned OpenCode binary against a local
+  #     OpenAI-compatible stub, which is where the CLI's actual requirements were found.
+  # The pinned CLI is installed explicitly (postinstall included) so the real-binary job
+  # can never silently self-skip; `verify:conductor` also fails if it is absent.
   # `verify:conductor` additionally emits the acceptance report (docs/ops/OMNICONDUCTOR_EVIDENCE.md)
   # so a green run leaves behind machine-readable evidence instead of a hand-written claim.
   test-conductor:
@@ -1545,6 +1550,13 @@ jobs:
           # PR acceleration is not release-candidate provenance.
           cache: ${{ github.event_name == 'pull_request' }}
       - run: npm run check:node-runtime
+      - name: Install the pinned OpenCode CLI (real-binary evidence)
+        run: |
+          npm ci --prefix services/omni-conductor --no-audit --no-fund
+          node services/omni-conductor/node_modules/opencode-ai/postinstall.mjs
+          services/omni-conductor/node_modules/.bin/opencode --version
+      - name: Real OpenCode CLI through a real Hub + Runner
+        run: npm run test:conductor:opencode
       - name: Service-level runtime suite (OpenCode seam, guards, Hub/Faro/Runner)
         run: npm run test:conductor
       - name: OmniRoute ⇄ Hub contract (production route handlers, real Hub)

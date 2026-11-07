@@ -3400,13 +3400,13 @@
     "comboRefMember": "تركيبة → {name}"
   },
   "combos": {
+    "title": "المجموعات",
+    "description": "أنشئ مجموعات نماذج باستخدام التوجيه المرجّح والتبديل الاحتياطي",
+    "autoCatalogTitle": "كتالوج التوجيه التلقائي",
     "autoTosLoadError": "تعذر تحميل سياسة شروط الخدمة. أعد المحاولة قبل تغييرها.",
     "autoTosSaveError": "تعذر حفظ سياسة شروط الخدمة. لا يزال الإعداد السابق معروضًا. أعد المحاولة.",
     "autoTosIncludeLabel": "تضمين مقدمي الخدمة المصنفين ToS: avoid في auto",
     "autoTosDescription": "معطّل افتراضيًا. يسري على جميع مجموعات auto، وليس على حساب واحد فقط. ربط مقدم خدمة لا يفعّل هذا الخيار.",
-    "title": "المجموعات",
-    "description": "أنشئ مجموعات نماذج باستخدام التوجيه المرجّح والتبديل الاحتياطي",
-    "autoCatalogTitle": "كتالوج التوجيه التلقائي",
     "autoCatalogTemplateCount": "{count} قالبًا",
     "autoCatalogDescription": "تُحل مجموعات auto/* المضمّنة ديناميكيًا من المزوّدين المتصلين. استخدم أيًا من هذه المعرّفات في حقل النموذج، دون حاجة إلى إعداد.",
     "autoCatalogExpand": "توسيع كتالوج التوجيه التلقائي",
@@ -6079,6 +6079,13 @@
     "claudeLowPriorityModeDescription": "عندما يصل هذا الحساب إلى حد الاستخدام البالغ 5 ساعات وتقدم Anthropic مسار الأولوية المنخفضة، يقبل OmniRoute ذلك ويستمر في إرسال الطلبات مع anthropic-usage-limit: slow حتى يتم إعادة تعيين النافذة، بدلاً من تهدئة الاتصال. لا يزال الحد الأسبوعي ساريًا وقد تنتظر الاستجابات توفر سعة إضافية.",
     "claudeAutoLimitResetLabel": "إعادة تعيين حد الجلسة تلقائيًا (مرة واحدة في الأسبوع)",
     "claudeAutoLimitResetDescription": "عندما يصل هذا الحساب إلى حد الاستخدام البالغ 5 ساعات وتكون إعادة تعيين حد الجلسة متاحة، يطالب OmniRoute بها تلقائيًا ويعيد المحاولة بالسرعة الكاملة. يستخدم هذا خيار إعادة التعيين الأسبوعي للحساب ولا يزال يُحتسب ضمن الحد الأسبوعي.",
+    "codexPaidCreditsShort": "أرصدة إضافية",
+    "codexPaidCreditsToggleTitle": "السماح بأرصدة Codex المدفوعة بعد نفاد حصة الاشتراك (قد تُطبّق رسوم إضافية)",
+    "codexPaidCreditsEnabled": "أرصدة Codex المدفوعة مفعّلة (قد تُطبّق رسوم إضافية)",
+    "codexPaidCreditsDisabled": "أرصدة Codex المدفوعة معطّلة",
+    "failedUpdateCodexPaidCredits": "فشل تحديث سياسة أرصدة Codex المدفوعة",
+    "allowCodexPaidCreditsLabel": "السماح بأرصدة Codex المدفوعة",
+    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled.",
     "disableCoolingDescription": "تخطي فترة التهدئة المؤقتة حتى يظل هذا الاتصال مؤهلاً حتى بعد الأخطاء القابلة للاسترداد (لا تزال الحالات النهائية مثل banned/expired سارية).",
     "disableCoolingLabel": "تعطيل فترة التهدئة لهذا الاتصال",
     "bulkPasteAdded": "المفاتيح المضافة: {count, plural, one {أُضيف مفتاح واحد} other {أُضيف # من المفاتيح}}",
@@ -6532,6 +6539,7 @@
       "monsterapi": "احصل على مفتاح API من monsterapi.ai",
       "moonshot": "ربط Moonshot AI بمفتاح API.",
       "morph": "الفئة المجانية: 250 ألف رصيد/شهر، $0",
+      "apmix": "اربط Apmix بمفتاح API من apmix.ai/dashboard — اشتراك واحد، نماذج كثيرة.",
       "nanogpt": "ربط NanoGPT بمفتاح API.",
       "nebius": "رصيد تجريبي بقيمة ~1$ عند التسجيل لاختبار واجهة برمجة التطبيقات (API)",
       "nlpcloud": "تستخدم NLP Cloud واجهة برمجة تطبيقات روبوت دردشة خاصة بدلاً من إكمال الدردشة الخاص بـ OpenAI. تقوم OmniRoute بتكييف رسائل OpenAI مع المدخلات/السياق/السجل وتعرض كتالوجًا محليًا لنماذج روبوتات الدردشة المدعومة.",
@@ -6628,8 +6636,7 @@
       "kiro": "الفئة المجانية: 50 رصيدًا شهريًا (~25 ألف–100 ألف توكن). ⚠️ تحظر شروط خدمة Kiro استخدام وكيل/أداة خارجية.",
       "codex": "ربط OpenAI Codex باستخدام تدفق OAuth الحالي.",
       "qwen": "ربط Qwen Code باستخدام تدفق OAuth الحالي.",
-      "github-models": "أنشئ رمز وصول شخصي (PAT) لـ GitHub بنطاق 'models: read' على github.com/settings/tokens",
-      "apmix": "اربط Apmix بمفتاح API من apmix.ai/dashboard — اشتراك واحد، نماذج كثيرة."
+      "github-models": "أنشئ رمز وصول شخصي (PAT) لـ GitHub بنطاق 'models: read' على github.com/settings/tokens"
     },
     "passthroughModelsDescription": "{provider} يقبل معرفات النماذج الأصلية للموفر. قم بالاستيراد من /models أو قم بإضافة معرفات مخصصة للتوجيه.",
     "bedrockModelsDescription": "يتم تحديد نطاق نماذج Amazon Bedrock حسب منطقة AWS. قم بالاستيراد من /models أو قم بإضافة معرفات نماذج Bedrock الممكنة في المنطقة المحددة.",
@@ -6801,14 +6808,7 @@
     "rateLimitOverridesModelConcurrencyLabel": "حدود التزامن لكل نموذج",
     "rateLimitOverridesModelConcurrencyPlaceholder": "glm-5=1\nglm-4.7=3",
     "rateLimitOverridesModelConcurrencyHint": "اختياري: model=cap واحد في كل سطر، يُطابَق مع معرّف نموذج المنبع بالضبط. تُوضع الطلبات الزائدة في طابور محلي؛ والفراغ يعني عدم وجود حد لكل نموذج.",
-    "rateLimitOverridesModelConcurrencyInvalid": "إدخال تزامن لكل نموذج غير صالح \"{entry}\" — استخدم model=cap حيث cap عدد صحيح من 1 إلى {max}.",
-    "codexPaidCreditsShort": "أرصدة إضافية",
-    "codexPaidCreditsToggleTitle": "السماح بأرصدة Codex المدفوعة بعد نفاد حصة الاشتراك (قد تُطبّق رسوم إضافية)",
-    "codexPaidCreditsEnabled": "أرصدة Codex المدفوعة مفعّلة (قد تُطبّق رسوم إضافية)",
-    "codexPaidCreditsDisabled": "أرصدة Codex المدفوعة معطّلة",
-    "failedUpdateCodexPaidCredits": "فشل تحديث سياسة أرصدة Codex المدفوعة",
-    "allowCodexPaidCreditsLabel": "السماح بأرصدة Codex المدفوعة",
-    "allowCodexPaidCreditsDescription": "Allow this account to use paid credits after its subscription quota reaches the cutoff. Requires available credits reported by OpenAI; may incur charges. Spark limits and upstream cooldowns still apply. Credit availability is checked even if quota preflight is disabled."
+    "rateLimitOverridesModelConcurrencyInvalid": "إدخال تزامن لكل نموذج غير صالح \"{entry}\" — استخدم model=cap حيث cap عدد صحيح من 1 إلى {max}."
   },
   "settings": {
     "title": "الإعدادات",
@@ -9834,6 +9834,10 @@
     "streamTransformFailed": "فشل تحويل التدفق"
   },
   "usage": {
+    "codexPaidCreditsLabel": "أرصدة Codex المدفوعة",
+    "codexPaidCreditsAvailable": "متاح (الرصيد غير مُبلَّغ عنه)",
+    "codexPaidCreditsUnavailable": "غير متاح أو تم بلوغ حد الإنفاق",
+    "codexPaidCreditsUnlimited": "غير محدود",
     "title": "الاستخدام",
     "grokExtraUsageCredits": "رصيد استخدام إضافي",
     "grokAutoTopUp": "إعادة تعبئة تلقائية",
@@ -10286,11 +10290,7 @@
     "updatedShort": "تم التحديث",
     "lastRefreshed": "آخر تحديث",
     "providerQuota": "حصة المزود",
-    "providerQuotaHomeHint": "الحالة المباشرة عبر الحسابات المتصلة",
-    "codexPaidCreditsLabel": "أرصدة Codex المدفوعة",
-    "codexPaidCreditsAvailable": "متاح (الرصيد غير مُبلَّغ عنه)",
-    "codexPaidCreditsUnavailable": "غير متاح أو تم بلوغ حد الإنفاق",
-    "codexPaidCreditsUnlimited": "غير محدود"
+    "providerQuotaHomeHint": "الحالة المباشرة عبر الحسابات المتصلة"
   },
   "modals": {
     "waitingAuth": "في انتظار التصريح",
@@ -14845,6 +14845,8 @@
     "council": "مجلس",
     "candidates": "المرشحون",
     "cancel": "إلغاء المهمة",
+    "retry": "__MISSING__:Retry task",
+    "retryFailed": "__MISSING__:The hub refused the retry",
     "cancelConfirmTitle": "هل تريد إلغاء هذه المهمة؟",
     "cancelConfirmMessage": "سيقوم المركز بإلغاء التنفيذ على العداء. لا يمكن التراجع عن ذلك.",
     "cancelFailed": "رفض المركز إلغاء الطلب",
